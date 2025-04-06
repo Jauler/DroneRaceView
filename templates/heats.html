@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Drone Race – Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">Picnic Drone Race</div>
+    <div class="menu-icon" id="menuToggle">&#9776;</div>
+    <nav class="dropdown" id="dropdownMenu">
+      <a href="results">Results</a>
+      <a href="heats">Heats</a>
+    </nav>
+  </header>
+
+  <main class="heats-page">
+    {% for round in rounds %}
+    <section class="round-section">
+      <div class="results-container">
+        <h2>Round {{ round.round_number }}</h2>
+        <div class="table-wrapper">
+          <table class="round-table">
+            <thead>
+              <tr>
+                <th>Heat</th>
+                <th>Channel</th>
+                <th>Nickname</th>
+                <th>Position</th>
+                <th>Gains</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for heat in round.heats %}
+                {% for pilot in heat.pilots %}
+                  {% if loop.index == 1 %}
+                    <tr class="heat-start">
+                    <td rowspan="4" class="vertical-text">{{ heat.heat_name }}</td>
+                  {% else %}
+                    <tr>
+                  {% endif %}
+                  <td>{{ pilot.channel }}</td>
+                  <td>{{ pilot.nickname }}</td>
+                  <td>{{ pilot.position }}</td>
+                  <td>{{ pilot.gains }}</td>
+                  <td>{{ pilot.points }}</td>
+                </tr>
+                {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    {% endfor %}
+  </main>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    menuToggle.addEventListener('click', () => {
+      dropdownMenu.classList.toggle('show');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drone Race Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">Picnic Drone Race</div>
+  <div class="menu-icon" id="menuToggle">&#9776;</div>
+  <nav class="dropdown" id="dropdownMenu">
+    <a href="results">Results</a>
+    <a href="heats">Heats</a>
+  </nav>
+</header>
+
+<main>
+  <!-- Current Heat Section -->
+  <section class="current-heat-section">
+  <div class="results-container">
+    <h2>Current Heat</h2>
+
+    <div class="heat-wrapper">
+      <div class="heat-number">
+          <span id="heatNumber">{{ current_heat }}</span>
+      </div>
+      <div class="pilot-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Pilot</th>
+              <th>Channel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pilot in current_pilots %}
+            <tr>
+              <td>{{ pilot.nickname }}</td>
+              <td>{{ pilot.channel }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Full Results Table Section -->
+  <section class="results-section">
+    <div class="results-container">
+      <h2>Hill Climb</h2>
+      <div class="table-wrapper">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Nickname</th>
+              <th>Points</th>
+              <th>Fastest Lap</th>
+              <th>Fastest Lap Source</th>
+              <th>Fastest 3 Laps</th>
+              <th>Fastest 3 Laps Source</th>
+              <th>Next Heat</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pilot in pilot_results %}
+            <tr>
+              <td>{{ pilot.rank }}</td>
+              <td>{{ pilot.nickname }}</td>
+              <td>{{ pilot.points }}</td>
+              <td>{{ pilot.fastest_lap }}</td>
+              <td>{{ pilot.fastest_lap_source }}</td>
+              <td>{{ pilot.fastest_3_laps }}</td>
+              <td>{{ pilot.fastest_3_laps_source }}</td>
+              <td>{{ pilot.next_heat }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    menuToggle.addEventListener('click', () => {
+      dropdownMenu.classList.toggle('show');
+    });
+  </script>
+</body>
+</html>
+

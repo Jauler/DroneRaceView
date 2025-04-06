@@ -1,0 +1,113 @@
+import argparse
+import logging
+import socketio
+import time
+import threading
+import os
+from sqlalchemy import create_engine, Column, Integer, DateTime, JSON, String
+from sqlalchemy.orm import sessionmaker, declarative_base
+from datetime import datetime
+from storage import init_db, RHDataTable, session_maker
+
+# --- Logging setup ---
+logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] %(levelname)s: %(message)s')
+logger = logging.getLogger("SocketIOListener")
+
+# --- SQLAlchemy setup ---
+Base = declarative_base()
+
+init_db()
+
+ignored_events = set()
+
+# --- Socket.IO Client setup ---
+sio = socketio.Client(reconnection=False)  # We will handle reconnection manually
+
+def save_event(event_name, data):
+    try:
+        global ignored_events
+        if not data:
+            return
+        if event_name in ignored_events:
+            return
+        session = session_maker()
+        entry = RHDataTable(entry_type=event_name, payload=data)
+        session.add(entry)
+        session.commit()
+        session.close()
+        logger.debug(f"Saved event '{event_name}' to database.")
+    except Exception:
+        logger.exception("Fatal error while saving event — terminating app")
+        os._exit(1)  # 🚨 Exit immediately on DB error
+
+# Catch-all event handler
+@sio.on("*")
+def catch_all(event, data=None):
+    save_event(event, data)
+
+@sio.event
+def connect():
+    logger.info("Connected to Socket.IO server")
+
+@sio.event
+def disconnect():
+    logger.warning("Disconnected from Socket.IO server")
+
+def periodic_load_all():
+    while True:
+        if sio.connected:
+            logger.info("Emitting 'load_all'")
+            data = {
+                    "load_types":[
+                        "node_data",
+                        "frequency_data",
+                        "pilot_data",
+                        "heat_data",
+                        "class_data",
+                        "result_data",
+                        "race_status",
+                    ]
+                }
+            sio.emit("load_data", data=data)
+        else:
+            logger.warning("Skipping 'load_all' emit because client is disconnected")
+
+        time.sleep(60)
+
+def run_socketio_client(url, username, password):
+    while True:
+        try:
+            logger.info(f"Connecting to {url} with user '{username}'")
+            sio.connect(
+                url,
+                auth={"username": username, "password": password},
+                transports=["websocket"]
+            )
+            # Start periodic message sender
+            load_all_thread = threading.Thread(target=periodic_load_all, daemon=True)
+            load_all_thread.start()
+            sio.wait()
+        except Exception as e:
+            logger.exception("Socket.IO connection error, will retry in 60s")
+            time.sleep(60)
+
+# --- Argparse CLI ---
+def main():
+    parser = argparse.ArgumentParser(description="Socket.IO client with DB logging.")
+    parser.add_argument("--url", required=True, help="Socket.IO server URL")
+    parser.add_argument("--username", required=True, help="Username for authentication")
+    parser.add_argument("--password", required=True, help="Password for authentication")
+    parser.add_argument("--ignore-events", help="Comma-separated list of events to ignore", default="")
+
+    args = parser.parse_args()
+
+    global ignored_events
+    ignored_events = set([e.strip() for e in args.ignore_events.split(",") if e.strip()])
+
+    run_socketio_client(args.url, args.username, args.password)
+
+if __name__ == "__main__":
+    main()
+
+
+

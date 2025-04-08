@@ -11,6 +11,7 @@ services:
       - 5000:5000
     volumes:
       - ./data:/data/
+      - ./web:/app
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/"]
       interval: 30s
@@ -27,6 +28,7 @@ services:
     restart: always
     volumes:
       - ./data:/data/
+      - ./collector:/collector
     network_mode: host
     environment:
       - DATABASE_URL=sqlite:////data/data.db

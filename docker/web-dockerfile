@@ -9,8 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpcre3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+RUN rm requirements.txt
 
 # Ensure logs go to stdout/stderr
 ENV PYTHONUNBUFFERED=1

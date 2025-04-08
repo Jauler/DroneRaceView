@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 class Class(BaseModel):
     id: int
@@ -7,7 +6,7 @@ class Class(BaseModel):
     displayname: str
     description: str
     format: int
-    win_conditions: Optional[str]
+    win_conditions: str | None = None
     rounds: int
     locked: bool
 

@@ -1,10 +1,9 @@
 from pydantic import BaseModel
-from typing import Optional
 
 class Frequency(BaseModel):
-    band: Optional[str]
-    channel: Optional[int]
-    frequency: Optional[int]
+    band: str | None = None
+    channel: int | None = None
+    frequency: int | None = None
 
 class Frequencies(BaseModel):
     fdata: list[Frequency]

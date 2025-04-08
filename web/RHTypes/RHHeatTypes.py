@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 class HeatSlot(BaseModel):
     id: int
@@ -10,8 +9,8 @@ class HeatSlot(BaseModel):
 class Heat(BaseModel):
     id: int
     displayname: str
-    name: Optional[str]
-    auto_name: Optional[str]
+    name: str | None = None
+    auto_name: str | None = None
     class_id: int
     group_id: int
     status: int

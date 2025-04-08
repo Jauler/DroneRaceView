@@ -7,7 +7,10 @@ from RHTypes.RHPilotTypes import Pilots
 from RHTypes.RHResultTypes import Results
 from RHTypes.RHFrequencyTypes import Frequencies
 from TemplateTypes import PilotResult, HeatPilot
+from pathlib import Path
 import converter
+
+SCRIPT_DIR = Path(__file__).resolve().parent
 
 @pytest.mark.parametrize("race_status_filename", [
     "testdata/race_status_data_sample_1.json",
@@ -17,8 +20,8 @@ import converter
     "testdata/heat_data_sample_2.json"
 ])
 def test_current_heat_converter(race_status_filename, heats_filename):
-    race_status = RaceStatus(**json.load(open(race_status_filename)))
-    heats = Heats(**json.load(open(heats_filename)))
+    race_status = RaceStatus(**json.load(open(SCRIPT_DIR / race_status_filename)))
+    heats = Heats(**json.load(open(SCRIPT_DIR / heats_filename)))
 
     current_heat = converter.current_heat(race_status, heats)
 
@@ -31,8 +34,8 @@ def test_current_heat_converter(race_status_filename, heats_filename):
     "testdata/heat_data_sample_1.json",
 ])
 def test_current_heat_converter_null_heat(race_status_filename, heats_filename):
-    race_status = RaceStatus(**json.load(open(race_status_filename)))
-    heats = Heats(**json.load(open(heats_filename)))
+    race_status = RaceStatus(**json.load(open(SCRIPT_DIR / race_status_filename)))
+    heats = Heats(**json.load(open(SCRIPT_DIR / heats_filename)))
 
     race_status.race_heat_id = 0
 
@@ -54,10 +57,10 @@ def test_current_heat_converter_null_heat(race_status_filename, heats_filename):
     "testdata/frequency_data_sample_1.json"
 ])
 def test_current_pilots_converter(race_status_filename, heats_filename, pilots_filename, freq_filename):
-    race_status = RaceStatus(**json.load(open(race_status_filename)))
-    heats = Heats(**json.load(open(heats_filename)))
-    pilots = Pilots(**json.load(open(pilots_filename)))
-    frequency = Frequencies(**json.load(open(freq_filename)))
+    race_status = RaceStatus(**json.load(open(SCRIPT_DIR / race_status_filename)))
+    heats = Heats(**json.load(open(SCRIPT_DIR / heats_filename)))
+    pilots = Pilots(**json.load(open(SCRIPT_DIR / pilots_filename)))
+    frequency = Frequencies(**json.load(open(SCRIPT_DIR / freq_filename)))
 
     current_pilots = converter.current_pilots(race_status, heats, pilots, frequency)
 
@@ -82,9 +85,9 @@ def test_current_pilots_converter(race_status_filename, heats_filename, pilots_f
     "testdata/pilot_data_sample_2.json"
 ])
 def test_current_pilots_converter_pilot_results(results_filename, heats_filename, pilots_filename):
-    results = Results(**json.load(open(results_filename)))
-    heats = Heats(**json.load(open(heats_filename)))
-    pilots = Pilots(**json.load(open(pilots_filename)))
+    results = Results(**json.load(open(SCRIPT_DIR / results_filename)))
+    heats = Heats(**json.load(open(SCRIPT_DIR / heats_filename)))
+    pilots = Pilots(**json.load(open(SCRIPT_DIR / pilots_filename)))
 
     pr = converter.pilot_results(results, heats, pilots)
 
@@ -160,11 +163,11 @@ def test_current_pilots_converter_pilot_results(results_filename, heats_filename
     "testdata/frequency_data_sample_1.json"
 ])
 def test_rounds_converter(results_filename, heats_filename, pilots_filename, classes_filename, freq_filename):
-    results = Results(**json.load(open(results_filename)))
-    heats = Heats(**json.load(open(heats_filename)))
-    pilots = Pilots(**json.load(open(pilots_filename)))
-    classes = Classes(**json.load(open(classes_filename)))
-    frequency = Frequencies(**json.load(open(freq_filename)))
+    results = Results(**json.load(open(SCRIPT_DIR / results_filename)))
+    heats = Heats(**json.load(open(SCRIPT_DIR / heats_filename)))
+    pilots = Pilots(**json.load(open(SCRIPT_DIR / pilots_filename)))
+    classes = Classes(**json.load(open(SCRIPT_DIR / classes_filename)))
+    frequency = Frequencies(**json.load(open(SCRIPT_DIR / freq_filename)))
 
     pr = converter.rounds(results, heats, classes, pilots, frequency)
 

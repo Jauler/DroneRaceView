@@ -7,7 +7,6 @@ import os
 from sqlalchemy import create_engine, Column, Integer, DateTime, JSON, String
 from sqlalchemy.orm import sessionmaker, declarative_base
 from datetime import datetime
-from storage import init_db, RHDataTable, session_maker
 
 # --- Logging setup ---
 logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] %(levelname)s: %(message)s')
@@ -15,8 +14,18 @@ logger = logging.getLogger("SocketIOListener")
 
 # --- SQLAlchemy setup ---
 Base = declarative_base()
+engine = create_engine("sqlite:///data.db")
+session_maker = sessionmaker(bind=engine)
+Base.metadata.create_all(bind=engine)
 
-init_db()
+class RHDataTable(Base):
+    __tablename__ = "rhdata"
+
+    id = Column(Integer, primary_key=True)
+    entry_type = Column(String, nullable=False)
+    payload = Column(JSON, nullable=False)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
 
 ignored_events = set()
 
@@ -88,7 +97,7 @@ def run_socketio_client(url, username, password):
             load_all_thread.start()
             sio.wait()
         except Exception as e:
-            logger.exception("Socket.IO connection error, will retry in 60s")
+            logger.exception(f"Socket.IO connection error, will retry in 60s: {e}")
             time.sleep(60)
 
 # --- Argparse CLI ---

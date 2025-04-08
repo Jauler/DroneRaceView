@@ -8,11 +8,12 @@ from RHTypes.RHRaceStatusTypes import RaceStatus
 from RHTypes.RHResultTypes import Results
 from RHTypes.RHFrequencyTypes import Frequencies
 from typing import Generic, TypeVar, Type
+import os
 
 T = TypeVar("T")
 Base = declarative_base()
-
-engine = create_engine("sqlite:///data.db")
+db_path = os.getenv("DATABASE_URL", "sqlite:///data.db")  # fallback default
+engine = create_engine(db_path)
 session_maker = sessionmaker(bind=engine)
 session = session_maker()
 

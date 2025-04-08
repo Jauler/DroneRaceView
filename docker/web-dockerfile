@@ -1,0 +1,19 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    curl \
+    libpcre3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Ensure logs go to stdout/stderr
+ENV PYTHONUNBUFFERED=1
+
+CMD ["uwsgi", "--http", ":5000", "--wsgi-file", "app.py", "--callable", "app", "--master", "--processes", "4", "--threads", "2"]
+

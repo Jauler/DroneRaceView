@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./web
+      dockerfile: ../docker/web-dockerfile
+    command: uwsgi --http :5000 --wsgi-file app.py --callable app --master --processes 4 --threads 2
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - ./data:/data/
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    environment:
+      - DATABASE_URL=sqlite:////data/data.db
+
+  collector:
+    build:
+      context: ./collector
+      dockerfile: ../docker/collector-dockerfile
+    command: python main.py --url http://10.42.0.191:8000 --username <your username> --password <your password> --ignore-events heartbeat,cluster_status,node_data,environmental_data
+    restart: always
+    volumes:
+      - ./data:/data/
+    network_mode: host
+    environment:
+      - DATABASE_URL=sqlite:////data/data.db
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "main.py"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+

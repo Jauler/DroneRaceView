@@ -41,6 +41,7 @@ def test_rh_pilot_data(filename):
 
 @pytest.mark.parametrize("filename", [
     "testdata/race_status_data_sample_1.json",
+    "testdata/race_status_data_sample_2.json",
 ])
 def test_rh_race_status(filename):
     _r = RaceStatus(**json.load(open(SCRIPT_DIR / filename)))

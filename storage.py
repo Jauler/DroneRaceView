@@ -1,12 +1,12 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, JSON, String, DateTime, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
-from RHClassTypes import Classes
-from RHHeatTypes import Heats
-from RHPilotTypes import Pilots
-from RHRaceStatusTypes import RaceStatus
-from RHResultTypes import Results
-from RHFrequencyTypes import Frequencies
+from RHTypes.RHClassTypes import Classes
+from RHTypes.RHHeatTypes import Heats
+from RHTypes.RHPilotTypes import Pilots
+from RHTypes.RHRaceStatusTypes import RaceStatus
+from RHTypes.RHResultTypes import Results
+from RHTypes.RHFrequencyTypes import Frequencies
 from typing import Generic, TypeVar, Type
 
 T = TypeVar("T")

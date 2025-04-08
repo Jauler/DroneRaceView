@@ -1,6 +1,12 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
+
+########################################
+#
+# result_data types
+#
 class LeaderboardResultSource(BaseModel):
     round: int
     heat: int
@@ -85,3 +91,9 @@ class Results(BaseModel):
     classes: dict[str, Class]
     event_leaderboard: Optional[Leaderboard]
     consecutives_count: int
+
+########################################
+#
+# calss_data types
+#
+

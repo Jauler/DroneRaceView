@@ -1,12 +1,11 @@
 import pytest
 import json
-from RHClassTypes import Classes
-
-from RHHeatTypes import Heats
-from RHRaceStatusTypes import RaceStatus
-from RHPilotTypes import Pilots
-from RHResultTypes import Results
-from RHFrequencyTypes import Frequencies
+from RHTypes.RHClassTypes import Classes
+from RHTypes.RHHeatTypes import Heats
+from RHTypes.RHRaceStatusTypes import RaceStatus
+from RHTypes.RHPilotTypes import Pilots
+from RHTypes.RHResultTypes import Results
+from RHTypes.RHFrequencyTypes import Frequencies
 from TemplateTypes import PilotResult, HeatPilot
 import converter
 

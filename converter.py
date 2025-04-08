@@ -1,9 +1,9 @@
-from RHRaceStatusTypes import RaceStatus
-from RHHeatTypes import Heats as RHHeats
-from RHPilotTypes import Pilots as RHPilots
-from RHResultTypes import Results as RHResults
-from RHClassTypes import Classes as RHClasses
-from RHFrequencyTypes import Frequencies as RHFrequencies, Frequency as RHFrequency
+from RHTypes.RHRaceStatusTypes import RaceStatus
+from RHTypes.RHHeatTypes import Heats as RHHeats
+from RHTypes.RHPilotTypes import Pilots as RHPilots
+from RHTypes.RHResultTypes import Results as RHResults
+from RHTypes.RHClassTypes import Classes as RHClasses
+from RHTypes.RHFrequencyTypes import Frequencies as RHFrequencies, Frequency as RHFrequency
 from TemplateTypes import (
     CurrentHeat as TCurrentHeat,
     CurrentHeatPilot as TCurrentHeatPilot,

@@ -79,12 +79,22 @@ class Heat(BaseModel):
     rounds: list[Round]
     leaderboard: Leaderboard | None = None
 
+class RankingEntry(BaseModel):
+    pilot_id: int
+    callsign: str
+    team_name: str
+    points: int
+    position: int
+
+class Ranking(BaseModel):
+    ranking: list[RankingEntry]
+
 class Class(BaseModel):
     id: int
     name: str
     description: str
     leaderboard: Leaderboard | None = None
-    ranking: bool | None = None
+    ranking: Ranking | bool | None = None
 
 class Results(BaseModel):
     heats: dict[str, Heat]

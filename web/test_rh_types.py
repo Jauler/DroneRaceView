@@ -50,6 +50,7 @@ def test_rh_race_status(filename):
     "testdata/result_data_sample_1.json",
     "testdata/result_data_sample_2.json",
     "testdata/result_data_sample_3.json",
+    "testdata/result_data_sample_4.json",
 ])
 def test_rh_result_data(filename):
     _r = Results(**json.load(open(SCRIPT_DIR / filename)))

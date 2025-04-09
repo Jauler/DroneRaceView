@@ -156,16 +156,18 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
             if entry.pilot_id != pilot_id:
                 continue
             return entry
-
+        return None
+    def find_gains_for_pilot_in_class(class_id, pilot_id):
+        if r and str(class_id) in r.classes:
+            ranking = r.classes[str(class_id)].ranking
+            if isinstance(ranking, Ranking):
+                return next((p.points for p in ranking.ranking if p.pilot_id == pilot_id), None)
         return None
 
-
-    position_to_gains = {
-            1: "50",
-            2: "20",
-            3: "-20",
-            4: "-50"
-    }
+    # Initialize pilots points to 1000
+    pilot_points = {}
+    for rh_pilot in p.pilots:
+        pilot_points[rh_pilot.pilot_id] = BASE_POINTS;
 
     rounds = []
     for race_class in c.classes:
@@ -186,10 +188,17 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
                 lb_entry = find_pilot_leaderboard_by_heat_and_pilot_id(rh_heat.id, rh_slot.pilot_id)
                 if lb_entry is not None and rhp is not None:
                     position = str(value_or_default(lb_entry.position, NO_DATA))
-                    gains = map_or_default(position_to_gains, lb_entry.position, NO_DATA)
-                    points = NO_DATA
-                    if lb_entry.points is not None:
-                        points = str(BASE_POINTS + lb_entry.points)
+
+                    # Get gains from results
+                    gains = find_gains_for_pilot_in_class(race_class.id, rh_slot.pilot_id)
+
+                    if gains is None:
+                        points = NO_DATA
+                        gains = NO_DATA
+                    else:
+                        points = pilot_points[rh_slot.pilot_id] + gains
+                        pilot_points[rh_slot.pilot_id] = points
+                        gains = str(gains)
                 else:
                     position = NO_DATA
                     gains = NO_DATA

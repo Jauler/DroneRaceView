@@ -210,7 +210,7 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
                         gains=gains,
                         points=points))
 
-            round_name = race_class.displayname + " Round " + str(rh_heat.group_id)
+            round_name = race_class.displayname + " Round " + str(rh_heat.group_id + 1)
             if round_name not in rounds:
                 race_round = TRound(round_name=round_name, heats=[])
                 rounds[round_name] = race_round

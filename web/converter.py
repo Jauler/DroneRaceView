@@ -1,7 +1,7 @@
 from RHTypes.RHRaceStatusTypes import RaceStatus
 from RHTypes.RHHeatTypes import Heats as RHHeats
 from RHTypes.RHPilotTypes import Pilots as RHPilots
-from RHTypes.RHResultTypes import Results as RHResults
+from RHTypes.RHResultTypes import Results as RHResults, Ranking
 from RHTypes.RHClassTypes import Classes as RHClasses
 from RHTypes.RHFrequencyTypes import Frequencies as RHFrequencies, Frequency as RHFrequency
 from TemplateTypes import (
@@ -102,10 +102,12 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
             source = entry.consecutives_source.displayname if entry.consecutives_source else NO_DATA
             pilot_results[entry.pilot_id].fastest_3_laps_source = source
 
-        # Fill in points column
-        for entry in r.event_leaderboard.by_race_time:
-            points = entry.points if entry.points else 0
-            pilot_results[entry.pilot_id].points = 1000 + points
+    # Fill in points column
+    if r and r.classes:
+        for c in r.classes.values():
+            if isinstance(c.ranking, Ranking):
+                for entry in c.ranking.ranking:
+                    pilot_results[entry.pilot_id].points += entry.points
 
     # Fill in next_heat
     if h:

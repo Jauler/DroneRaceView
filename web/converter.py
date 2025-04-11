@@ -169,8 +169,9 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
     for rh_pilot in p.pilots:
         pilot_points[rh_pilot.pilot_id] = BASE_POINTS;
 
-    rounds = {}
+    rounds = []
     for race_class in c.classes:
+        race_round = TRound(round_name=race_class.displayname, heats=[])
         rh_heats = find_heats_by_class_id(race_class.id)
         for rh_heat in rh_heats:
             th = THeat(heat_name=rh_heat.displayname, pilots=[])
@@ -210,13 +211,11 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
                         gains=gains,
                         points=points))
 
-            round_name = race_class.displayname + " Round " + str(rh_heat.group_id + 1)
-            if round_name not in rounds:
-                race_round = TRound(round_name=round_name, heats=[])
-                rounds[round_name] = race_round
-            rounds[round_name].heats.append(th)
+            race_round.heats.append(th)
 
-    return list(rounds.values())
+        rounds.append(race_round)
+
+    return rounds
 
 
 

@@ -45,7 +45,7 @@ Rounds = list[Round]
 
 class PilotProgression(BaseModel):
     nickname: str
-    points: list[int]
+    points: list[int | None]
 
 PilotsProgression = list[PilotProgression]
 

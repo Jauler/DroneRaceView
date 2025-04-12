@@ -161,21 +161,31 @@ def pilots_progression(r: Optional[RHResults], p: Optional[RHPilots]) -> TPilots
     if not p:
         return []
 
+    num_classes = len(r.classes) if r else 0
+
     # Initialize pilots points to 1000
     pilots_progression: dict[int, TPilotProgression] = {}
+    pilot_points = {}
     for rh_pilot in p.pilots:
-        pilots_progression[rh_pilot.pilot_id] = TPilotProgression(nickname=rh_pilot.callsign, points=[BASE_POINTS]);
+        pilots_progression[rh_pilot.pilot_id] = TPilotProgression(nickname=rh_pilot.callsign, points=[BASE_POINTS] + [None]*num_classes);
+        pilot_points[rh_pilot.pilot_id] = BASE_POINTS
 
     # Add up points from each class leaderboard
     if r:
-        for rh_heat in r.heats.values():
+        for idx, heat_id in enumerate(r.heats_by_class):
+            if heat_id not in r.heats:
+                continue
+            rh_heat = r.heats[heat_id]
             if not rh_heat.leaderboard:
                 continue
             for entry in rh_heat.leaderboard.by_race_time:
                 pilot_id = entry.pilot_id
                 gains = entry.points if entry.points else 0
-                points_after_round = pilots_progression[pilot_id].points[-1] + gains
-                pilots_progression[pilot_id].points.append(points_after_round)
+                points_before_round = pilot_points[entry.pilot_id]
+                points_after_round = points_before_round + gains
+
+                pilots_progression[pilot_id].points[idx] = points_after_round
+                pilot_points[pilot_id] = points_after_round
 
     return list(pilots_progression.values())
 

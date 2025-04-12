@@ -172,20 +172,22 @@ def pilots_progression(r: Optional[RHResults], p: Optional[RHPilots]) -> TPilots
 
     # Add up points from each class leaderboard
     if r:
-        for idx, heat_id in enumerate(r.heats_by_class):
-            if heat_id not in r.heats:
-                continue
-            rh_heat = r.heats[heat_id]
-            if not rh_heat.leaderboard:
-                continue
-            for entry in rh_heat.leaderboard.by_race_time:
-                pilot_id = entry.pilot_id
-                gains = entry.points if entry.points else 0
-                points_before_round = pilot_points[entry.pilot_id]
-                points_after_round = points_before_round + gains
+        for idx, class_id in enumerate(r.heats_by_class.keys()):
+            heats_in_class = r.heats_by_class[class_id]
+            for heat_id in heats_in_class:
+                if heat_id not in r.heats:
+                    continue
+                rh_heat = r.heats[heat_id]
+                if not rh_heat.leaderboard:
+                    continue
+                for entry in rh_heat.leaderboard.by_race_time:
+                    pilot_id = entry.pilot_id
+                    gains = entry.points if entry.points else 0
+                    points_before_round = pilot_points[entry.pilot_id]
+                    points_after_round = points_before_round + gains
 
-                pilots_progression[pilot_id].points[idx] = points_after_round
-                pilot_points[pilot_id] = points_after_round
+                    pilots_progression[pilot_id].points[idx] = points_after_round
+                    pilot_points[pilot_id] = points_after_round
 
     return list(pilots_progression.values())
 

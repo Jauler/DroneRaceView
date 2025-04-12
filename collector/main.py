@@ -85,7 +85,7 @@ def periodic_load_all():
         else:
             logger.warning("Skipping 'load_all' emit because client is disconnected")
 
-        time.sleep(60)
+        time.sleep(300)
 
 def run_socketio_client(url, username, password):
     while True:

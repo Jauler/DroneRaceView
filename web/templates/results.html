@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Drone Race Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <header class="topbar">
@@ -45,6 +46,13 @@
         </table>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="chart-section">
+  <div class="results-container">
+    <h2>Points Progression</h2>
+    <canvas id="progressionChart"></canvas>
   </div>
 </section>
 
@@ -89,6 +97,55 @@
 
     menuToggle.addEventListener('click', () => {
       dropdownMenu.classList.toggle('show');
+    });
+
+
+    const progressionData = {{ pilots_progression | tojson }};
+    const labels = progressionData[0].points.map((_, i) => `Round ${i + 1}`);
+
+    const datasets = progressionData.map(pilot => ({
+      label: pilot.nickname,
+      data: pilot.points,
+      fill: false,
+      tension: 0.3,
+      borderWidth: 2
+    }));
+
+    const ctx = document.getElementById('progressionChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top'
+          },
+          title: {
+            display: true,
+            text: 'Point Progression'
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Rounds'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Points'
+            }
+          }
+        }
+      }
     });
   </script>
 </body>

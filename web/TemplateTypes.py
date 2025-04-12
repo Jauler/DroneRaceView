@@ -43,3 +43,10 @@ class Round(BaseModel):
 Rounds = list[Round]
 
 
+class PilotProgression(BaseModel):
+    nickname: str
+    points: list[int]
+
+PilotsProgression = list[PilotProgression]
+
+

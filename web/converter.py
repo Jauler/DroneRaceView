@@ -13,7 +13,9 @@ from TemplateTypes import (
     Round as TRound,
     Rounds as TRounds,
     Heat as THeat,
-    HeatPilot as THeatPilot
+    HeatPilot as THeatPilot,
+    PilotsProgression as TPilotsProgression,
+    PilotProgression as TPilotProgression
 )
 
 from typing import Optional
@@ -153,6 +155,29 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
             rank += 1
 
     return results
+
+
+def pilots_progression(r: Optional[RHResults], p: Optional[RHPilots]) -> TPilotsProgression:
+    if not p:
+        return []
+
+    # Initialize pilots points to 1000
+    pilots_progression: dict[int, TPilotProgression] = {}
+    for rh_pilot in p.pilots:
+        pilots_progression[rh_pilot.pilot_id] = TPilotProgression(nickname=rh_pilot.callsign, points=[BASE_POINTS]);
+
+    # Add up points from each class leaderboard
+    if r:
+        for rhclass in r.classes.values():
+            if not rhclass.leaderboard:
+                continue
+            for entry in rhclass.leaderboard.by_race_time:
+                pilot_id = entry.pilot_id
+                gains = entry.points if entry.points else 0
+                points_after_round = pilots_progression[pilot_id].points[-1] + gains
+                pilots_progression[pilot_id].points.append(points_after_round)
+
+    return list(pilots_progression.values())
 
 
 def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses], p: Optional[RHPilots], f: Optional[RHFrequencies]) -> TRounds:

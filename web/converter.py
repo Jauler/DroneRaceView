@@ -107,7 +107,7 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                 base = entry.consecutives_base
                 time = entry.consecutives
                 time_raw = entry.consecutives_raw
-                pilot_results[entry.pilot_id].consecutives_str = f"{time} ({base} ) ({source})"
+                pilot_results[entry.pilot_id].consecutives_str = f"{time} ({base} laps) ({source})"
                 pilot_results[entry.pilot_id].consecutives_base = base
                 pilot_results[entry.pilot_id].consecutives_raw = time_raw
                 pilot_results[entry.pilot_id].consecutives_source = source

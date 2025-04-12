@@ -269,3 +269,19 @@ body {
 
 
 
+.chart-section {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-section canvas {
+  max-width: 100%;
+  height: 400px;
+}
+
+#progressionChart {
+  max-width: 100%;
+  height: 400px;
+}
+

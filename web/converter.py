@@ -168,10 +168,10 @@ def pilots_progression(r: Optional[RHResults], p: Optional[RHPilots]) -> TPilots
 
     # Add up points from each class leaderboard
     if r:
-        for rhclass in r.classes.values():
-            if not rhclass.leaderboard:
+        for rh_heat in r.heats.values():
+            if not rh_heat.leaderboard:
                 continue
-            for entry in rhclass.leaderboard.by_race_time:
+            for entry in rh_heat.leaderboard.by_race_time:
                 pilot_id = entry.pilot_id
                 gains = entry.points if entry.points else 0
                 points_after_round = pilots_progression[pilot_id].points[-1] + gains

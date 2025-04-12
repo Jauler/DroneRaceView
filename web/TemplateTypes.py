@@ -8,8 +8,10 @@ class PilotResult(BaseModel):
     points: int
     fastest_lap: str
     fastest_lap_source: str
-    fastest_3_laps: str
-    fastest_3_laps_source: str
+    consecutives_str: str
+    consecutives_raw: float
+    consecutives_base: int
+    consecutives_source: str
     next_heat: Optional[str]
 
 PilotResults = list[PilotResult]

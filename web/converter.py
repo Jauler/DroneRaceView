@@ -82,8 +82,10 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                 points = BASE_POINTS,
                 fastest_lap = NO_DATA,
                 fastest_lap_source = NO_DATA,
-                fastest_3_laps = NO_DATA,
-                fastest_3_laps_source = NO_DATA,
+                consecutives_str = NO_DATA,
+                consecutives_raw = 0.0,
+                consecutives_base = 0,
+                consecutives_source = "",
                 next_heat = NO_DATA,
                 )
             for pilot in p.pilots
@@ -92,15 +94,29 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
     if r and r.event_leaderboard:
         # Fill in fastest_lap column
         for entry in r.event_leaderboard.by_fastest_lap:
-            pilot_results[entry.pilot_id].fastest_lap = entry.fastest_lap
-            source = entry.fastest_lap_source.displayname if entry.fastest_lap_source else NO_DATA
-            pilot_results[entry.pilot_id].fastest_lap_source = source
+            if entry.fastest_lap_source:
+                time = entry.fastest_lap
+                source = entry.fastest_lap_source.displayname
+                pilot_results[entry.pilot_id].fastest_lap = f"{time} ({source})"
+                pilot_results[entry.pilot_id].fastest_lap_source = source
 
         # Fill in consecutives column
         for entry in r.event_leaderboard.by_consecutives:
-            pilot_results[entry.pilot_id].fastest_3_laps = entry.consecutives
+            if entry.consecutives_base and entry.consecutives_source and entry.consecutives_raw:
+                source = entry.consecutives_source.displayname
+                base = entry.consecutives_base
+                time = entry.consecutives
+                time_raw = entry.consecutives_raw
+                pilot_results[entry.pilot_id].consecutives_str = f"{time} ({base} ) ({source})"
+                pilot_results[entry.pilot_id].consecutives_base = base
+                pilot_results[entry.pilot_id].consecutives_raw = time_raw
+                pilot_results[entry.pilot_id].consecutives_source = source
+
+            pilot_results[entry.pilot_id].consecutives_str = entry.consecutives
+            if entry.consecutives_raw:
+                pilot_results[entry.pilot_id].consecutives_raw = entry.consecutives_raw
             source = entry.consecutives_source.displayname if entry.consecutives_source else NO_DATA
-            pilot_results[entry.pilot_id].fastest_3_laps_source = source
+            pilot_results[entry.pilot_id].consecutives_source = source
 
     # Fill in points column
     if r and r.classes:
@@ -126,7 +142,16 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                 pilot_results[slot.pilot_id].next_heat = heat.displayname
 
     # Update rank. Keep the same amount of points - the same rank
-    results = list(sorted(pilot_results.values(), key=lambda r: r.points, reverse=True))
+    results = list(
+            sorted(
+                pilot_results.values(), key=lambda r: (
+                    -r.points,
+                    -r.consecutives_base,
+                    r.consecutives_raw,
+                    r.nickname
+                )
+            )
+        )
     rank = 1
     for i, _ in enumerate(results):
         results[i].rank = rank

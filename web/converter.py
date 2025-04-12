@@ -112,12 +112,6 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                 pilot_results[entry.pilot_id].consecutives_raw = time_raw
                 pilot_results[entry.pilot_id].consecutives_source = source
 
-            pilot_results[entry.pilot_id].consecutives_str = entry.consecutives
-            if entry.consecutives_raw:
-                pilot_results[entry.pilot_id].consecutives_raw = entry.consecutives_raw
-            source = entry.consecutives_source.displayname if entry.consecutives_source else NO_DATA
-            pilot_results[entry.pilot_id].consecutives_source = source
-
     # Fill in points column
     if r and r.classes:
         for c in r.classes.values():

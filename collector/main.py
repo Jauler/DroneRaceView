@@ -28,7 +28,8 @@ class RHDataTable(Base):
     timestamp = Column(DateTime, default=datetime.utcnow)
 
 
-ignored_events = set()
+ignored_events = None
+store_events = None
 
 # --- Socket.IO Client setup ---
 sio = socketio.Client(reconnection=False)  # We will handle reconnection manually
@@ -38,7 +39,9 @@ def save_event(event_name, data):
         global ignored_events
         if not data:
             return
-        if event_name in ignored_events:
+        if ignored_events and event_name in ignored_events:
+            return
+        if store_events and event_name not in store_events:
             return
         session = session_maker()
         entry = RHDataTable(entry_type=event_name, payload=data)
@@ -107,12 +110,18 @@ def main():
     parser.add_argument("--url", required=True, help="Socket.IO server URL")
     parser.add_argument("--username", required=True, help="Username for authentication")
     parser.add_argument("--password", required=True, help="Password for authentication")
-    parser.add_argument("--ignore-events", help="Comma-separated list of events to ignore", default="")
+    parser.add_argument("--ignore-events", help="Comma-separated list of events to ignore", default=None)
+    parser.add_argument("--store-events", help="Comma-separated list of events to store. Will only store these events if specified", default=None)
 
     args = parser.parse_args()
 
-    global ignored_events
-    ignored_events = set([e.strip() for e in args.ignore_events.split(",") if e.strip()])
+    if args.ignore_events:
+        global ignored_events
+        ignored_events = set([e.strip() for e in args.ignore_events.split(",") if e.strip()])
+
+    if args.store_events:
+        global store_events
+        store_events = set([e.strip() for e in args.store_events.split(",") if e.strip()])
 
     run_socketio_client(args.url, args.username, args.password)
 

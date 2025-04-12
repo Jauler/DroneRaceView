@@ -175,9 +175,9 @@ def pilots_progression(r: Optional[RHResults], p: Optional[RHPilots]) -> TPilots
         for idx, class_id in enumerate(r.heats_by_class.keys()):
             heats_in_class = r.heats_by_class[class_id]
             for heat_id in heats_in_class:
-                if heat_id not in r.heats:
+                if str(heat_id) not in r.heats:
                     continue
-                rh_heat = r.heats[heat_id]
+                rh_heat = r.heats[str(heat_id)]
                 if not rh_heat.leaderboard:
                     continue
                 for entry in rh_heat.leaderboard.by_race_time:

@@ -48,7 +48,7 @@ def results():
         current_heat=current_heat,
         current_pilots=current_pilots,
         pilot_results=pilot_results,
-        pilots_progression=pilots_progression
+        pilots_progression=[p.dict() for p in pilots_progression]
     )
 
 @app.route("/heats")

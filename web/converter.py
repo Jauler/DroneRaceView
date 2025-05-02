@@ -136,7 +136,13 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
             for race_round in heat.rounds:
                 for race_round_node in race_round.nodes:
                     pilot_id = race_round_node.pilot_id
-                    laps_count = len(race_round_node.laps)
+
+                    laps_count = 0
+                    for lap in race_round_node.laps:
+                        if lap.deleted:
+                            continue
+                        laps_count += 1
+
                     if 0 < laps_count and laps_count <= consecutive_base:
                         pilot_results[pilot_id].unfinished_races += 1
 
@@ -368,9 +374,12 @@ def pilot_rounds(r: Optional[RHResults], h: Optional[RHHeats], pilot_id: int) ->
 
                 # fill in laps
                 laps = []
+                started = False
                 for idx, lap in enumerate(seat.laps):
                     if lap.deleted:
                         continue
+
+                    started = True
 
                     # skip holeshot
                     if idx == 0:
@@ -379,7 +388,7 @@ def pilot_rounds(r: Optional[RHResults], h: Optional[RHHeats], pilot_id: int) ->
                     laps.append(round(lap.lap_time / 1000, 3))
 
                 # determine status
-                if len(laps) == 0:
+                if not started:
                     status = "skipped"
                 elif len(laps) < consecutives_base:
                     status = "crashed"

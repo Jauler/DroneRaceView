@@ -54,29 +54,34 @@
   </div>
 </section>
 
-<section class="pilot-laps-section">
-  <div class="pilot-laps-container">
-    <h2>Laps by Round</h2>
-    {% for round_name, laps in laps_by_round.items() %}
-      <h3>{{ round_name }}</h3>
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>Lap</th>
-            <th>Time (s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for lap in laps %}
-          <tr>
-            <td>{{ lap.lap }}</td>
-            <td>{{ lap.time }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% endfor %}
-  </div>
+<section class="pilot-results-container">
+  <h2>Flight History</h2>
+  <table class="pilot-results-table">
+    <thead>
+      <tr>
+        <th>Round</th>
+        <th>Status</th>
+        <th>Position</th>
+        <th>Laps</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for flight in pilot_rounds %}
+      <tr>
+        <td>{{ flight.round_name }}</td>
+        <td>{{ flight.status }}</td>
+        <td>{{ flight.position or "N/A" }}</td>
+        <td>
+          {% if flight.laps %}
+            {{ flight.laps | join(', ') }} s
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

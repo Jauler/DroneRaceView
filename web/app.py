@@ -75,26 +75,35 @@ def pilot(pilot_id):
     # Get pilot info
     pilot_info = converter.pilot_result(results, heats, pilots, pilot_id)
     pilot_lap_times = converter.pilot_lap_times(results, pilot_id)
+    pilot_rounds = converter.pilot_rounds(results, pilot_id)
 
-    lap_times = [
-        {"lap": 1, "round": "Round 1", "time": 22.1},
-        {"lap": 2, "round": "Round 1", "time": 21.7},
-        {"lap": 1, "round": "Round 2", "time": 20.4},
-        {"lap": 2, "round": "Round 2", "time": 20.1},
-        {"lap": 3, "round": "Round 2", "time": 19.8},
+
+    pilot_rounds = [
+        {
+            "round_name": "Round 1",
+            "status": "Finished",
+            "position": "First",
+            "laps": [22.1, 21.7, 20.9]
+        },
+        {
+            "round_name": "Round 2",
+            "status": "Crashed",
+            "position": "Third",
+            "laps": [23.3, 22.5]
+        },
+        {
+            "round_name": "Round 3",
+            "status": "Skipped",
+            "position": 3,
+            "laps": []
+        }
     ]
-
-    # Organize laps by round
-    from collections import defaultdict
-    laps_by_round = defaultdict(list)
-    for lap in lap_times:
-        laps_by_round[lap["round"]].append(lap)
 
     return render_template(
         "pilot.html",
         pilot=pilot_info,
         pilot_lap_times=pilot_lap_times,
-        laps_by_round=laps_by_round
+        pilot_rounds=pilot_rounds
     )
 
 

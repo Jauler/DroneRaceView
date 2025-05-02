@@ -372,3 +372,11 @@ body {
   color: #222;
 }
 
+.pilot-results-table td {
+  vertical-align: top;
+}
+
+.pilot-results-table td:last-child {
+  white-space: nowrap;
+}
+

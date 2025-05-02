@@ -352,4 +352,9 @@ def pilot_lap_times(r: Optional[RHResults], pilot_id: int) -> list[float]:
     return lap_times
 
 
+def pilot_rounds(r: Optional[RHResults], pilot_id: int) -> list[float]:
+    if not r:
+        return []
+
+    return []
 

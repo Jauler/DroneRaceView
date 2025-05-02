@@ -84,53 +84,21 @@
   const lapData = {{ pilot_lap_times | tojson }};
   const labels = lapData.map((_, i) => `Lap ${i + 1}`);
 
-  // Compute 10-lap running average
-  function runningAverage(data, windowSize) {
-    return data.map((_, i, arr) => {
-      if (i < windowSize - 1) return null;  // Not enough data yet
-      const slice = arr.slice(i - windowSize + 1, i + 1);
-      const sum = slice.reduce((a, b) => a + b, 0);
-      return (sum / windowSize).toFixed(2);
-    });
-  }
-
-  const runningAvg = runningAverage(lapData, 10);
-
   new Chart(document.getElementById("lapTimeChart"), {
     type: 'line',
     data: {
       labels: labels,
-      datasets: [
-        {
-          label: "Lap Time (s)",
-          data: lapData,
-          fill: false,
-          borderColor: "blue",
-          tension: 0.3,
-          borderWidth: 2
-        },
-        {
-          label: "10-Lap Running Avg",
-          data: runningAvg,
-          fill: false,
-          borderColor: "orange",
-          borderDash: [5, 5],
-          tension: 0.3,
-          borderWidth: 2
-        }
-      ]
+      datasets: [{
+        label: "Lap Time (s)",
+        data: lapData,
+        fill: false,
+        tension: 0.3,
+        borderColor: "blue",
+        borderWidth: 2
+      }]
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: {
-          position: 'top'
-        },
-        title: {
-          display: true,
-          text: 'Lap Times with 10-Lap Running Average'
-        }
-      },
       scales: {
         x: {
           title: {

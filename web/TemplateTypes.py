@@ -12,6 +12,11 @@ class PilotResult(BaseModel):
     consecutives_raw: float
     consecutives_base: int
     consecutives_source: str
+    average_lap_time: str
+    total_laps: int
+    total_starts: int
+    finished_races: int
+    success_ratio: float
     next_heat: Optional[str]
 
 PilotResults = list[PilotResult]

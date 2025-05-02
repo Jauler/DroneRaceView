@@ -40,34 +40,36 @@
 <section class="results-summary-section">
   <div class="results-container">
     <h2>Pilot Summary</h2>
-    <table class="results-table">
-      <thead>
-        <tr>
-          <th>Pilot</th>
-          <th>Total Flights</th>
-          <th>Flights ≥ 3 Laps</th>
-          <th>Success Rate %</th>
-          <th>Total Laps</th>
-          <th>Avg Lap Time</th>
-          <th>Fastest Lap</th>
-          <th>Fastest 3 Laps</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for pilot in pilot_summary %}
-        <tr>
-          <td>{{ pilot.nickname }}</td>
-          <td>{{ pilot.total_starts }}</td>
-          <td>{{ pilot.finished_races }}</td>
-          <td>{{ pilot.success_ratio }}%</td>
-          <td>{{ pilot.total_laps }}</td>
-          <td>{{ pilot.average_lap_time }}</td>
-          <td>{{ pilot.fastest_lap }}</td>
-          <td>{{ pilot.fastest_3_consecutive_laps }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Pilot</th>
+            <th>Total Flights</th>
+            <th>Flights ≥ 3 Laps</th>
+            <th>Success Rate %</th>
+            <th>Total Laps</th>
+            <th>Avg Lap Time</th>
+            <th>Fastest Lap</th>
+            <th>Fastest 3 Laps</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pilot in pilot_summary %}
+          <tr>
+            <td>{{ pilot.nickname }}</td>
+            <td>{{ pilot.total_starts }}</td>
+            <td>{{ pilot.finished_races }}</td>
+            <td>{{ pilot.success_ratio }}%</td>
+            <td>{{ pilot.total_laps }}</td>
+            <td>{{ pilot.average_lap_time }}</td>
+            <td>{{ pilot.fastest_lap }}</td>
+            <td>{{ pilot.fastest_3_consecutive_laps }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 

@@ -91,7 +91,7 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                 average_lap_time = NO_DATA,
                 total_laps = 0,
                 total_starts = 0,
-                finished_races = 0,
+                unfinished_races = 0,
                 success_ratio = NO_DATA,
                 next_heat = NO_DATA,
                 )
@@ -131,8 +131,16 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
             for race_round in heat.rounds:
                 for race_round_node in race_round.nodes:
                     pilot_id = race_round_node.pilot_id
-                    if len(race_round_node.laps) > consecutive_base:
-                        pilot_results[pilot_id].finished_races += 1
+                    laps_count = len(race_round_node.laps)
+                    if 0 < laps_count and laps_count <= consecutive_base:
+                        pilot_results[pilot_id].unfinished_races += 1
+
+        # Populate success ratio
+        for pilot_id in pilot_results.keys():
+            attempt_count = pilot_results[pilot_id].total_starts
+            fail_count = pilot_results[pilot_id].unfinished_races
+            if attempt_count > 0:
+               pilot_results[pilot_id].success_ratio = str(round((attempt_count - fail_count) / attempt_count * 100))
 
     # Fill in points column
     if r and r.classes:

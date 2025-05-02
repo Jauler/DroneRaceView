@@ -15,8 +15,8 @@ class PilotResult(BaseModel):
     average_lap_time: str
     total_laps: int
     total_starts: int
-    finished_races: int
-    success_ratio: str
+    unfinished_races: int
+    success_ration: str
     next_heat: Optional[str]
 
 PilotResults = list[PilotResult]

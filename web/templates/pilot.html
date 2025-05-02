@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Pilot {{ pilot.nickname }}{% endblock %}
+
+{% block content %}
+<section class="results-container">
+  <h2>Pilot: {{ pilot.nickname }}</h2>
+  <p><strong>Rank:</strong> {{ pilot.rank }}</p>
+  <p><strong>Total Laps:</strong> {{ pilot.total_laps }}</p>
+  <p><strong>Average Lap Time:</strong> {{ pilot.average_lap_time }}</p>
+  <p><strong>Total Races:</strong> {{ pilot.total_races }}</p>
+  <p><strong>Unfinished Races:</strong> {{ pilot.unfinished_races }}</p>
+  <p><strong>Success Ratio:</strong> {{ pilot.success_ratio }}%</p>
+  <p><strong>Next Heat:</strong> {{ pilot.next_heat }}</p>
+</section>
+
+<section class="results-container chart-section">
+  <h2>Lap Times Over Time</h2>
+  <canvas id="lapTimeChart"></canvas>
+</section>
+
+<section class="results-container">
+  <h2>Laps by Round</h2>
+  {% for round_name, laps in laps_by_round.items() %}
+    <h3>{{ round_name }}</h3>
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Lap</th>
+          <th>Time (s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lap in laps %}
+        <tr>
+          <td>{{ lap.lap }}</td>
+          <td>{{ lap.time }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const lapTimes = {{ lap_times | tojson }};
+  const labels = lapTimes.map((_, i) => `Lap ${i + 1}`);
+  const data = lapTimes.map(lap => lap.time);
+
+  new Chart(document.getElementById("lapTimeChart"), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Lap Time (s)",
+        data: data,
+        fill: false,
+        tension: 0.3,
+        borderColor: "blue",
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: { title: { display: true, text: "Lap Index" }},
+        y: { title: { display: true, text: "Lap Time (s)" }}
+      }
+    }
+  });
+</script>
+{% endblock %}

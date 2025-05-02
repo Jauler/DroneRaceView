@@ -63,7 +63,42 @@ def results():
 
 @app.route("/pilot/<int:pilot_id>", methods=["GET"])
 def pilot(pilot_id):
-    return render_template("pilot_not_found.html")
+    pilots = rhpilotsrepo.get_latest_entry()
+    if not pilots or not any(p.pilot_id == pilot_id for p in pilots.pilots):
+        return render_template("pilot_not_found.html")
+
+    # Replace with real data fetching logic
+    pilot_info = {
+        "nickname": "test",
+        "total_laps": 36,
+        "average_lap_time": "21.4s",
+        "rank": 3,
+        "total_races": 12,
+        "unfinished_races": 2,
+        "success_ratio": 83.3,
+        "next_heat": 7
+    }
+
+    lap_times = [
+        {"lap": 1, "round": "Round 1", "time": 22.1},
+        {"lap": 2, "round": "Round 1", "time": 21.7},
+        {"lap": 1, "round": "Round 2", "time": 20.4},
+        {"lap": 2, "round": "Round 2", "time": 20.1},
+        {"lap": 3, "round": "Round 2", "time": 19.8},
+    ]
+
+    # Organize laps by round
+    from collections import defaultdict
+    laps_by_round = defaultdict(list)
+    for lap in lap_times:
+        laps_by_round[lap["round"]].append(lap)
+
+    return render_template(
+        "pilot.html",
+        pilot=pilot_info,
+        lap_times=lap_times,
+        laps_by_round=laps_by_round
+    )
 
 
 @app.route("/heats")

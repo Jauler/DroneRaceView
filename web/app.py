@@ -63,7 +63,7 @@ def results():
 
 @app.route("/pilot/<int:pilot_id>", methods=["GET"])
 def pilot(pilot_id):
-    return render_template("pilot_not_found")
+    return render_template("pilot_not_found.html")
 
 
 @app.route("/heats")

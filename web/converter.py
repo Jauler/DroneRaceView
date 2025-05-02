@@ -381,7 +381,7 @@ def pilot_rounds(r: Optional[RHResults], h: Optional[RHHeats], pilot_id: int) ->
                 # determine status
                 if len(laps) == 0:
                     status = "skipped"
-                elif len(laps) <= consecutives_base:
+                elif len(laps) < consecutives_base:
                     status = "crashed"
                 else:
                     status = "finished"

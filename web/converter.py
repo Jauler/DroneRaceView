@@ -342,7 +342,7 @@ def pilot_lap_times(r: Optional[RHResults], pilot_id: int) -> list[float]:
                 for lap in seat.laps:
                     if lap.deleted:
                         continue
-                    lap_times.append(round(lap.lap_time, 3))
+                    lap_times.append(round(lap.lap_time / 1000, 3))
 
     return lap_times
 

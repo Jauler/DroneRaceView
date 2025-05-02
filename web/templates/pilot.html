@@ -67,12 +67,12 @@
           </span>
         </p>
         <p><strong>Position:</strong>
-          {% if round.position == 1 %}
-            <span class="medal">🥇</span> First
-          {% elif round.position == 2 %}
-            <span class="medal">🥈</span> Second
-          {% elif round.position == 3 %}
-            <span class="medal">🥉</span> Third
+          {% if round.position == "1" %}
+            <span class="medal">🥇</span>
+          {% elif round.position == "2" %}
+            <span class="medal">🥈</span>
+          {% elif round.position == "3" %}
+            <span class="medal">🥉</span>
           {% elif round.position is not none %}
             {{ round.position }}
           {% else %}

@@ -125,6 +125,14 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
             pilot_results[entry.pilot_id].total_starts = entry.starts
             pilot_results[entry.pilot_id].total_laps = entry.laps
 
+        # Count finished races
+        consecutive_base = r.consecutives_count
+        for heat in r.heats.values():
+            for race_round in heat.rounds:
+                for race_round_node in race_round.nodes:
+                    pilot_id = race_round_node.pilot_id
+                    if len(race_round_node.laps) > consecutive_base:
+                        pilot_results[pilot_id].finished_races += 1
 
     # Fill in points column
     if r and r.classes:

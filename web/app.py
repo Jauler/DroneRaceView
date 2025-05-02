@@ -63,23 +63,17 @@ def results():
 
 @app.route("/pilot/<int:pilot_id>", methods=["GET"])
 def pilot(pilot_id):
+    # get pilot list
     pilots = rhpilotsrepo.get_latest_entry()
     if not pilots or not any(p.pilot_id == pilot_id for p in pilots.pilots):
         return render_template("pilot_not_found.html")
 
-    # Replace with real data fetching logic
-    pilot_info = {
-        "nickname": "test",
-        "total_laps": 36,
-        "average_lap_time": "21.4s",
-        "rank": 3,
-        "total_races": 12,
-        "unfinished_races": 2,
-        "success_ratio": 83.3,
-        "fastest_lap": 18.6,
-        "consecutives": 56.8,
-        "next_heat": 7
-    }
+    # get results
+    heats = rhheatsrepo.get_latest_entry()
+    results = rhresultsrepo.get_latest_entry()
+
+    # Get pilot info
+    pilot_info = converter.pilot_result(results, heats, pilots, pilot_id)
 
     lap_times = [
         {"lap": 1, "round": "Round 1", "time": 22.1},

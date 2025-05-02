@@ -5,6 +5,7 @@ from typing import Optional
 class PilotResult(BaseModel):
     rank: int
     nickname: str
+    pilot_id: int
     points: int
     fastest_lap: str
     fastest_lap_source: str

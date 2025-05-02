@@ -29,7 +29,7 @@
             {% for pilot in pilot_results %}
             <tr>
               <td>{{ pilot.rank }}</td>
-              <td>{{ pilot.nickname }}</td>
+	      <td><a href={{ url_for('pilot', pilot_id=pilot.pilot_id) }}>{{ pilot.nickname }}</a></td>
               <td>{{ pilot.points }}</td>
               <td>{{ pilot.consecutives_str }}</td>
               <td>{{ pilot.fastest_lap }}</td>

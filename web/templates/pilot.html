@@ -8,16 +8,16 @@
     <h2>Pilot: {{ pilot.nickname }}</h2>
     <div class="pilot-stat-grid">
       <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Rank</span>
-        <span class="pilot-stat-value">{{ pilot.rank }}</span>
+        <span class="pilot-stat-label">Points</span>
+        <span class="pilot-stat-value">{{ pilot.points }}</span>
       </div>
       <div class="pilot-stat-item">
         <span class="pilot-stat-label">Fastest lap</span>
-        <span class="pilot-stat-value">{{ pilot.fastest_lap}}</span>
+        <span class="pilot-stat-value">{{ pilot.fastest_lap }}</span>
       </div>
       <div class="pilot-stat-item">
         <span class="pilot-stat-label">Consecutives</span>
-        <span class="pilot-stat-value">{{ pilot.consecutives}}</span>
+        <span class="pilot-stat-value">{{ pilot.consecutives_str }}</span>
       </div>
       <div class="pilot-stat-item">
         <span class="pilot-stat-label">Total Laps</span>
@@ -29,7 +29,7 @@
       </div>
       <div class="pilot-stat-item">
         <span class="pilot-stat-label">Total Races</span>
-        <span class="pilot-stat-value">{{ pilot.total_races }}</span>
+        <span class="pilot-stat-value">{{ pilot.total_starts }}</span>
       </div>
       <div class="pilot-stat-item">
         <span class="pilot-stat-label">Unfinished Races</span>

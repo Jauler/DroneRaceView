@@ -80,6 +80,7 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
             pilot.pilot_id:
             TPilotResult(
                 rank = 1,
+                pilot_id = pilot.pilot_id,
                 nickname=pilot.callsign,
                 points = BASE_POINTS,
                 fastest_lap = NO_DATA,
@@ -186,6 +187,30 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
 
     return results
 
+def pilot_result(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPilots], pilot_id) -> TPilotResult:
+    pilots = pilot_results(r, h, p)
+    for pilot in pilots:
+        if pilot.pilot_id == pilot_id:
+            return pilot
+
+    return TPilotResult(
+        rank = 1,
+        pilot_id = pilot_id,
+        nickname="",
+        points = BASE_POINTS,
+        fastest_lap = NO_DATA,
+        fastest_lap_source = NO_DATA,
+        consecutives_str = NO_DATA,
+        consecutives_raw = 0.0,
+        consecutives_base = 0,
+        consecutives_source = "",
+        average_lap_time = NO_DATA,
+        total_laps = 0,
+        total_starts = 0,
+        unfinished_races = 0,
+        success_ratio = NO_DATA,
+        next_heat = NO_DATA,
+    )
 
 def pilots_progression(r: Optional[RHResults], p: Optional[RHPilots]) -> TPilotsProgression:
     if not p:

@@ -54,34 +54,38 @@
   </div>
 </section>
 
-<section class="pilot-results-container">
-  <h2>Flight History</h2>
-  <table class="pilot-results-table">
-    <thead>
-      <tr>
-        <th>Round</th>
-        <th>Status</th>
-        <th>Position</th>
-        <th>Laps</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for flight in pilot_rounds %}
-      <tr>
-        <td>{{ flight.round_name }}</td>
-        <td>{{ flight.status }}</td>
-        <td>{{ flight.position or "N/A" }}</td>
-        <td>
-          {% if flight.laps %}
-            {{ flight.laps | join(', ') }} s
-          {% else %}
-            -
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<section class="pilot-rounds-container">
+  {% for round in pilot_rounds %}
+  <div class="pilot-round-card">
+    <h3>{{ round.round_name }}</h3>
+
+    <div class="pilot-round-meta">
+      <p><strong>Status:</strong> {{ round.status }}</p>
+      <p><strong>Position:</strong> {{ round.position or "N/A" }}</p>
+    </div>
+
+    {% if round.laps %}
+    <table class="pilot-results-table">
+      <thead>
+        <tr>
+          <th>Lap #</th>
+          <th>Time (s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lap in round.laps %}
+        <tr>
+          <td>Lap {{ loop.index }}</td>
+          <td>{{ lap }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p class="pilot-no-laps">No laps recorded.</p>
+    {% endif %}
+  </div>
+  {% endfor %}
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

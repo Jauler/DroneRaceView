@@ -372,11 +372,40 @@ body {
   color: #222;
 }
 
-.pilot-results-table td {
-  vertical-align: top;
+.pilot-rounds-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 3rem;
 }
 
-.pilot-results-table td:last-child {
-  white-space: nowrap;
+.pilot-round-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.pilot-round-card h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.pilot-round-meta {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.pilot-no-laps {
+  text-align: center;
+  font-style: italic;
+  color: #888;
 }
 

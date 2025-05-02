@@ -15,7 +15,9 @@ from TemplateTypes import (
     Heat as THeat,
     HeatPilot as THeatPilot,
     PilotsProgression as TPilotsProgression,
-    PilotProgression as TPilotProgression
+    PilotProgression as TPilotProgression,
+    PilotRound as TPilotRound,
+    PilotRounds as TPilotRounds
 )
 
 from typing import Optional
@@ -352,9 +354,59 @@ def pilot_lap_times(r: Optional[RHResults], pilot_id: int) -> list[float]:
     return lap_times
 
 
-def pilot_rounds(r: Optional[RHResults], pilot_id: int) -> list[float]:
-    if not r:
+def pilot_rounds(r: Optional[RHResults], h: Optional[RHHeats], pilot_id: int) -> TPilotRounds:
+    if not r or not h:
         return []
 
-    return []
+    consecutives_base = r.consecutives_count
+    pilot_rounds = []
+    for heat in r.heats.values():
+        for race_round_idx, race_round in enumerate(heat.rounds):
+            for seat in race_round.nodes:
+                if seat.pilot_id != pilot_id:
+                    continue
+
+                # fill in laps
+                laps = []
+                for idx, lap in enumerate(seat.laps):
+                    if lap.deleted:
+                        continue
+
+                    # skip holeshot
+                    if idx == 0:
+                        continue
+
+                    laps.append(round(lap.lap_time / 1000, 3))
+
+                # determine status
+                if len(laps) == 0:
+                    status = "skipped"
+                elif len(laps) <= consecutives_base:
+                    status = "crashed"
+                else:
+                    status = "finished"
+
+                # Determine position
+                position = ""
+                lb = race_round.leaderboard.by_race_time if race_round.leaderboard else []
+                for entry in lb:
+                    if entry.pilot_id == pilot_id:
+                        position = str(entry.position)
+
+                # Determine round name
+                round_name = ""
+                for db_heat in h.heats:
+                    if db_heat.id != heat.heat_id:
+                        continue
+                    round_name = f"{db_heat.displayname} round {race_round_idx + 1}"
+
+
+                pilot_rounds.append(TPilotRound(
+                    round_name=round_name,
+                    status = status,
+                    position = position,
+                    laps = laps
+                ))
+
+    return pilot_rounds
 

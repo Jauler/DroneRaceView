@@ -60,7 +60,7 @@ PilotsProgression = list[PilotProgression]
 class PilotRound(BaseModel):
     round_name: str
     status: str
-    position: int
+    position: str
     laps: list[float]
 
 PilotRounds = list[PilotRound]

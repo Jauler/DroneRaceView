@@ -75,29 +75,7 @@ def pilot(pilot_id):
     # Get pilot info
     pilot_info = converter.pilot_result(results, heats, pilots, pilot_id)
     pilot_lap_times = converter.pilot_lap_times(results, pilot_id)
-    pilot_rounds = converter.pilot_rounds(results, pilot_id)
-
-
-    pilot_rounds = [
-        {
-            "round_name": "Round 1",
-            "status": "Finished",
-            "position": "First",
-            "laps": [22.1, 21.7, 20.9]
-        },
-        {
-            "round_name": "Round 2",
-            "status": "Crashed",
-            "position": "Third",
-            "laps": [23.3, 22.5]
-        },
-        {
-            "round_name": "Round 3",
-            "status": "Skipped",
-            "position": 3,
-            "laps": []
-        }
-    ]
+    pilot_rounds = converter.pilot_rounds(results, heats, pilot_id)
 
     return render_template(
         "pilot.html",

@@ -66,7 +66,19 @@
             {{ round.status }}
           </span>
         </p>
-        <p><strong>Position:</strong> {{ round.position or "N/A" }}</p>
+        <p><strong>Position:</strong>
+          {% if round.position == 1 %}
+            🥇
+          {% elif round.position == 2 %}
+            🥈
+          {% elif round.position == 3 %}
+            🥉
+          {% elif round.position is not none %}
+            {{ round.position }}
+          {% else %}
+            ❌ N/A
+          {% endif %}
+        </p>
       </div>
 
       {% if round.laps %}

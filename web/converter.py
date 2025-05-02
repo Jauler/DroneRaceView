@@ -339,9 +339,14 @@ def pilot_lap_times(r: Optional[RHResults], pilot_id: int) -> list[float]:
             for seat in race_round.nodes:
                 if seat.pilot_id != pilot_id:
                     continue
-                for lap in seat.laps:
+                for idx, lap in enumerate(seat.laps):
                     if lap.deleted:
                         continue
+
+                    # skip holeshot
+                    if idx == 0:
+                        continue
+
                     lap_times.append(round(lap.lap_time / 1000, 3))
 
     return lap_times

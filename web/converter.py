@@ -104,7 +104,7 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
             if entry.fastest_lap_source:
                 time = entry.fastest_lap
                 source = entry.fastest_lap_source.displayname
-                pilot_results[entry.pilot_id].fastest_lap = f"{time} ({source})"
+                pilot_results[entry.pilot_id].fastest_lap = f"{time}@{source}"
                 pilot_results[entry.pilot_id].fastest_lap_source = source
 
         # Fill in consecutives column
@@ -114,7 +114,7 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                 base = entry.consecutives_base
                 time = entry.consecutives
                 time_raw = entry.consecutives_raw
-                pilot_results[entry.pilot_id].consecutives_str = f"{time} ({base} laps) ({source})"
+                pilot_results[entry.pilot_id].consecutives_str = f"{base}/{time}@{source}"
                 pilot_results[entry.pilot_id].consecutives_base = base
                 pilot_results[entry.pilot_id].consecutives_raw = time_raw
                 pilot_results[entry.pilot_id].consecutives_source = source

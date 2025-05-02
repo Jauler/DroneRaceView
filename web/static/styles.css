@@ -153,6 +153,12 @@ body {
   justify-content: center;
 }
 
+.results-summary-section {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
 .results-container {
   width: 100%;
   max-width: 1000px;

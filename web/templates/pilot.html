@@ -81,14 +81,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const lapTimes = {{ lap_times | tojson }};
-  const labels = lapTimes.map((_, i) => `Lap ${i + 1}`);
-  const data = lapTimes.map(lap => lap.time);
+  const data = {{ lap_times | tojson }};
 
   new Chart(document.getElementById("lapTimeChart"), {
     type: 'line',
     data: {
-      labels: labels,
       datasets: [{
         label: "Lap Time (s)",
         data: data,
@@ -101,7 +98,6 @@
     options: {
       responsive: true,
       scales: {
-        x: { title: { display: true, text: "Lap Index" }},
         y: { title: { display: true, text: "Lap Time (s)" }}
       }
     }

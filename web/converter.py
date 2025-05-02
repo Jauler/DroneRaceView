@@ -119,6 +119,13 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                 pilot_results[entry.pilot_id].consecutives_raw = time_raw
                 pilot_results[entry.pilot_id].consecutives_source = source
 
+        # Fill some race totals
+        for entry in r.event_leaderboard.by_race_time:
+            pilot_results[entry.pilot_id].average_lap_time = entry.average_lap
+            pilot_results[entry.pilot_id].total_starts = entry.starts
+            pilot_results[entry.pilot_id].total_laps = entry.laps
+
+
     # Fill in points column
     if r and r.classes:
         for c in r.classes.values():

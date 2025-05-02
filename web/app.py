@@ -61,6 +61,11 @@ def results():
         pilots_progression=[p.dict() for p in pilots_progression]
     )
 
+@app.route("/pilot/<int:pilot_id>", methods=["GET"])
+def pilot(pilot_id):
+    return render_template("pilot_not_found")
+
+
 @app.route("/heats")
 def heats():
     classes = rhclassesrepo.get_latest_entry()

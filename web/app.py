@@ -34,29 +34,29 @@ def index():
 def race():
     race_status = rhracestatusrepo.get_latest_entry()
     heats = rhheatsrepo.get_latest_entry()
+    frequency = rhfrequencyrepo.get_latest_entry()
+    pilots = rhpilotsrepo.get_latest_entry()
 
     current_heat = converter.current_heat(race_status, heats)
+    current_pilots = converter.current_pilots(race_status, heats, pilots, frequency)
 
     return render_template(
         "results.html",
-        current_heat=current_heat
+        current_heat=current_heat,
+        current_pilots=current_pilots
     )
 
 @app.route("/results", methods=["GET"])
 def results():
-    race_status = rhracestatusrepo.get_latest_entry()
     results = rhresultsrepo.get_latest_entry()
     heats = rhheatsrepo.get_latest_entry()
     pilots = rhpilotsrepo.get_latest_entry()
-    frequency = rhfrequencyrepo.get_latest_entry()
 
-    current_pilots = converter.current_pilots(race_status, heats, pilots, frequency)
     pilot_results = converter.pilot_results(results, heats, pilots)
     pilots_progression = converter.pilots_progression(results, pilots)
 
     return render_template(
         "results.html",
-        current_pilots=current_pilots,
         pilot_results=pilot_results,
         pilots_progression=[p.dict() for p in pilots_progression]
     )

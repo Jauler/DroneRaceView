@@ -74,6 +74,7 @@ def pilot(pilot_id):
 
     # Get pilot info
     pilot_info = converter.pilot_result(results, heats, pilots, pilot_id)
+    pilot_lap_times = converter.pilot_lap_times(results, pilot_id)
 
     lap_times = [
         {"lap": 1, "round": "Round 1", "time": 22.1},
@@ -92,7 +93,7 @@ def pilot(pilot_id):
     return render_template(
         "pilot.html",
         pilot=pilot_info,
-        lap_times=lap_times,
+        lap_times=pilot_lap_times,
         laps_by_round=laps_by_round
     )
 

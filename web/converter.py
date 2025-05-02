@@ -329,7 +329,22 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
 
     return rounds
 
+def pilot_lap_times(r: Optional[RHResults], pilot_id: int) -> list[float]:
+    if not r:
+        return []
 
+    lap_times = []
+    for heat in r.heats.values():
+        for race_round in heat.rounds:
+            for seat in race_round.nodes:
+                if seat.pilot_id != pilot_id:
+                    continue
+                for lap in seat.laps:
+                    if lap.deleted:
+                        continue
+                    lap_times.append(round(lap.lap_time, 3))
+
+    return lap_times
 
 
 

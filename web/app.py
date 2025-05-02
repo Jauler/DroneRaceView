@@ -76,6 +76,8 @@ def pilot(pilot_id):
         "total_races": 12,
         "unfinished_races": 2,
         "success_ratio": 83.3,
+        "fastest_lap": 18.6,
+        "consecutives": 56.8,
         "next_heat": 7
     }
 

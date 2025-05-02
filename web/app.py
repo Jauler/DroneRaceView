@@ -41,7 +41,7 @@ def race():
     current_pilots = converter.current_pilots(race_status, heats, pilots, frequency)
 
     return render_template(
-        "results.html",
+        "race.html",
         current_heat=current_heat,
         current_pilots=current_pilots
     )

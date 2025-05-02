@@ -403,6 +403,12 @@ body {
   font-size: 1rem;
 }
 
+.pilot-round-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .pilot-no-laps {
   text-align: center;
   font-style: italic;

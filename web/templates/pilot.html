@@ -55,35 +55,37 @@
 </section>
 
 <section class="pilot-rounds-container">
-  {% for round in pilot_rounds %}
-  <div class="pilot-round-card">
-    <h3>{{ round.round_name }}</h3>
+  {% for round in pilot_flights_by_round %}
+  <div class="pilot-round-wrapper">
+    <div class="pilot-round-card">
+      <h3>{{ round.round_name }}</h3>
 
-    <div class="pilot-round-meta">
-      <p><strong>Status:</strong> {{ round.status }}</p>
-      <p><strong>Position:</strong> {{ round.position or "N/A" }}</p>
+      <div class="pilot-round-meta">
+        <p><strong>Status:</strong> {{ round.status }}</p>
+        <p><strong>Position:</strong> {{ round.position or "N/A" }}</p>
+      </div>
+
+      {% if round.laps %}
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Lap #</th>
+            <th>Time (s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for lap in round.laps %}
+          <tr>
+            <td>Lap {{ loop.index }}</td>
+            <td>{{ lap }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p class="pilot-no-laps">No laps recorded.</p>
+      {% endif %}
     </div>
-
-    {% if round.laps %}
-    <table class="pilot-results-table">
-      <thead>
-        <tr>
-          <th>Lap #</th>
-          <th>Time (s)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for lap in round.laps %}
-        <tr>
-          <td>Lap {{ loop.index }}</td>
-          <td>{{ lap }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-      <p class="pilot-no-laps">No laps recorded.</p>
-    {% endif %}
   </div>
   {% endfor %}
 </section>

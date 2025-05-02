@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Drone Race{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<header class="topbar">
+  <div class="logo">DroneRace</div>
+  <div class="menu-icon" id="menuToggle">&#9776;</div>
+  <nav class="dropdown" id="dropdownMenu">
+    <a href="{{ url_for('results') }}">Results</a>
+    <a href="{{ url_for('heats') }}">Heats</a>
+  </nav>
+</header>
+
+<!-- Page Content -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- Optional global scripts -->
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  if (menuToggle && dropdownMenu) {
+    menuToggle.addEventListener('click', () => {
+      dropdownMenu.classList.toggle('show');
+    });
+  }
+</script>
+</body>
+</html>

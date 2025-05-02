@@ -61,7 +61,11 @@
       <h3>{{ round.round_name }}</h3>
 
       <div class="pilot-round-meta">
-        <p><strong>Status:</strong> {{ round.status }}</p>
+        <p><strong>Status:</strong>
+          <span class="status-badge {{ round.status | lower }}">
+            {{ round.status }}
+          </span>
+        </p>
         <p><strong>Position:</strong> {{ round.position or "N/A" }}</p>
       </div>
 

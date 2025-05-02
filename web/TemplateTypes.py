@@ -32,6 +32,7 @@ CurrentHeatPilots = list[CurrentHeatPilot]
 
 # Heats info
 class HeatPilot(BaseModel):
+    pilot_id: Optional[int]
     channel: str
     nickname: str
     position: str

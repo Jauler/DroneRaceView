@@ -316,6 +316,7 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
                     points = NO_DATA
 
                 th.pilots.append(THeatPilot(
+                        pilot_id=rh_slot.pilot_id if rh_slot.pilot_id > 0 else None,
                         channel=channel,
                         nickname=callsign,
                         position=position,

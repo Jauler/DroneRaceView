@@ -4,15 +4,38 @@
 
 {% block content %}
 <section class="pilot-summary-section">
-  <div class="pilot-summary">
+  <div class="pilot-summary-card">
     <h2>Pilot: {{ pilot.nickname }}</h2>
-    <p><strong>Rank:</strong> {{ pilot.rank }}</p>
-    <p><strong>Total Laps:</strong> {{ pilot.total_laps }}</p>
-    <p><strong>Average Lap Time:</strong> {{ pilot.average_lap_time }}</p>
-    <p><strong>Total Races:</strong> {{ pilot.total_races }}</p>
-    <p><strong>Unfinished Races:</strong> {{ pilot.unfinished_races }}</p>
-    <p><strong>Success Ratio:</strong> {{ pilot.success_ratio }}%</p>
-    <p><strong>Next Heat:</strong> {{ pilot.next_heat }}</p>
+    <div class="pilot-stat-grid">
+      <div class="pilot-stat-item">
+        <span class="pilot-stat-label">Rank</span>
+        <span class="pilot-stat-value">{{ pilot.rank }}</span>
+      </div>
+      <div class="pilot-stat-item">
+        <span class="pilot-stat-label">Total Laps</span>
+        <span class="pilot-stat-value">{{ pilot.total_laps }}</span>
+      </div>
+      <div class="pilot-stat-item">
+        <span class="pilot-stat-label">Avg Lap Time</span>
+        <span class="pilot-stat-value">{{ pilot.average_lap_time }}</span>
+      </div>
+      <div class="pilot-stat-item">
+        <span class="pilot-stat-label">Total Races</span>
+        <span class="pilot-stat-value">{{ pilot.total_races }}</span>
+      </div>
+      <div class="pilot-stat-item">
+        <span class="pilot-stat-label">Unfinished Races</span>
+        <span class="pilot-stat-value">{{ pilot.unfinished_races }}</span>
+      </div>
+      <div class="pilot-stat-item">
+        <span class="pilot-stat-label">Success Ratio</span>
+        <span class="pilot-stat-value">{{ pilot.success_ratio }}%</span>
+      </div>
+      <div class="pilot-stat-item">
+        <span class="pilot-stat-label">Next Heat</span>
+        <span class="pilot-stat-value">{{ pilot.next_heat }}</span>
+      </div>
+    </div>
   </div>
 </section>
 

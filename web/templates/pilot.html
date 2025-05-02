@@ -81,18 +81,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const data = {{ lap_times | tojson }};
+  const data = {{ pilot_lap_times | tojson }};
 
   new Chart(document.getElementById("lapTimeChart"), {
     type: 'line',
     data: {
       datasets: [{
         label: "Lap Time (s)",
-        data: data,
+        data: pilot_lap_times,
         fill: false,
         tension: 0.3,
-        borderColor: "blue",
-        borderWidth: 2
       }]
     },
     options: {

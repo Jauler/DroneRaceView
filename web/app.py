@@ -93,7 +93,7 @@ def pilot(pilot_id):
     return render_template(
         "pilot.html",
         pilot=pilot_info,
-        lap_times=pilot_lap_times,
+        pilot_lap_times=pilot_lap_times,
         laps_by_round=laps_by_round
     )
 

@@ -1,22 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Drone Race – Results</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-  <header class="topbar">
-    <div class="logo">Picnic Drone Race</div>
-    <div class="menu-icon" id="menuToggle">&#9776;</div>
-    <nav class="dropdown" id="dropdownMenu">
-      <a href="results">Results</a>
-      <a href="heats">Heats</a>
-    </nav>
-  </header>
+{% extends "base.html" %}
 
-  <main class="heats-page">
+{% block title %}Results{% endblock %}
+
+
+{% block content %}
     {% for round in rounds %}
     <section class="round-section">
       <div class="results-container">
@@ -56,15 +43,5 @@
       </div>
     </section>
     {% endfor %}
-  </main>
 
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const dropdownMenu = document.getElementById('dropdownMenu');
-
-    menuToggle.addEventListener('click', () => {
-      dropdownMenu.classList.toggle('show');
-    });
-  </script>
-</body>
-</html>
+{% endblock %}

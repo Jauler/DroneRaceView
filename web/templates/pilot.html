@@ -81,22 +81,38 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const lap_time_data = {{ pilot_lap_times | tojson }};
+  const lapData = {{ pilot_lap_times | tojson }};
+  const labels = lapData.map((_, i) => `Lap ${i + 1}`);
 
   new Chart(document.getElementById("lapTimeChart"), {
     type: 'line',
     data: {
+      labels: labels,
       datasets: [{
         label: "Lap Time (s)",
-        data: lap_time_data,
+        data: lapData,
         fill: false,
         tension: 0.3,
+        borderColor: "blue",
+        borderWidth: 2
       }]
     },
     options: {
       responsive: true,
       scales: {
-        y: { title: { display: true, text: "Lap Time (s)" }}
+        x: {
+          title: {
+            display: true,
+            text: "Lap Number"
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: "Time (s)"
+          },
+          beginAtZero: false
+        }
       }
     }
   });

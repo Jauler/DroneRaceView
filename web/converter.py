@@ -396,10 +396,10 @@ def pilot_rounds(r: Optional[RHResults], h: Optional[RHHeats], pilot_id: int) ->
                     status = "finished"
 
                 # Determine position
-                position = ""
+                position = None
                 lb = race_round.leaderboard.by_race_time if race_round.leaderboard else []
                 for entry in lb:
-                    if entry.pilot_id == pilot_id:
+                    if entry.pilot_id == pilot_id and entry.position:
                         position = str(entry.position)
 
                 # Determine round name

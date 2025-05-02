@@ -4,37 +4,6 @@
 
 
 {% block content %}
-  <!-- Current Heat Section -->
-  <section class="current-heat-section">
-  <div class="results-container">
-    <h2>Current Heat</h2>
-
-    <div class="heat-wrapper">
-      <div class="heat-number">
-          <span id="heatNumber">{{ current_heat }}</span>
-      </div>
-      <div class="pilot-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Pilot</th>
-              <th>Channel</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for pilot in current_pilots %}
-            <tr>
-              <td>{{ pilot.nickname }}</td>
-              <td>{{ pilot.channel }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
   <!-- Full Results Table Section -->
   <section class="results-section">
     <div class="results-container">

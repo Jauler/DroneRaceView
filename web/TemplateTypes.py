@@ -24,6 +24,7 @@ PilotResults = list[PilotResult]
 
 # Current heat info
 class CurrentHeatPilot(BaseModel):
+    pilot_id: int
     nickname: str
     channel: str
 

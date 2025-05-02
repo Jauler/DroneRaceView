@@ -70,6 +70,7 @@ def current_pilots(rc: Optional[RaceStatus], h: Optional[RHHeats], p: Optional[R
         return next((p.callsign for p in p.pilots if p.pilot_id == pilot_id), "")
 
     return [TCurrentHeatPilot(
+            pilot_id=pilot_id,
             nickname=find_pilot_by_id(pilot_id),
             channel = frequency_to_str(f.fdata[channel_id]))
             for channel_id, pilot_id in enumerate(pilot_ids) if len(f.fdata) > channel_id and f.fdata[channel_id].band is not None]

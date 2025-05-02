@@ -89,9 +89,9 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                 consecutives_base = 0,
                 consecutives_source = "",
                 average_lap_time = NO_DATA,
-                total_laps = NO_DATA,
-                total_starts = NO_DATA,
-                finished_races = NO_DATA,
+                total_laps = 0,
+                total_starts = 0,
+                finished_races = 0,
                 success_ratio = NO_DATA,
                 next_heat = NO_DATA,
                 )

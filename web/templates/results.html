@@ -44,19 +44,7 @@
     </div>
   </section>
 
-
-</main>
-
-
   <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const dropdownMenu = document.getElementById('dropdownMenu');
-
-    menuToggle.addEventListener('click', () => {
-      dropdownMenu.classList.toggle('show');
-    });
-
-
     const progressionData = {{ pilots_progression | tojson }};
     const labels = progressionData[0].points.map((_, i) => `Round ${i}`);
 

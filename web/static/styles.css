@@ -297,3 +297,28 @@ body {
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+.pilot-summary-section,
+.pilot-chart-section,
+.pilot-laps-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.pilot-summary,
+.pilot-chart-container,
+.pilot-laps-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 1rem 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.chart-container canvas {
+  max-width: 100%;
+  height: 400px;
+}

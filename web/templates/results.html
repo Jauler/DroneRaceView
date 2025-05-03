@@ -17,11 +17,6 @@
               <th>Points</th>
               <th>Consecutives</th>
               <th>Fastest Lap</th>
-              <th>Total Laps</th>
-              <th>Avg Lap Time</th>
-              <th>Total Races</th>
-              <th>Unfinished Races</th>
-              <th>Success Rate %</th>
               <th>Next Heat</th>
             </tr>
           </thead>
@@ -33,11 +28,6 @@
               <td>{{ pilot.points }}</td>
               <td>{{ pilot.consecutives_str }}</td>
               <td>{{ pilot.fastest_lap }}</td>
-              <td>{{ pilot.total_laps}}</td>
-              <td>{{ pilot.average_lap_time }}</td>
-              <td>{{ pilot.total_starts }}</td>
-              <td>{{ pilot.unfinished_races }}</td>
-              <td>{{ pilot.success_ratio }} %</td>
               <td>{{ pilot.next_heat }}</td>
             </tr>
             {% endfor %}

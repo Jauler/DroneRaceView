@@ -42,9 +42,9 @@ class ByRaceTimeLeaderboardEntry(LeaderboardEntry):
 
 class LeaderboardMeta(BaseModel):
     primary_leaderboard: str
-    win_condition: int
+    win_condition: int | None
     team_racing_mode: bool
-    start_behavior: int
+    start_behavior: int | None
     consecutives_count: int
 
 class Leaderboard(BaseModel):

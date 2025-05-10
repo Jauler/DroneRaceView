@@ -239,16 +239,23 @@ body {
 }
 
 .vertical-text {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
   text-align: center;
   vertical-align: middle;
-  font-weight: bold;
-  padding: 1rem 0.25rem;
+  padding: 0.5rem;
   background-color: #f0f0f0;
   color: #333;
   width: 20px;
   border-right: 4px solid #333;
+}
+
+.vertical-label {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: bold;
+  font-size: 1rem;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .heat-start td {

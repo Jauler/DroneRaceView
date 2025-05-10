@@ -28,23 +28,7 @@ def authenticate():
 
 @app.route("/")
 def index():
-    return redirect(url_for('race'))
-
-@app.route("/race", methods=["GET"])
-def race():
-    race_status = rhracestatusrepo.get_latest_entry()
-    heats = rhheatsrepo.get_latest_entry()
-    frequency = rhfrequencyrepo.get_latest_entry()
-    pilots = rhpilotsrepo.get_latest_entry()
-
-    current_heat = converter.current_heat(race_status, heats)
-    current_pilots = converter.current_pilots(race_status, heats, pilots, frequency)
-
-    return render_template(
-        "race.html",
-        current_heat=current_heat,
-        current_pilots=current_pilots
-    )
+    return redirect(url_for('heats'))
 
 @app.route("/results", methods=["GET"])
 def results():

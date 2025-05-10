@@ -104,17 +104,6 @@ body {
   color: #222;
 }
 
-.heat-number {
-  font-size: 3rem;
-  font-weight: bold;
-  background-color: #222;
-  color: #fff;
-  padding: 2rem 3rem;
-  border-radius: 1rem;
-  min-width: 100px;
-  text-align: center;
-}
-
 .pilot-table table {
   border-collapse: collapse;
   background-color: #fff;
@@ -255,7 +244,7 @@ body {
   padding: 0.5rem 0;
 }
 
-.heat-number-2 {
+.heat-number {
   font-weight: bold;
   font-size: 1rem;
 }

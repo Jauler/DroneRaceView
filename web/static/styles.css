@@ -233,7 +233,7 @@ body {
   vertical-align: middle;
   width: 1px;
   min-width: 0;
-  border-right: 2px solid #333;  /* ← Add vertical divider */
+  border-right: 2px solid #ddd;  /* ← Add vertical divider */
 }
 
 .rotated-heat-label {

@@ -268,8 +268,8 @@ body {
   background-color: #28a745; /* green */
   border-radius: 0.25rem;
   text-transform: uppercase;
-  writing-mode: horizontal-tb;
-  transform: rotate(0deg);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
 }
 
 .heat-start td {

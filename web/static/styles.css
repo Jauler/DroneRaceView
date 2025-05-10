@@ -256,6 +256,13 @@ body {
   height: 100%;
 }
 
+.vertical-line {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .vertical-heat-number {
   font-weight: bold;
   font-size: 1rem;

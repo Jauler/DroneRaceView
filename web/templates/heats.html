@@ -25,7 +25,7 @@
                 {% for pilot in heat.pilots %}
                   {% if loop.index == 1 %}
                     <tr class="heat-start">
-                      <td rowspan="{{ heat.pilots | length }}" class="vertical-text">{{ heat.heat_name }}</td>
+                        <td rowspan="{{ heat.pilots | length }}"><span class="vertical-text">{{ heat.heat_name }}</span></td>
                   {% else %}
                     <tr>
                   {% endif %}

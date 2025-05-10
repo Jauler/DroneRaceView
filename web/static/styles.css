@@ -235,7 +235,7 @@ body {
 
 .rotated-heat-label {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   transform: rotate(270deg);

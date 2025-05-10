@@ -27,7 +27,7 @@
                     <tr class="heat-start">
                         <td rowspan="{{ heat.pilots | length }}" class="vertical-text">
                             <span class="vertical-label">{{ heat.heat_name }}</span>
-                            {% if heat.status == 'completed' %}
+                            {% if heat.completed %}
                                 <span class="heat-badge">Completed</span>
                             {% endif %}
                         </td>

@@ -336,6 +336,8 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
 
         rounds.append(race_round)
 
+    rounds.reverse()
+
     return rounds
 
 def pilot_lap_times(r: Optional[RHResults], pilot_id: int) -> list[float]:

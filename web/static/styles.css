@@ -258,6 +258,20 @@ body {
   line-height: 1.2;
 }
 
+.heat-badge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+  background-color: #28a745; /* green */
+  border-radius: 0.25rem;
+  text-transform: uppercase;
+  writing-mode: horizontal-tb;
+  transform: rotate(0deg);
+}
+
 .heat-start td {
   border-top: 2px solid #333;
 }
@@ -270,8 +284,6 @@ body {
 .round-table {
   min-width: 600px; /* ensures scrolling kicks in if needed */
 }
-
-
 
 .chart-section {
   padding: 2rem;

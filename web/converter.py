@@ -266,6 +266,12 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
     def find_pilot_by_id(pilot_id: int):
         assert p
         return next((p for p in p.pilots if p.pilot_id == pilot_id), None)
+    def is_heat_completed(heat_id: int):
+        if not r or str(heat_id) not in r.heats:
+            return False
+        if r.heats[str(heat_id)].leaderboard is None:
+            return False
+        return True
     def find_pilot_leaderboard_by_heat_and_pilot_id(heat_id: int, pilot_id: int):
         if not r or str(heat_id) not in r.heats:
             return None
@@ -294,7 +300,7 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
         race_round = TRound(round_name=race_class.displayname, heats=[])
         rh_heats = find_heats_by_class_id(race_class.id)
         for rh_heat in rh_heats:
-            th = THeat(heat_name=rh_heat.displayname, pilots=[])
+            th = THeat(heat_name=rh_heat.displayname, pilots=[], completed=is_heat_completed(rh_heat.id))
             for rh_slot in rh_heat.slots:
                 if len(f.fdata) <= rh_slot.node_index or f.fdata[rh_slot.node_index].band is None:
                     continue
@@ -319,6 +325,7 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
                         pilot_points[rh_slot.pilot_id] += gains
                         points = str(pilot_points[rh_slot.pilot_id])
                         gains = str(gains)
+
                 else:
                     position = NO_DATA
                     gains = NO_DATA

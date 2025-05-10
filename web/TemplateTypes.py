@@ -42,6 +42,7 @@ class HeatPilot(BaseModel):
 
 class Heat(BaseModel):
     heat_name: str
+    completed: bool
     pilots: list[HeatPilot]
 
 class Round(BaseModel):

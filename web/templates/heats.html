@@ -25,7 +25,12 @@
                 {% for pilot in heat.pilots %}
                   {% if loop.index == 1 %}
                     <tr class="heat-start">
-                        <td rowspan="{{ heat.pilots | length }}" class="vertical-text"><span class="vertical-label">{{ heat.heat_name }}</span></td>
+                        <td rowspan="{{ heat.pilots | length }}" class="vertical-text">
+                            <span class="vertical-label">{{ heat.heat_name }}</span>
+                            {% if heat.status == 'completed' %}
+                                <span class="heat-badge">Completed</span>
+                            {% endif %}
+                        </td>
                   {% else %}
                     <tr>
                   {% endif %}

@@ -329,7 +329,7 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
                 else:
                     position = NO_DATA
                     gains = NO_DATA
-                    points = str(pilot_points[rh_slot.pilot_id])
+                    points = NO_DATA
 
                 th.pilots.append(THeatPilot(
                         pilot_id=rh_slot.pilot_id if rh_slot.pilot_id > 0 else None,

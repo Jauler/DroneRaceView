@@ -302,8 +302,14 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
         for rh_heat in rh_heats:
             th = THeat(heat_name=rh_heat.displayname, pilots=[], completed=is_heat_completed(rh_heat.id))
             for rh_slot in rh_heat.slots:
-                if len(f.fdata) <= rh_slot.node_index or f.fdata[rh_slot.node_index].band is None:
+                # Validate data
+                if rh_slot.node_index is None:
                     continue
+                if len(f.fdata) <= rh_slot.node_index:
+                    continue
+                if f.fdata[rh_slot.node_index].band is None:
+                    continue
+
                 rhp = find_pilot_by_id(rh_slot.pilot_id)
 
                 # pilot info

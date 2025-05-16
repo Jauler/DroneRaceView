@@ -24,7 +24,7 @@ services:
     build:
       context: ./collector
       dockerfile: ../docker/collector-dockerfile
-    command: python main.py --url http://10.42.0.191:8000 --username <your username> --password <your password> --ignore-events heartbeat,cluster_status,node_data,environmental_data
+    command: python main.py --url http://10.42.0.191:8000 --username <your username> --password <your password> --ignore-events heartbeat,cluster_status,node_data,environmental_data --store-max-events 100
     restart: always
     volumes:
       - ./data:/data/

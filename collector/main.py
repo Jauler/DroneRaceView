@@ -30,6 +30,7 @@ class RHDataTable(Base):
 
 ignored_events = None
 store_events = None
+store_max_event_count = None
 
 # --- Socket.IO Client setup ---
 sio = socketio.Client(reconnection=False)  # We will handle reconnection manually
@@ -46,6 +47,19 @@ def save_event(event_name, data):
         session = session_maker()
         entry = RHDataTable(entry_type=event_name, payload=data)
         session.add(entry)
+
+        if store_max_event_count is not None:
+            # Count events in this category
+            events = (
+                RHDataTable.query
+                .filter_by(entry_type=event_name)
+                .order_by(RHDataTable.timestamp.desc())
+                .all()
+            )
+
+            for e in events[10:]:
+                session.delete(e)
+
         session.commit()
         session.close()
         logger.debug(f"Saved event '{event_name}' to database.")
@@ -112,6 +126,7 @@ def main():
     parser.add_argument("--password", required=True, help="Password for authentication")
     parser.add_argument("--ignore-events", help="Comma-separated list of events to ignore", default=None)
     parser.add_argument("--store-events", help="Comma-separated list of events to store. Will only store these events if specified", default=None)
+    parser.add_argument("--store-max-events", help="Maximum number of events to store in DB", type=int)
 
     args = parser.parse_args()
 
@@ -122,6 +137,10 @@ def main():
     if args.store_events:
         global store_events
         store_events = set([e.strip() for e in args.store_events.split(",") if e.strip()])
+
+    if args.store_max_events:
+        global store_max_event_count
+        store_max_event_count = args.store_max_events
 
     run_socketio_client(args.url, args.username, args.password)
 

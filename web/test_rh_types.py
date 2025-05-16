@@ -6,6 +6,7 @@ from RHTypes.RHRaceStatusTypes import RaceStatus
 from RHTypes.RHPilotTypes import Pilots
 from RHTypes.RHResultTypes import Results
 from RHTypes.RHFrequencyTypes import Frequencies
+from RHTypes.RHFormatTypes import Formats
 from TemplateTypes import PilotResult, HeatPilot
 from pathlib import Path
 
@@ -54,5 +55,12 @@ def test_rh_race_status(filename):
 ])
 def test_rh_result_data(filename):
     _r = Results(**json.load(open(SCRIPT_DIR / filename)))
+
+@pytest.mark.parametrize("filename", [
+    "testdata/format_data_sample_1.json",
+])
+def test_rh_format_data(filename):
+    _r = Formats(**json.load(open(SCRIPT_DIR / filename)))
+
 
 

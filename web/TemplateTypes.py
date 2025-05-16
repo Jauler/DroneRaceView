@@ -22,15 +22,6 @@ class PilotResult(BaseModel):
 
 PilotResults = list[PilotResult]
 
-# Current heat info
-class CurrentHeatPilot(BaseModel):
-    pilot_id: int
-    nickname: str
-    channel: str
-
-CurrentHeat = str
-CurrentHeatPilots = list[CurrentHeatPilot]
-
 # Heats info
 class HeatPilot(BaseModel):
     pilot_id: Optional[int]

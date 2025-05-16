@@ -5,9 +5,6 @@ from RHTypes.RHResultTypes import Results as RHResults, Ranking
 from RHTypes.RHClassTypes import Classes as RHClasses
 from RHTypes.RHFrequencyTypes import Frequencies as RHFrequencies, Frequency as RHFrequency
 from TemplateTypes import (
-    CurrentHeat as TCurrentHeat,
-    CurrentHeatPilot as TCurrentHeatPilot,
-    CurrentHeatPilots as TCurrentHeatPilots,
     PilotResults as TPilotResults,
     PilotResult as TPilotResult,
     Round as TRound,
@@ -43,37 +40,6 @@ def map_or_default(m, v, d):
         return d
 
     return m[v]
-
-def current_heat(rc: Optional[RaceStatus], heats: Optional[RHHeats]) -> TCurrentHeat:
-    if rc is None or heats is None:
-        return "N/A"
-    heat_id = rc.race_heat_id
-    target = next((h for h in heats.heats if h.id == heat_id), None)
-    if target is None:
-        return NO_DATA
-    return target.displayname
-
-def current_pilots(rc: Optional[RaceStatus], h: Optional[RHHeats], p: Optional[RHPilots], f: Optional[RHFrequencies]) -> TCurrentHeatPilots:
-    if rc is None or h is None or p is None or f is None:
-        return []
-
-    heat_id = rc.race_heat_id
-    current_heat = next((h for h in h.heats if h.id == heat_id), None)
-    if current_heat is None:
-        return []
-
-    slots = sorted(current_heat.slots, key=lambda s: s.node_index)
-    pilot_ids = [s.pilot_id for s in slots]
-
-    def find_pilot_by_id(pilot_id: int):
-        assert p
-        return next((p.callsign for p in p.pilots if p.pilot_id == pilot_id), "")
-
-    return [TCurrentHeatPilot(
-            pilot_id=pilot_id,
-            nickname=find_pilot_by_id(pilot_id),
-            channel = frequency_to_str(f.fdata[channel_id]))
-            for channel_id, pilot_id in enumerate(pilot_ids) if len(f.fdata) > channel_id and f.fdata[channel_id].band is not None]
 
 def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPilots]) -> TPilotResults:
     if p is None:

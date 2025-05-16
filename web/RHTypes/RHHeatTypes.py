@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 class HeatSlot(BaseModel):
     id: int
-    node_index: int | None
+    node_index: int | None = None
     pilot_id: int
     method: int
 

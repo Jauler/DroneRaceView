@@ -51,7 +51,7 @@ def save_event(event_name, data):
         if store_max_event_count is not None:
             # Count events in this category
             events = (
-                RHDataTable.query
+                session.query(RHDataTable)
                 .filter_by(entry_type=event_name)
                 .order_by(RHDataTable.timestamp.desc())
                 .all()

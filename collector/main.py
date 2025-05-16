@@ -57,7 +57,7 @@ def save_event(event_name, data):
                 .all()
             )
 
-            for e in events[10:]:
+            for e in events[store_max_event_count:]:
                 session.delete(e)
 
         session.commit()

@@ -363,8 +363,11 @@ def results(r: Optional[RHResults], p: Optional[RHPilots], c: Optional[RHClasses
         for converter in supported_result_converters:
             format_str = f"display={converter.name()}"
             print(f"searching for {format_str} in {rhformat.name}")
-            if f"display={converter.name()}" in rhformat.name:
+            if format_str in rhformat.name:
+                print("found")
                 visible_format_ids[rhformat.id] = converter
+
+    print(f"visible: {visible_format_ids}")
 
     # Now build a list of classes per visible display format
     visible_classes = {}

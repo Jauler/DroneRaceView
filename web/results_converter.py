@@ -7,6 +7,8 @@ from RHTypes.RHClassTypes import Classes as RHClasses
 from TemplateTypes import (
     PilotProgression as TPilotProgression,
     PilotsProgression as TPilotsProgression,
+    Result as TResult,
+    Results as TResults,
     PilotResult as TPilotResult,
     PointResults as TPointResults,
     ConsecutivesResults as TConsecutivesResults,
@@ -372,8 +374,11 @@ def results(r: Optional[RHResults], p: Optional[RHPilots], c: Optional[RHClasses
             insert_or_append(visible_classes, visible_format_ids[rhclass.format], rhclass.id)
 
     for converter, class_group in visible_classes.items():
-        point_result = converter.convert(r, p, class_group)
-        results.results.append(point_result)
+        result = TResult(
+                result_type=converter.name(),
+                data=converter.convert(r, p, class_group)
+                )
+        results.results.append(result)
 
     return results
 

@@ -326,7 +326,7 @@ class PointResultsConverter(ConsecutivesResultConverter):
                         rank = idx + 1,
                         nickname = entry.callsign,
                         pilot_id = entry.pilot_id,
-                        points = BASE_POINTS + entry.points if entry.points else 0,
+                        points = BASE_POINTS + (entry.points if entry.points else 0),
                         fastest_lap=entry.fastest_lap,
                         fastest_lap_source=format_fastest_lap_source(entry.fastest_lap_source),
                         consecutives_str=entry.consecutives,

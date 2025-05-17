@@ -42,6 +42,8 @@ def results():
 
     results = results_converter.results(results, pilots, classes, formats)
 
+    print(results)
+
     return render_template(
         "results.html",
         results=results,

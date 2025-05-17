@@ -361,6 +361,8 @@ def results(r: Optional[RHResults], p: Optional[RHPilots], c: Optional[RHClasses
     visible_format_ids = {}
     for rhformat in f.formats:
         for converter in supported_result_converters:
+            format_str = f"display={converter.name()}"
+            print(f"searching for {format_str} in rhformat.name")
             if f"display={converter.name()}" in rhformat.name:
                 visible_format_ids[rhformat.id] = converter
 

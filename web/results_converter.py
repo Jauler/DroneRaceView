@@ -298,6 +298,8 @@ class PointResultsConverter(ConsecutivesResultConverter):
                         pilots_progression[pilot_id].points[idx] = points_after_round
                         pilot_points[pilot_id] = points_after_round
 
+        print(list(pilots_progression.values()))
+
         return list(pilots_progression.values())
 
     @classmethod

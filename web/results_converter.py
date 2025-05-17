@@ -239,7 +239,7 @@ class PointResultsConverter(ConsecutivesResultConverter):
     @classmethod
     def merge_leaderboard_entries(cls, entry1: ByRaceTimeLeaderboardEntry, entry2: ByRaceTimeLeaderboardEntry) -> ByRaceTimeLeaderboardEntry:
         merged_consecutives_entry = super().merge_leaderboard_entries(entry1, entry2)
-        points = (entry1.points if entry1.points else 0) + (entry2.points if entry2.points else 0)
+        points = (entry1.points if entry1.points is not None else 0) + (entry2.points if entry2.points is not None else 0)
         if entry1.pilot_id == 18:
             print("=======merging: ", entry1, entry2)
         point_entry = ByRaceTimeLeaderboardEntry(**merged_consecutives_entry.dict(), points=0, behind=0)

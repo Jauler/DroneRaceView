@@ -39,7 +39,7 @@
 </section>
 
 <script>
-  const progressionData = {{ result.data.pilots_progression | tojson }};
+  const progressionData = {{ result.data.pilots_progression.dict() | tojson }};
   const labels = progressionData[0].points.map((_, i) => `Round ${i}`);
 
   const datasets = progressionData.map(pilot => ({

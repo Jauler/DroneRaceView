@@ -302,7 +302,7 @@ class PointResultsConverter(ConsecutivesResultConverter):
     def convert(cls, r: RHResults, p: RHPilots, c: list[int]) -> TPointResults:
 
         pilots_progression = PointResultsConverter.pilots_progression(r, p, c)
-        result = TPointResults(results=[], pilot_progression=pilots_progression)
+        result = TPointResults(results=[], pilots_progression=pilots_progression)
 
         # Calculate merged consecutives leaderboard from all relevant classes
         merged_lb: list[ByRaceTimeLeaderboardEntry] | None = None

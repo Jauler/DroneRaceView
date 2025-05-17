@@ -33,7 +33,7 @@ class ConsecutivesResults(BaseModel):
 
 class PointResults(BaseModel):
     results: PilotResults
-    pilot_progression: PilotsProgression
+    pilots_progression: PilotsProgression
 
 class Result(BaseModel):
     result_type: str # One of "points | consecutives | ..."

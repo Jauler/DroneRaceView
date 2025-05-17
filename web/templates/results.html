@@ -7,9 +7,9 @@
 
 {% for result in results %}
   {% if result.result_type == 'points' %}
-    {% include "_results_points_view.html" with context %}
+    {% include "templates/_results_points_view.html" with context %}
   {% elif result.result_type == 'consecutives' %}
-    {% include "_results_consecutives_view.html" with context %}
+    {% include "templates/_results_consecutives_view.html" with context %}
   {% endif %}
 {% endfor %}
 

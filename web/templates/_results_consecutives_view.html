@@ -8,7 +8,6 @@
           <tr>
             <th>Rank</th>
             <th>Nickname</th>
-            <th>Points</th>
             <th>Consecutives</th>
             <th>Fastest Lap</th>
             <th>Next Heat</th>
@@ -19,7 +18,6 @@
           <tr>
             <td>{{ pilot.rank }}</td>
             <td><a href={{ url_for('pilot', pilot_id=pilot.pilot_id) }}>{{ pilot.nickname }}</a></td>
-            <td>{{ pilot.points }}</td>
             <td>{{ pilot.consecutives_str }}</td>
             <td>{{ pilot.fastest_lap }}</td>
             <td>{{ pilot.next_heat }}</td>

@@ -225,9 +225,11 @@ class PointResultsConverter(ConsecutivesResultConverter):
 
     @classmethod
     def cmp_lb_entries(cls, entry1: ByRaceTimeLeaderboardEntry, entry2: ByRaceTimeLeaderboardEntry):
-        if entry1.points and not entry2.points:
+        entry1_has_points = entry1.points is not None
+        entry2_has_points = entry2.points is not None
+        if entry1_has_points and not entry2_has_points:
             return -1;
-        elif entry2.points and not entry1.points:
+        elif entry2_has_points and not entry1_has_points:
             return 1
         elif entry1.points != entry2.points:
             assert entry1.points
@@ -240,12 +242,8 @@ class PointResultsConverter(ConsecutivesResultConverter):
     def merge_leaderboard_entries(cls, entry1: ByRaceTimeLeaderboardEntry, entry2: ByRaceTimeLeaderboardEntry) -> ByRaceTimeLeaderboardEntry:
         merged_consecutives_entry = super().merge_leaderboard_entries(entry1, entry2)
         points = (entry1.points if entry1.points is not None else 0) + (entry2.points if entry2.points is not None else 0)
-        if entry1.pilot_id == 18:
-            print("=======merging: ", entry1, entry2)
         point_entry = ByRaceTimeLeaderboardEntry(**merged_consecutives_entry.dict(), points=0, behind=0)
         point_entry.points = points
-        if entry1.pilot_id == 18:
-            print("=======merged: ", point_entry)
         return point_entry
 
     @classmethod

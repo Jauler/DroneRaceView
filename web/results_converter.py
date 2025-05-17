@@ -240,9 +240,28 @@ class PointResultsConverter(ConsecutivesResultConverter):
     def merge_leaderboard_entries(cls, entry1: ByRaceTimeLeaderboardEntry, entry2: ByRaceTimeLeaderboardEntry) -> ByRaceTimeLeaderboardEntry:
         merged_consecutives_entry = super().merge_leaderboard_entries(entry1, entry2)
         points = (entry1.points if entry1.points else 0) + (entry2.points if entry2.points else 0)
+        if entry1.pilot_id == 18:
+            print("===========", entry1, entry2)
         point_entry = ByRaceTimeLeaderboardEntry(**merged_consecutives_entry.dict(), points=0, behind=0)
         point_entry.points = points
         return point_entry
+
+    @classmethod
+    def merge_leaderboards(cls, lb1: list[ByRaceTimeLeaderboardEntry], lb2: list[ByRaceTimeLeaderboardEntry]) -> list[ByRaceTimeLeaderboardEntry]:
+        participants: dict[int, list[ByRaceTimeLeaderboardEntry]] = {}
+        for entry in lb1:
+            insert_or_append(participants, entry.pilot_id, entry)
+        for entry in lb2:
+            insert_or_append(participants, entry.pilot_id, entry)
+
+        for pilot_id, lb_entries in participants.items():
+            if len(lb_entries) <= 1:
+                continue
+
+            participants[pilot_id] = [cls.merge_leaderboard_entries(lb_entries[0], lb_entries[1])]
+
+        results = [v[0] for v in participants.values()]
+        return sorted(results, key=cmp_to_key(cls.cmp_lb_entries))
 
 
     # Used specifically with points type to display graph of all pilots
@@ -280,23 +299,6 @@ class PointResultsConverter(ConsecutivesResultConverter):
                         pilot_points[pilot_id] = points_after_round
 
         return list(pilots_progression.values())
-
-    @classmethod
-    def merge_leaderboards(cls, lb1: list[ByRaceTimeLeaderboardEntry], lb2: list[ByRaceTimeLeaderboardEntry]) -> list[ByRaceTimeLeaderboardEntry]:
-        participants: dict[int, list[ByRaceTimeLeaderboardEntry]] = {}
-        for entry in lb1:
-            insert_or_append(participants, entry.pilot_id, entry)
-        for entry in lb2:
-            insert_or_append(participants, entry.pilot_id, entry)
-
-        for pilot_id, lb_entries in participants.items():
-            if len(lb_entries) <= 1:
-                continue
-
-            participants[pilot_id] = [cls.merge_leaderboard_entries(lb_entries[0], lb_entries[1])]
-
-        results = [v[0] for v in participants.values()]
-        return sorted(results, key=cmp_to_key(cls.cmp_lb_entries))
 
     @classmethod
     def convert(cls, r: RHResults, p: RHPilots, c: list[int]) -> TPointResults:

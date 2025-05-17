@@ -22,6 +22,28 @@ class PilotResult(BaseModel):
 
 PilotResults = list[PilotResult]
 
+class PilotProgression(BaseModel):
+    nickname: str
+    points: list[int | None]
+
+PilotsProgression = list[PilotProgression]
+
+class ConsecutivesResults(BaseModel):
+    results: PilotResults
+
+class PointResults(BaseModel):
+    results: PilotResults
+    pilot_progression: PilotsProgression
+
+class Result(BaseModel):
+    result_type: str # One of "points | consecutives | ..."
+    data: PointResults | ConsecutivesResults
+
+class Results(BaseModel):
+    results: list[Result]
+
+
+
 # Heats info
 class HeatPilot(BaseModel):
     pilot_id: Optional[int]
@@ -41,14 +63,6 @@ class Round(BaseModel):
     heats: list[Heat]
 
 Rounds = list[Round]
-
-
-class PilotProgression(BaseModel):
-    nickname: str
-    points: list[int | None]
-
-PilotsProgression = list[PilotProgression]
-
 
 class PilotRound(BaseModel):
     round_name: str

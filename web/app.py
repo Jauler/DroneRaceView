@@ -1,7 +1,9 @@
 from flask import Flask, render_template, redirect, url_for
 from flask import Flask, render_template, redirect, url_for, Response
 from storage import RHClassesRepository, RHFrequencyRepository, RHPilotsRepository, RHRaceStatusRepository, init_db, RHResultsRepository, RHHeatsRepository
-import converter
+import results_converter
+import rounds_converter
+import pilot_info_converter
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -36,13 +38,11 @@ def results():
     heats = rhheatsrepo.get_latest_entry()
     pilots = rhpilotsrepo.get_latest_entry()
 
-    pilot_results = converter.pilot_results(results, heats, pilots)
-    pilots_progression = converter.pilots_progression(results, pilots)
+    results = results_converter.results(results, heats, pilots)
 
     return render_template(
         "results.html",
-        pilot_results=pilot_results,
-        pilots_progression=[p.dict() for p in pilots_progression]
+        results=results,
     )
 
 @app.route("/pilot/<int:pilot_id>", methods=["GET"])
@@ -57,9 +57,9 @@ def pilot(pilot_id):
     results = rhresultsrepo.get_latest_entry()
 
     # Get pilot info
-    pilot_info = converter.pilot_result(results, heats, pilots, pilot_id)
-    pilot_lap_times = converter.pilot_lap_times(results, pilot_id)
-    pilot_rounds = converter.pilot_rounds(results, heats, pilot_id)
+    pilot_info = pilot_info_converter.pilot_result(results, heats, pilots, pilot_id)
+    pilot_lap_times = pilot_info_converter.pilot_lap_times(results, pilot_id)
+    pilot_rounds = pilot_info_converter.pilot_rounds(results, heats, pilot_id)
 
     return render_template(
         "pilot.html",
@@ -77,7 +77,7 @@ def heats():
     pilots = rhpilotsrepo.get_latest_entry()
     frequency = rhfrequencyrepo.get_latest_entry()
 
-    rounds = converter.rounds(results, heats, classes, pilots, frequency)
+    rounds = rounds_converter.rounds(results, heats, classes, pilots, frequency)
 
     return render_template("heats.html", rounds=rounds)
 

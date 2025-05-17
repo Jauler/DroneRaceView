@@ -8,7 +8,8 @@ from RHTypes.RHResultTypes import Results
 from RHTypes.RHFrequencyTypes import Frequencies
 from TemplateTypes import PilotResult, HeatPilot
 from pathlib import Path
-import converter
+import pilot_info_converter
+import rounds_converter
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
@@ -34,7 +35,7 @@ def test_rounds_converter(results_filename, heats_filename, pilots_filename, cla
     classes = Classes(**json.load(open(SCRIPT_DIR / classes_filename)))
     frequency = Frequencies(**json.load(open(SCRIPT_DIR / freq_filename)))
 
-    pr = converter.rounds(results, heats, classes, pilots, frequency)
+    pr = rounds_converter.rounds(results, heats, classes, pilots, frequency)
 
     assert len(pr) == 4
     assert len(pr[0].heats) == 0

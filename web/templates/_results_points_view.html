@@ -1,0 +1,86 @@
+<!-- Full Results Table Section -->
+<section class="results-section">
+  <div class="results-container">
+    <h2>Results</h2>
+    <div class="table-wrapper">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Nickname</th>
+            <th>Points</th>
+            <th>Consecutives</th>
+            <th>Fastest Lap</th>
+            <th>Next Heat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pilot in pilot_results %}
+          <tr>
+            <td>{{ pilot.rank }}</td>
+            <td><a href={{ url_for('pilot', pilot_id=pilot.pilot_id) }}>{{ pilot.nickname }}</a></td>
+            <td>{{ pilot.points }}</td>
+            <td>{{ pilot.consecutives_str }}</td>
+            <td>{{ pilot.fastest_lap }}</td>
+            <td>{{ pilot.next_heat }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="chart-section">
+  <div class="results-container">
+    <h2>Pilots Progression</h2>
+    <canvas id="progressionChart"></canvas>
+  </div>
+</section>
+
+<script>
+  const progressionData = {{ pilots_progression | tojson }};
+  const labels = progressionData[0].points.map((_, i) => `Round ${i}`);
+
+  const datasets = progressionData.map(pilot => ({
+    label: pilot.nickname,
+    data: pilot.points,
+    fill: false,
+    tension: 0.3,
+    borderWidth: 2
+  }));
+
+  const ctx = document.getElementById('progressionChart').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top'
+        },
+        title: {
+          display: false,
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: false,
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Points'
+          }
+        }
+      }
+    }
+  });
+</script>

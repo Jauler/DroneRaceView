@@ -374,7 +374,7 @@ def results(r: Optional[RHResults], p: Optional[RHPilots], c: Optional[RHClasses
         if rhclass.format in visible_format_ids:
             insert_or_append(visible_classes, visible_format_ids[rhclass.format], rhclass.id)
 
-    print("visible classes: {visible_classes}")
+    print(f"visible classes: {visible_classes}")
 
     for converter, class_group in visible_classes.items():
         point_result = converter.convert(r, p, class_group)

@@ -2,6 +2,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, JSON, String, DateTime, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from RHTypes.RHClassTypes import Classes
+from RHTypes.RHFormatTypes import Formats
 from RHTypes.RHHeatTypes import Heats
 from RHTypes.RHPilotTypes import Pilots
 from RHTypes.RHRaceStatusTypes import RaceStatus
@@ -81,3 +82,7 @@ class RHResultsRepository(RHDataRepository[Results]):
 class RHFrequencyRepository(RHDataRepository[Frequencies]):
     typename = "frequency_data"
     stored_type = Frequencies
+
+class RHFormatsRepository(RHDataRepository[Formats]):
+    typename = "format_data"
+    stored_type = Formats

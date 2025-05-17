@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for
 from flask import Flask, render_template, redirect, url_for, Response
-from storage import RHClassesRepository, RHFrequencyRepository, RHPilotsRepository, RHRaceStatusRepository, init_db, RHResultsRepository, RHHeatsRepository
+from storage import RHClassesRepository, RHFrequencyRepository, RHPilotsRepository, RHRaceStatusRepository, init_db, RHResultsRepository, RHHeatsRepository, RHFormatsRepository
 import results_converter
 import rounds_converter
 import pilot_info_converter
@@ -18,6 +18,7 @@ rhresultsrepo = RHResultsRepository()
 rhheatsrepo = RHHeatsRepository()
 rhracestatusrepo = RHRaceStatusRepository()
 rhfrequencyrepo = RHFrequencyRepository()
+rhformatsrepo = RHFormatsRepository()
 
 init_db()
 
@@ -35,10 +36,11 @@ def index():
 @app.route("/results", methods=["GET"])
 def results():
     results = rhresultsrepo.get_latest_entry()
-    heats = rhheatsrepo.get_latest_entry()
+    classes = rhclassesrepo.get_latest_entry()
     pilots = rhpilotsrepo.get_latest_entry()
+    formats = rhformatsrepo.get_latest_entry()
 
-    results = results_converter.results(results, heats, pilots)
+    results = results_converter.results(results, pilots, classes, formats)
 
     return render_template(
         "results.html",

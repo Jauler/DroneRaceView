@@ -232,8 +232,8 @@ class PointResultsConverter(ConsecutivesResultConverter):
         elif entry2_has_points and not entry1_has_points:
             return 1
         elif entry1.points != entry2.points:
-            assert entry1.points
-            assert entry2.points
+            assert entry1.points is not None
+            assert entry2.points is not None
             return entry2.points - entry1.points
 
         return super().cmp_lb_entries(entry1, entry2)

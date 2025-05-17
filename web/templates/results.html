@@ -6,7 +6,7 @@
 {% block content %}
 
 {% for result in results %}
-  <p> {{ result.result_type }}
+<p> {{ result.result_type }} </p>
   {% if result.result_type == 'points' %}
     {% include "templates/_results_points_view.html" with context %}
   {% elif result.result_type == 'consecutives' %}

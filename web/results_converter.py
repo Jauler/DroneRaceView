@@ -267,7 +267,10 @@ class PointResultsConverter(ConsecutivesResultConverter):
     # Used specifically with points type to display graph of all pilots
     @staticmethod
     def pilots_progression(r: RHResults, p: RHPilots, c: list[int]) -> TPilotsProgression:
-        num_classes = len(r.classes) if r else 0
+        num_classes = 0
+        for rh_class_id in r.classes:
+            if int(rh_class_id) in c:
+                num_classes += 1
 
         # Initialize pilots points to 1000
         pilots_progression: dict[int, TPilotProgression] = {}
@@ -279,7 +282,7 @@ class PointResultsConverter(ConsecutivesResultConverter):
         # Add up points from each class leaderboard
         if r:
             for idx, class_id in enumerate(r.heats_by_class.keys()):
-                if class_id not in c:
+                if int(class_id) not in c:
                     continue
 
                 heats_in_class = r.heats_by_class[class_id]

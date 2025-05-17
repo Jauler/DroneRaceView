@@ -240,7 +240,8 @@ class PointResultsConverter(ConsecutivesResultConverter):
     def merge_leaderboard_entries(cls, entry1: ByRaceTimeLeaderboardEntry, entry2: ByRaceTimeLeaderboardEntry) -> ByRaceTimeLeaderboardEntry:
         merged_consecutives_entry = super().merge_leaderboard_entries(entry1, entry2)
         points = (entry1.points if entry1.points else 0) + (entry2.points if entry2.points else 0)
-        point_entry = ByRaceTimeLeaderboardEntry(**merged_consecutives_entry.dict(), points=points, behind=0)
+        point_entry = ByRaceTimeLeaderboardEntry(**merged_consecutives_entry.dict(), points=0, behind=0)
+        point_entry.points = points
         return point_entry
 
 

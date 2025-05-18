@@ -353,7 +353,8 @@ class PointResultsConverter(ConsecutivesResultConverter):
 # List of all supported converters according to format name
 #
 supported_result_converters = [
-    ConsecutivesResultConverter
+    ConsecutivesResultConverter,
+    PointResultsConverter
 ]
 
 # Convert RotorHazard data into relevant result types for fronted jinja templates

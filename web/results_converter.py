@@ -380,8 +380,8 @@ def results(r: Optional[RHResults], p: Optional[RHPilots], c: Optional[RHClasses
 
     for converter, class_group in visible_classes.items():
         result = TResult(
-                result_type=PointResultsConverter.name(), # TODO remove after debugging
-                data=PointResultsConverter.convert(r, p, class_group)
+                result_type=converter.name(),
+                data=converter.convert(r, p, class_group)
                 )
         results.results.append(result)
 

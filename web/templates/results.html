@@ -10,6 +10,8 @@
     {% include "_results_points_view.html" with context %}
   {% elif result.result_type == 'consecutives' %}
     {% include "_results_consecutives_view.html" with context %}
+  {% elif result.result_type == 'eliminations' %}
+    {% include "_results_eliminations_view.html" with context %}
   {% endif %}
 {% endfor %}
 

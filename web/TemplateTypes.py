@@ -35,15 +35,6 @@ class PointResults(BaseModel):
     results: PilotResults
     pilots_progression: PilotsProgression
 
-class Result(BaseModel):
-    result_type: str # One of "points | consecutives | ..."
-    data: PointResults | ConsecutivesResults
-
-class Results(BaseModel):
-    results: list[Result]
-
-
-
 # Heats info
 class HeatPilot(BaseModel):
     pilot_id: Optional[int]
@@ -71,3 +62,73 @@ class PilotRound(BaseModel):
     laps: list[float]
 
 PilotRounds = list[PilotRound]
+
+
+
+# Elimination bracket info
+class EliminationStage(BaseModel):
+    id: int
+    name: str
+    type: str
+    settings: dict
+
+class EliminationGroup(BaseModel):
+    id: int
+    stage_id: int
+    number: int
+
+class EliminationParticipant(BaseModel):
+    id: int
+    name: str
+
+class EliminationRound(BaseModel):
+    id: int
+    number: int
+    stage_id: int
+    group_id: int
+
+class EliminationOpponent(BaseModel):
+    id: int
+
+class EliminationMatch(BaseModel):
+    id: int
+    number: int
+    stage_id: int
+    group_id: int
+    round_id: int
+    child_count: int
+    status: int
+    previous_connection_type: str | bool | None
+    next_connection_type: str | bool | None
+    opponent1: EliminationOpponent | None
+    opponent2: EliminationOpponent | None
+    opponent3: EliminationOpponent | None
+    opponent4: EliminationOpponent | None
+
+class EliminationTrack(BaseModel):
+    stage: list[EliminationStage]
+    group: list[EliminationGroup]
+    participant: list[EliminationParticipant]
+    round: list[EliminationRound]
+    match: list[EliminationMatch]
+    match_game: list
+
+class EliminationResults(BaseModel):
+    track: dict[str, EliminationTrack]
+
+class EliminationRoundMeta(BaseModel):
+    number:int
+    track: str
+    previous_connection_type: str | bool | None
+    next_connection_type: str | bool | None
+
+class Result(BaseModel):
+    result_type: str # One of "points | consecutives | ..."
+    data: PointResults | ConsecutivesResults | EliminationResults
+
+class Results(BaseModel):
+    results: list[Result]
+
+
+
+

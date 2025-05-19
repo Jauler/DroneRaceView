@@ -1,13 +1,12 @@
 import pytest
 import json
 from pathlib import Path
-from RHTypes.RHResultTypes import Leaderboard, LeaderboardResultSource, Results, LeaderboardEntry
+from RHTypes.RHResultTypes import LeaderboardResultSource, Results, LeaderboardEntry
 
-from results_converter import ConsecutivesResultConverter
+from converters.results_converters.consecutives_results_converter import ConsecutivesResultConverter
 
 import copy
 
-SCRIPT_DIR = Path(__file__).resolve().parent
 EMPTY_LB_ENTRY = LeaderboardEntry(
         pilot_id=1,
         callsign="testpilot",
@@ -49,7 +48,7 @@ def zeroize_unmerged_lb_entry_fields(entry):
 ])
 def test_milliseconds_format(results_filename):
     assert ConsecutivesResultConverter
-    results = Results(**json.load(open(SCRIPT_DIR / results_filename)))
+    results = Results(**json.load(open(results_filename)))
 
     for heat in results.heats.values():
         assert heat.leaderboard
@@ -71,7 +70,7 @@ def test_milliseconds_format(results_filename):
 def test_lb_entry_comparison(results_filename):
     # This test ensures that rotorhazard "sorting" of consecutives leaderboard
     # is consistent with ConsecutivesResultConverter implementation
-    results = Results(**json.load(open(SCRIPT_DIR / results_filename)))
+    results = Results(**json.load(open(results_filename)))
 
     for heat in results.heats.values():
         assert heat.leaderboard
@@ -108,7 +107,7 @@ def test_lb_entry_comparison(results_filename):
 def test_lb_entry_merge(results_filename):
     # This test ensures that rotorhazard merging of leaderboards (e.g. merging all
     # singular heat leaderboard should be consistent with class leaderboard
-    results = Results(**json.load(open(SCRIPT_DIR / results_filename)))
+    results = Results(**json.load(open(results_filename)))
 
     for rh_class_id, heat_ids in results.heats_by_class.items():
         merged_lbs = {}
@@ -199,7 +198,7 @@ def test_lb_entry_merge_with_different_consecutives_base():
 def test_lb_merging_heats_to_class(results_filename):
     # This test ensures that rotorhazard merging of leaderboards (e.g. merging all
     # singular heat leaderboard should be consistent with class leaderboard
-    results = Results(**json.load(open(SCRIPT_DIR / results_filename)))
+    results = Results(**json.load(open(results_filename)))
 
     for rh_class_id, heat_ids in results.heats_by_class.items():
         merged_lb = None
@@ -245,7 +244,7 @@ def test_lb_merging_heats_to_class(results_filename):
 def test_lb_merging_heats_to_event(results_filename):
     # This test ensures that rotorhazard merging of leaderboards (e.g. merging all
     # singular heat leaderboard should be consistent with class leaderboard
-    results = Results(**json.load(open(SCRIPT_DIR / results_filename)))
+    results = Results(**json.load(open(results_filename)))
 
     merged_lb = None
     for heat in results.heats.values():

@@ -2,16 +2,11 @@ import pytest
 import json
 from RHTypes.RHClassTypes import Classes
 from RHTypes.RHHeatTypes import Heats
-from RHTypes.RHRaceStatusTypes import RaceStatus
 from RHTypes.RHPilotTypes import Pilots
 from RHTypes.RHResultTypes import Results
 from RHTypes.RHFrequencyTypes import Frequencies
-from TemplateTypes import PilotResult, HeatPilot
-from pathlib import Path
-import pilot_info_converter
+from TemplateTypes import HeatPilot
 import rounds_converter
-
-SCRIPT_DIR = Path(__file__).resolve().parent
 
 @pytest.mark.parametrize("results_filename", [
     "testdata/result_data_sample_1.json"
@@ -29,11 +24,11 @@ SCRIPT_DIR = Path(__file__).resolve().parent
     "testdata/frequency_data_sample_1.json"
 ])
 def test_rounds_converter(results_filename, heats_filename, pilots_filename, classes_filename, freq_filename):
-    results = Results(**json.load(open(SCRIPT_DIR / results_filename)))
-    heats = Heats(**json.load(open(SCRIPT_DIR / heats_filename)))
-    pilots = Pilots(**json.load(open(SCRIPT_DIR / pilots_filename)))
-    classes = Classes(**json.load(open(SCRIPT_DIR / classes_filename)))
-    frequency = Frequencies(**json.load(open(SCRIPT_DIR / freq_filename)))
+    results = Results(**json.load(open(results_filename)))
+    heats = Heats(**json.load(open(heats_filename)))
+    pilots = Pilots(**json.load(open(pilots_filename)))
+    classes = Classes(**json.load(open(classes_filename)))
+    frequency = Frequencies(**json.load(open(freq_filename)))
 
     pr = rounds_converter.rounds(results, heats, classes, pilots, frequency)
 

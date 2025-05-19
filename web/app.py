@@ -1,9 +1,11 @@
 from flask import Flask, render_template, redirect, url_for
 from flask import Flask, render_template, redirect, url_for, Response
 from storage import RHClassesRepository, RHFrequencyRepository, RHPilotsRepository, RHRaceStatusRepository, init_db, RHResultsRepository, RHHeatsRepository, RHFormatsRepository
-import results_converter
-import rounds_converter
-import pilot_info_converter
+
+import converters.results_converter as results_converter
+import converters.rounds_converter as rounds_converter
+import converters.pilot_info_converter as pilot_info_converter
+
 import logging
 
 logging.basicConfig(level=logging.INFO)

@@ -1,9 +1,10 @@
 <!-- Full Results Table Section -->
-<section class="results-section">
-  <script type="text/javascript" src="{{ url_for('static', filename='brackets-viewer.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='stage-form-creator.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='brackets-viewer.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='stage-form-creator.min.js') }}"></script>
 
-  {% for track, data in result.data.track.items() %}
+
+{% for track, data in result.data.track.items() %}
+<section class="results-section">
   <div class="results-container">
     <h2>{{ track }}</h2>
     <div id="brackets-{{ track }}" class="brackets-viewer"></div>
@@ -27,7 +28,7 @@
 
     </script>
   </div>
-  {% endfor %}
 </section>
+{% endfor %}
 
 

@@ -1,12 +1,13 @@
 from typing import Optional
 from natsort import natsorted
 
-from RHTypes.RHHeatTypes import Heats as RHHeats
+from RHTypes.RHHeatTypes import Heats as RHHeats, Heat as RHHeat
 from RHTypes.RHPilotTypes import Pilots as RHPilots
 from RHTypes.RHClassTypes import Classes as RHClasses, Class as RHClass
 from RHTypes.RHResultTypes import Results as RHResults
 
 from TemplateTypes import (
+        EliminationOpponent,
         EliminationResults as TEliminationResults,
         EliminationTrack as TEliminationTrack,
         EliminationStage as TEliminationStage,
@@ -22,6 +23,11 @@ from converters.results_converters.results_converter_types import ResultConverte
 import json
 import logging
 import copy
+
+def heat_slot_to_opponent(h: RHHeat, idx: int) -> EliminationOpponent:
+    if len(h.slots) > idx:
+        return EliminationOpponent(id=h.slots[idx].pilot_id)
+    return EliminationOpponent(id=0)
 
 class EliminationsResultsConverter(ResultConverter):
 
@@ -49,7 +55,7 @@ class EliminationsResultsConverter(ResultConverter):
         common_track = TEliminationTrack(
             stage=[TEliminationStage(
                 id=0,
-                name="Eliminations",
+                name="1st Elimination Track",
                 type="single_elimination",
                 settings={}
             )],
@@ -95,7 +101,7 @@ class EliminationsResultsConverter(ResultConverter):
         # from now on we have filled all common infromation between different tracks.
         # therefore we will copy `elim_info` and fill in matches, which are unique
         # per track (winners track/loosers track)
-        heats_by_class = {}
+        heats_by_class: dict[int, list[tuple[RHHeat, TEliminationRoundMeta]]] = {}
         elim_info = TEliminationResults(track={})
         if c and h:
             for rh_class in c.classes:
@@ -110,6 +116,7 @@ class EliminationsResultsConverter(ResultConverter):
                 # Make sure that track exists
                 if meta.track not in elim_info.track:
                     elim_info.track[meta.track] = copy.deepcopy(common_track)
+                    elim_info.track[meta.track].stage[0].name = meta.displayname
 
                 # Now go though each relevant heat and index it by class
                 for heat in h.heats:
@@ -124,7 +131,7 @@ class EliminationsResultsConverter(ResultConverter):
                 heats_sorted = natsorted(heats, key=lambda x: x[0].displayname)
                 for heat_number, heat_with_meta in enumerate(heats_sorted):
                     heat, meta = heat_with_meta
-                    print(meta)
+
                     elim_info.track[meta.track].match.append(TEliminationMatch(
                         id=heat.id,
                         number=heat_number+1,
@@ -133,10 +140,10 @@ class EliminationsResultsConverter(ResultConverter):
                         round_id=class_id,
                         child_count=0,
                         status=0,
-                        opponent1=None,
-                        opponent2=None,
-                        opponent3=None,
-                        opponent4=None,
+                        opponent1=heat_slot_to_opponent(heat, 0),
+                        opponent2=heat_slot_to_opponent(heat, 1),
+                        opponent3=heat_slot_to_opponent(heat, 2),
+                        opponent4=heat_slot_to_opponent(heat, 3),
                         previous_connection_type=meta.previous_connection_type,
                         next_connection_type=meta.next_connection_type,
                     ))

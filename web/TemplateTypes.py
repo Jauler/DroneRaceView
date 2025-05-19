@@ -119,6 +119,7 @@ class EliminationResults(BaseModel):
 class EliminationRoundMeta(BaseModel):
     number:int
     track: str
+    displayname: str
     previous_connection_type: str | bool | None
     next_connection_type: str | bool | None
 

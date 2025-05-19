@@ -2,10 +2,13 @@ from typing import Optional
 
 from RHTypes.RHPilotTypes import Pilots as RHPilots
 from RHTypes.RHResultTypes import Results as RHResults
+from RHTypes.RHClassTypes import Classes as RHClasses
+from RHTypes.RHHeatTypes import Heats as RHHeats
 
 from TemplateTypes import (
         ConsecutivesResults as TConsecutivesResults,
-        PointResults as TPointResults
+        PointResults as TPointResults,
+        EliminationResults as TEliminationResults,
 )
 
 def insert_or_append(dictionary, key, element):
@@ -26,7 +29,12 @@ class ResultConverter:
         raise Exception("Not implemented")
 
     @staticmethod
-    def convert(r: Optional[RHResults], p: RHPilots, c: list[int]) -> TConsecutivesResults | TPointResults:
+    def convert(
+            r: Optional[RHResults],
+            p: Optional[RHPilots],
+            c: Optional[RHClasses],
+            h: Optional[RHHeats],
+            relevant_classes: list[int]) -> TConsecutivesResults | TPointResults | TEliminationResults:
         raise Exception("Not implemented")
 
 

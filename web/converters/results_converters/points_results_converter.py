@@ -1,3 +1,4 @@
+from typing import Optional
 from functools import cmp_to_key
 
 from converters.results_converters.consecutives_results_converter import ConsecutivesResultConverter
@@ -6,6 +7,7 @@ from converters.results_converters.results_converter_types import insert_or_appe
 
 from RHTypes.RHResultTypes import ByRaceTimeLeaderboardEntry, Results as RHResults
 from RHTypes.RHPilotTypes import Pilots as RHPilots
+
 from TemplateTypes import (
         PilotProgression as TPilotProgression,
         PilotsProgression as TPilotsProgression,
@@ -66,10 +68,10 @@ class PointResultsConverter(ConsecutivesResultConverter):
 
     # Used specifically with points type to display graph of all pilots
     @staticmethod
-    def pilots_progression(r: RHResults, p: RHPilots, c: list[int]) -> TPilotsProgression:
+    def pilots_progression(r: RHResults, p: RHPilots, relevant_classes: list[int]) -> TPilotsProgression:
         num_classes = 0
         for rh_class_id in r.classes:
-            if int(rh_class_id) in c:
+            if int(rh_class_id) in relevant_classes:
                 num_classes += 1
 
         # Initialize pilots points to 1000
@@ -82,7 +84,7 @@ class PointResultsConverter(ConsecutivesResultConverter):
         # Add up points from each class leaderboard
         if r:
             for idx, class_id in enumerate(r.heats_by_class.keys()):
-                if int(class_id) not in c:
+                if int(class_id) not in relevant_classes:
                     continue
 
                 heats_in_class = r.heats_by_class[class_id]
@@ -104,16 +106,27 @@ class PointResultsConverter(ConsecutivesResultConverter):
         return list(pilots_progression.values())
 
     @classmethod
-    def convert(cls, r: RHResults, p: RHPilots, c: list[int]) -> TPointResults:
+    def convert(cls,
+            r: Optional[RHResults],
+            p: Optional[RHPilots],
+            _c,
+            _h,
+            relevant_classes: list[int]) -> TPointResults:
+        result = TPointResults(results=[], pilots_progression=[])
 
-        pilots_progression = PointResultsConverter.pilots_progression(r, p, c)
-        result = TPointResults(results=[], pilots_progression=pilots_progression)
+        if not r or not p:
+            return result
+
+        result.pilots_progression = PointResultsConverter.pilots_progression(r, p, relevant_classes)
+
+        if not r:
+            return result
 
         # Calculate merged consecutives leaderboard from all relevant classes
         merged_lb: list[ByRaceTimeLeaderboardEntry] | None = None
         for rh_class in r.classes.values():
             # Skip classes with different display format
-            if rh_class.id not in c:
+            if rh_class.id not in relevant_classes:
                 continue
 
             if rh_class.leaderboard:

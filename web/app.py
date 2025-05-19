@@ -40,9 +40,10 @@ def results():
     results = rhresultsrepo.get_latest_entry()
     classes = rhclassesrepo.get_latest_entry()
     pilots = rhpilotsrepo.get_latest_entry()
+    heats = rhheatsrepo.get_latest_entry()
     formats = rhformatsrepo.get_latest_entry()
 
-    results = results_converter.results(results, pilots, classes, formats)
+    results = results_converter.results(results, pilots, classes, heats, formats)
 
     return render_template(
         "results.html",

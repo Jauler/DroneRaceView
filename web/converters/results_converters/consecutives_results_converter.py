@@ -1,3 +1,4 @@
+from typing import Optional
 from functools import cmp_to_key
 
 from RHTypes.RHPilotTypes import Pilots as RHPilots
@@ -148,14 +149,22 @@ class ConsecutivesResultConverter(ResultConverter):
         return sorted(results, key=cmp_to_key(cls.cmp_lb_entries))
 
     @classmethod
-    def convert(cls, r: RHResults, p: RHPilots, c: list[int]) -> TConsecutivesResults:
+    def convert(cls,
+            r: Optional[RHResults],
+            _p,
+            _c,
+            _h,
+            relevant_classes: list[int]) -> TConsecutivesResults:
         result = TConsecutivesResults(results=[])
+
+        if not r:
+            return result
 
         # Calculate merged consecutives leaderboard from all classes
         merged_lb: list[LeaderboardEntry] | None = None
         for rh_class in r.classes.values():
             # Skip classes with different display format
-            if rh_class.id not in c:
+            if rh_class.id not in relevant_classes:
                 continue
 
             if rh_class.leaderboard:

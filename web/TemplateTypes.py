@@ -100,6 +100,7 @@ class EliminationMatch(BaseModel):
     status: int
     previous_connection_type: str | bool | None
     next_connection_type: str | bool | None
+    custom_label: str | None
     opponent1: EliminationOpponent | None
     opponent2: EliminationOpponent | None
     opponent3: EliminationOpponent | None

@@ -140,6 +140,7 @@ class EliminationsResultsConverter(ResultConverter):
                         round_id=class_id,
                         child_count=0,
                         status=0,
+                        custom_label=heat.displayname,
                         opponent1=heat_slot_to_opponent(heat, 0),
                         opponent2=heat_slot_to_opponent(heat, 1),
                         opponent3=heat_slot_to_opponent(heat, 2),

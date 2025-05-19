@@ -7,7 +7,7 @@ from RHTypes.RHClassTypes import Classes as RHClasses, Class as RHClass
 from RHTypes.RHResultTypes import Results as RHResults
 
 from TemplateTypes import (
-        EliminationOpponent,
+        EliminationOpponent as TEliminationOpponent,
         EliminationResults as TEliminationResults,
         EliminationTrack as TEliminationTrack,
         EliminationStage as TEliminationStage,
@@ -24,10 +24,34 @@ import json
 import logging
 import copy
 
-def heat_slot_to_opponent(h: RHHeat, idx: int) -> EliminationOpponent:
-    if len(h.slots) > idx:
-        return EliminationOpponent(id=h.slots[idx].pilot_id)
-    return EliminationOpponent(id=0)
+def heat_slot_to_opponent(h: RHHeat, r: Optional[RHResults], idx: int) -> TEliminationOpponent:
+    if len(h.slots) <= idx:
+        return TEliminationOpponent(id=0, score="-", result=None)
+    pilot_id = h.slots[idx].pilot_id
+
+    if (not r or
+            str(h.id) not in r.heats or
+            r.heats[str(h.id)].leaderboard is None):
+        return TEliminationOpponent(id=pilot_id, score="-", result=None)
+
+    for lb_entry in r.heats[str(h.id)].leaderboard.by_race_time:
+        if lb_entry.pilot_id != pilot_id:
+            continue
+
+        if lb_entry.position is None:
+            position = "?"
+            result = None
+        else:
+            position = lb_entry.position
+            result = "win" if position <= 2 else "loss"
+
+        res = TEliminationOpponent(
+                id = pilot_id,
+                score = position,
+                result = result)
+        return res
+
+    return TEliminationOpponent(id=pilot_id, score="-", result=None)
 
 class EliminationsResultsConverter(ResultConverter):
 
@@ -141,10 +165,10 @@ class EliminationsResultsConverter(ResultConverter):
                         child_count=0,
                         status=0,
                         custom_label=heat.displayname,
-                        opponent1=heat_slot_to_opponent(heat, 0),
-                        opponent2=heat_slot_to_opponent(heat, 1),
-                        opponent3=heat_slot_to_opponent(heat, 2),
-                        opponent4=heat_slot_to_opponent(heat, 3),
+                        opponent1=heat_slot_to_opponent(heat, r, 0),
+                        opponent2=heat_slot_to_opponent(heat, r, 1),
+                        opponent3=heat_slot_to_opponent(heat, r, 2),
+                        opponent4=heat_slot_to_opponent(heat, r, 3),
                         previous_connection_type=meta.previous_connection_type,
                         next_connection_type=meta.next_connection_type,
                     ))

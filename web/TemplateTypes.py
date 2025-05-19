@@ -89,6 +89,8 @@ class EliminationRound(BaseModel):
 
 class EliminationOpponent(BaseModel):
     id: int
+    score: int | str
+    result: str | None
 
 class EliminationMatch(BaseModel):
     id: int
@@ -101,10 +103,10 @@ class EliminationMatch(BaseModel):
     previous_connection_type: str | bool | None
     next_connection_type: str | bool | None
     custom_label: str | None
-    opponent1: EliminationOpponent | None
-    opponent2: EliminationOpponent | None
-    opponent3: EliminationOpponent | None
-    opponent4: EliminationOpponent | None
+    opponent1: EliminationOpponent
+    opponent2: EliminationOpponent
+    opponent3: EliminationOpponent
+    opponent4: EliminationOpponent
 
 class EliminationTrack(BaseModel):
     stage: list[EliminationStage]

@@ -68,7 +68,8 @@ class FinalsResultConverter(ResultConverter):
                         continue
                     positions_by_pilot[slot.pilot_id] = TFinalsFinalist(
                             callsign=pilot_callsign_by_id(slot.pilot_id),
-                            race_positions=[]
+                            race_positions=[],
+                            totals=0
                         )
 
                 lb = lb_by_heat_id(heat.id)
@@ -82,11 +83,23 @@ class FinalsResultConverter(ResultConverter):
                     positions_by_pilot[lb_entry.pilot_id].callsign = lb_entry.callsign
                     positions_by_pilot[lb_entry.pilot_id].race_positions.append(lb_entry.position)
 
+            # Update totals
+            for pilot_id, finalists in positions_by_pilot.items():
+                total = 0
+                for race_position in finalists.race_positions:
+                    if race_position:
+                        total += race_position
+                positions_by_pilot[pilot_id].totals = total
+
+            # Get max race count
             race_count = max((len(p.race_positions) for p in positions_by_pilot.values()), default = 1)
             if race_count <= 0:
                 race_count = 1
+
+            # get class name
             class_name = class_name_by_heat_id(int(relevant_class_id))
 
+            # Finally append FinalsResult
             results.results.append(TFinalsResult(
                 displayname=class_name,
                 race_count=race_count,

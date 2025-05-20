@@ -9,6 +9,7 @@
         {% for i in range(finals.race_count) %}
           <th>Race {{ i + 1 }} position</th>
         {% endfor %}
+        <th>Total</th>
       </tr>
     </thead>
     <tbody>
@@ -24,6 +25,9 @@
             {% endif %}
           </td>
         {% endfor %}
+         <td>
+         {{ pilot.totals }}
+        </td>
       </tr>
       {% endfor %}
     </tbody>

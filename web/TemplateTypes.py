@@ -128,6 +128,7 @@ class EliminationRoundMeta(BaseModel):
 
 class FinalsFinalist(BaseModel):
     callsign: str
+    totals: int
     race_positions: list[int|None]
 
 class FinalsResult(BaseModel):

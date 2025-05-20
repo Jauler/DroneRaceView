@@ -10,6 +10,8 @@ from TemplateTypes import (
     FinalsFinalist as TFinalsFinalist,
 )
 
+import json
+
 from converters.results_converters.results_converter_types import ResultConverter
 
 # Consecutives result converter
@@ -54,13 +56,14 @@ class FinalsResultConverter(ResultConverter):
             positions_by_pilot: dict[int, TFinalsFinalist] = {}
             for heat in h.heats:
                 # Filter out non-finals classes
-                if heat.id != relevant_class_id:
+                if heat.class_id != relevant_class_id:
                     continue
-
 
                 # Prepopulate pilot list from first heat in class
                 # Other heats should have the same pilots
                 for slot in heat.slots:
+                    if slot.pilot_id == 0:
+                        continue
                     positions_by_pilot[slot.pilot_id] = TFinalsFinalist(
                             callsign=pilot_callsign_by_id(slot.pilot_id),
                             race_positions=[]
@@ -77,6 +80,8 @@ class FinalsResultConverter(ResultConverter):
                     positions_by_pilot[lb_entry.pilot_id].race_positions.append(lb_entry.position)
 
             race_count = max((len(p.race_positions) for p in positions_by_pilot.values()), default = 1)
+            if race_count <= 0:
+                race_count = 1
             class_name = class_name_by_heat_id(int(relevant_class_id))
 
             results.results.append(TFinalsResult(

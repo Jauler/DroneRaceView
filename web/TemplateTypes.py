@@ -126,9 +126,21 @@ class EliminationRoundMeta(BaseModel):
     previous_connection_type: str | bool | None
     next_connection_type: str | bool | None
 
+class FinalsFinalist(BaseModel):
+    callsign: str
+    race_positions: list[int|None]
+
+class FinalsResult(BaseModel):
+    displayname: str
+    race_count: int
+    finalists: list[FinalsFinalist]
+
+class FinalsResults(BaseModel):
+    results: list[FinalsResult]
+
 class Result(BaseModel):
     result_type: str # One of "points | consecutives | ..."
-    data: PointResults | ConsecutivesResults | EliminationResults
+    data: PointResults | ConsecutivesResults | EliminationResults | FinalsResults
 
 class Results(BaseModel):
     results: list[Result]

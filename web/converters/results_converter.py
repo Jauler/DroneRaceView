@@ -19,10 +19,12 @@ from converters.results_converters.results_converter_types import insert_or_appe
 from converters.results_converters.consecutives_results_converter import ConsecutivesResultConverter
 from converters.results_converters.points_results_converter import PointResultsConverter
 from converters.results_converters.eliminations_results_converter import EliminationsResultsConverter
+from converters.results_converters.finals_results_converter import FinalsResultConverter
 supported_result_converters = [
     ConsecutivesResultConverter,
     PointResultsConverter,
-    EliminationsResultsConverter
+    EliminationsResultsConverter,
+    FinalsResultConverter
 ]
 
 # Convert RotorHazard data into relevant result types for fronted jinja templates

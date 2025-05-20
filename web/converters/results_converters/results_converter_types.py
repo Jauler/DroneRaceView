@@ -9,6 +9,7 @@ from TemplateTypes import (
         ConsecutivesResults as TConsecutivesResults,
         PointResults as TPointResults,
         EliminationResults as TEliminationResults,
+        FinalsResults as TFinalsResults,
 )
 
 def insert_or_append(dictionary, key, element):
@@ -34,7 +35,7 @@ class ResultConverter:
             p: Optional[RHPilots],
             c: Optional[RHClasses],
             h: Optional[RHHeats],
-            relevant_classes: list[int]) -> TConsecutivesResults | TPointResults | TEliminationResults:
+            relevant_classes: list[int]) -> TConsecutivesResults | TPointResults | TEliminationResults | TFinalsResults:
         raise Exception("Not implemented")
 
 

@@ -1,0 +1,33 @@
+{% for finals in result.data.results %}
+<section class="finals-container">
+  <h2>{{ finals.displayname }}</h2>
+  <table class="results-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Pilot</th>
+        {% for i in range(finals.race_count) %}
+          <th>Race {{ i + 1 }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for pilot in finals.finalists %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ pilot.callsign }}</td>
+        {% for i in range(finals.race_count) %}
+          <td>
+            {% if pilot.race_positions[i] is defined %}
+              {{ pilot.race_positions[i] }}
+            {% else %}
+              -
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endfor %}

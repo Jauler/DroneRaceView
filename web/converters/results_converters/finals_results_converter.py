@@ -31,19 +31,12 @@ class FinalsResultConverter(ResultConverter):
         if not r or not h or not p or not c:
             return results
 
-        def pilots_by_heat_id(heat_id) -> list[int]:
-            assert h
-            heat = next((heat for heat in h.heats if heat.id == heat_id), None)
-            if not heat:
-                return []
-
-            pilots = []
-            for slot in heat.slots:
-                if slot.pilot_id == 0:
-                    continue
-                pilots.append(slot.pilot_id)
-
-            return pilots
+        def pilot_callsign_by_id(pilot_id) -> str:
+            assert p
+            pilot = next((pilot for pilot in p.pilots if pilot.pilot_id == pilot_id), None)
+            if not pilot:
+                return ""
+            return pilot.callsign
         def class_name_by_heat_id(class_id) -> str:
             assert c
             rh_class = next((rh_class for rh_class in c.classes if rh_class.id == class_id), None)
@@ -67,8 +60,11 @@ class FinalsResultConverter(ResultConverter):
 
                 # Prepopulate pilot list from first heat in class
                 # Other heats should have the same pilots
-                for pilot_id in pilots_by_heat_id(heat.id):
-                    positions_by_pilot[pilot_id] = TFinalsFinalist(callsign="", race_positions=[])
+                for slot in heat.slots:
+                    positions_by_pilot[slot.pilot_id] = TFinalsFinalist(
+                            callsign=pilot_callsign_by_id(slot.pilot_id),
+                            race_positions=[]
+                        )
 
                 lb = lb_by_heat_id(heat.id)
                 if not lb:

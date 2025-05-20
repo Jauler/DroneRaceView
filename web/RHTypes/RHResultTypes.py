@@ -83,7 +83,7 @@ class RankingEntry(BaseModel):
     pilot_id: int
     callsign: str
     team_name: str
-    points: int
+    points: int | None = None
     position: int
 
 class Ranking(BaseModel):

@@ -33,7 +33,7 @@ class FinalsResultConverter(ResultConverter):
 
         def pilots_by_heat_id(heat_id) -> list[int]:
             assert h
-            heat = next(heat for heat in h.heats if heat.id == heat_id)
+            heat = next((heat for heat in h.heats if heat.id == heat_id), None)
             if not heat:
                 return []
 
@@ -46,13 +46,13 @@ class FinalsResultConverter(ResultConverter):
             return pilots
         def class_name_by_heat_id(class_id) -> str:
             assert c
-            rh_class = next(rh_class for rh_class in c.classes if rh_class.id == class_id)
+            rh_class = next((rh_class for rh_class in c.classes if rh_class.id == class_id), None)
             if not rh_class:
                 return ""
             return rh_class.displayname
         def lb_by_heat_id(heat_id) -> Leaderboard | None:
             assert r
-            heat = next(heat for heat in r.heats.values() if heat.heat_id == heat_id)
+            heat = next((heat for heat in r.heats.values() if heat.heat_id == heat_id), None)
             if not heat:
                 return None
             return heat.leaderboard

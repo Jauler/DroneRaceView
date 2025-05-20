@@ -80,9 +80,7 @@ class FinalsResultConverter(ResultConverter):
                     positions_by_pilot[lb_entry.pilot_id].callsign = lb_entry.callsign
                     positions_by_pilot[lb_entry.pilot_id].race_positions.append(lb_entry.position)
 
-            race_count = max(len(p.race_positions) for p in positions_by_pilot.values())
-            if race_count < 0:
-                race_count = 1
+            race_count = max((len(p.race_positions) for p in positions_by_pilot.values()), default = 1)
             class_name = class_name_by_heat_id(int(relevant_class_id))
 
             results.results.append(TFinalsResult(

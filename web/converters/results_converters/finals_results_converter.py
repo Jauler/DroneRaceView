@@ -64,6 +64,8 @@ class FinalsResultConverter(ResultConverter):
                 for slot in heat.slots:
                     if slot.pilot_id == 0:
                         continue
+                    if slot.pilot_id in positions_by_pilot:
+                        continue
                     positions_by_pilot[slot.pilot_id] = TFinalsFinalist(
                             callsign=pilot_callsign_by_id(slot.pilot_id),
                             race_positions=[]
@@ -72,6 +74,7 @@ class FinalsResultConverter(ResultConverter):
                 lb = lb_by_heat_id(heat.id)
                 if not lb:
                     continue
+
 
                 for lb_entry in lb.by_race_time:
                     if lb_entry.pilot_id not in positions_by_pilot:
@@ -87,9 +90,9 @@ class FinalsResultConverter(ResultConverter):
             results.results.append(TFinalsResult(
                 displayname=class_name,
                 race_count=race_count,
-                finalists=list(positions_by_pilot.values()
-                )
+                finalists=list(positions_by_pilot.values())
             ))
+
 
         return results
 

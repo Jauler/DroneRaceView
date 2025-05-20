@@ -1,5 +1,6 @@
 {% for finals in result.data.results %}
-<section class="finals-container">
+<section class="results-section">
+  <div class="results-container">
   <h2>{{ finals.displayname }}</h2>
   <table class="results-table">
     <thead>
@@ -29,5 +30,6 @@
       {% endfor %}
     </tbody>
   </table>
+  </div>
 </section>
 {% endfor %}

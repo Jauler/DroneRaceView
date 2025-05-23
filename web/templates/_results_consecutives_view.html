@@ -17,7 +17,7 @@
           <tr>
             <td>{{ lb_entry.rank }}</td>
             <td><a href={{ url_for('pilot', pilot_id=lb_entry.pilot_id) }}>{{ lb_entry.nickname }}</a></td>
-	    <td>{{ lb_entry.consecutives_str }} {{ lb_entry.consecutives_source }}</td>
+	    <td>{{ lb_entry.consecutives_base }}/{{ lb_entry.consecutives_str }} {{ lb_entry.consecutives_source }}</td>
 	    <td>{{ lb_entry.fastest_lap }} {{lb_entry.fastest_lap_source }}</td>
           </tr>
           {% endfor %}

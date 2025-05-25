@@ -98,7 +98,8 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
         for c in r.classes.values():
             if isinstance(c.ranking, Ranking):
                 for entry in c.ranking.ranking:
-                    pilot_results[entry.pilot_id].points += entry.points
+                    if entry.points is not None:
+                        pilot_results[entry.pilot_id].points += entry.points
 
     # Fill in next_heat
     if h:

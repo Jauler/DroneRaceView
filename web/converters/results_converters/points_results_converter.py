@@ -100,7 +100,8 @@ class PointResultsConverter(ConsecutivesResultConverter):
                         points_before_round = pilot_points[entry.pilot_id]
                         points_after_round = points_before_round + gains
 
-                        pilots_progression[pilot_id].points[idx] = points_after_round
+                        if idx in pilots_progression[pilot_id].points:
+                            pilots_progression[pilot_id].points[idx] = points_after_round
                         pilot_points[pilot_id] = points_after_round
 
         return list(pilots_progression.values())

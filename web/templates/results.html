@@ -19,5 +19,9 @@
   {% endif %}
 {% endfor %}
 
+{% if ranking is not none %}
+  {% include "_results_ranking_vew.html" with context %}
+{% endif %}
+
 {% endblock %}
 

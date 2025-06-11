@@ -43,11 +43,13 @@ def results():
     heats = rhheatsrepo.get_latest_entry()
     formats = rhformatsrepo.get_latest_entry()
 
-    results = results_converter.results(results, pilots, classes, heats, formats)
+    converted_results = results_converter.results(results, pilots, classes, heats, formats)
+    ranking = results_converter.ranking(results, pilots, classes, heats, formats)
 
     return render_template(
         "results.html",
-        results=results,
+        results=converted_results,
+        ranking = ranking
     )
 
 @app.route("/pilot/<int:pilot_id>", methods=["GET"])

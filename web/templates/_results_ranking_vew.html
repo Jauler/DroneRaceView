@@ -1,0 +1,26 @@
+<!-- Full Results Table Section -->
+<section class="results-section">
+  <div class="results-container">
+    <h2>Final Ranking</h2>
+    <div class="table-wrapper">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Nickname</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rank_entry in ranking.ranking %}
+          <tr>
+            <td>{{ rank_entry.rank }}</td>
+            <td><a href={{ url_for('pilot', pilot_id=rank_entry.pilot_id) }}>{{ rank_entry.nickname }}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+

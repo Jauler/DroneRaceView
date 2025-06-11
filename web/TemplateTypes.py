@@ -147,5 +147,11 @@ class Results(BaseModel):
     results: list[Result]
 
 
+class RankingEntry(BaseModel):
+    rank: int
+    nickname: str
+    pilot_id: int
 
+class Ranking(BaseModel):
+    ranking: list[RankingEntry]
 

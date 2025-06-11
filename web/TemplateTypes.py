@@ -125,6 +125,7 @@ class EliminationRoundMeta(BaseModel):
     displayname: str
     previous_connection_type: str | bool | None
     next_connection_type: str | bool | None
+    final_ranking: bool = False
 
 class FinalsFinalist(BaseModel):
     callsign: str

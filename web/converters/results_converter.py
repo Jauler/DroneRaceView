@@ -8,9 +8,11 @@ from TemplateTypes import (
     Results as TResults,
     RankingEntry as TRankingEntry,
     Ranking as TRanking,
+    EliminationRoundMeta as TEliminationRoundMeta
 )
 
 from typing import Optional
+import json
 
 from converters.results_converters.results_converter_types import insert_or_append
 
@@ -78,15 +80,11 @@ def ranking(r: Optional[RHResults],
         return None
 
     # Build a convenience map which will index our result converters (RH data -> TemplateTypes data)
-    visible_format_ids = set()
-    for rhformat in f.formats:
-        format_str = f"final_ranking=true"
-        if format_str in rhformat.name:
-            visible_format_ids.add(rhformat.id)
-
     # Now build a list of classes per visible display format
     for rhclass in c.classes:
-        if rhclass.format not in visible_format_ids:
+        meta = TEliminationRoundMeta(**json.loads(rhclass.description))
+
+        if not meta.final_ranking:
             continue
 
         if str(rhclass.id) not in r.classes:

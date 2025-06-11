@@ -34,30 +34,31 @@ def heat_slot_to_opponent(h: RHHeat, r: Optional[RHResults], idx: int) -> TElimi
             r.heats[str(h.id)].leaderboard is None):
         return TEliminationOpponent(id=pilot_id, score="-", result=None)
 
-    for lb_entry in r.heats[str(h.id)].leaderboard.by_race_time:
-        if lb_entry.pilot_id != pilot_id:
+    score = None
+
+    for rh_round in r.heats[str(h.id)].rounds:
+        if rh_round.leaderboard is None:
             continue
+        for lb_entry in rh_round.leaderboard.by_race_time:
+            if lb_entry.pilot_id != pilot_id:
+                continue
 
-        if lb_entry.position is None:
-            position = "?"
-            result = None
-        else:
-            position = lb_entry.position
-            result = "win" if position <= 2 else "loss"
+            if lb_entry.position is not None:
+                if score is None:
+                    score = 0
+                score += lb_entry.position
 
-        res = TEliminationOpponent(
-                id = pilot_id,
-                score = position,
-                result = result)
-        return res
+    res = TEliminationOpponent(
+            id = pilot_id,
+            score = score if score is not None else "-",
+            result = None)
+    return res
 
-    return TEliminationOpponent(id=pilot_id, score="-", result=None)
-
-class EliminationsResultsConverter(ResultConverter):
+class PointFinalsResultsConverter(ResultConverter):
 
     @staticmethod
     def name() -> str:
-        return "eliminations"
+        return "pointfinals"
 
     @classmethod
     def convert(cls,

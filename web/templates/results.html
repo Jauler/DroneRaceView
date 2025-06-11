@@ -12,6 +12,8 @@
     {% include "_results_consecutives_view.html" with context %}
   {% elif result.result_type == 'eliminations' %}
     {% include "_results_eliminations_view.html" with context %}
+  {% elif result.result_type == 'pointfinals' %}
+    {% include "_results_eliminations_view.html" with context %}
   {% elif result.result_type == 'finals' %}
     {% include "_results_finals_view.html" with context %}
   {% endif %}

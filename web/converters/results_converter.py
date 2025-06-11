@@ -20,10 +20,12 @@ from converters.results_converters.consecutives_results_converter import Consecu
 from converters.results_converters.points_results_converter import PointResultsConverter
 from converters.results_converters.eliminations_results_converter import EliminationsResultsConverter
 from converters.results_converters.finals_results_converter import FinalsResultConverter
+from converters.results.converters.pointfinals_results_converter import PointFinalsResultsConverter
 supported_result_converters = [
     ConsecutivesResultConverter,
     PointResultsConverter,
     EliminationsResultsConverter,
+    PointFinalsResultsConverter,
     FinalsResultConverter
 ]
 

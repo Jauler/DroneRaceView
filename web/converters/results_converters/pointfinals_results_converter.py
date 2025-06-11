@@ -43,10 +43,10 @@ def heat_slot_to_opponent(h: RHHeat, r: Optional[RHResults], idx: int) -> TElimi
             if lb_entry.pilot_id != pilot_id:
                 continue
 
-            if lb_entry.position is not None:
+            if lb_entry.points is not None:
                 if score is None:
                     score = 0
-                score += lb_entry.position
+                score += lb_entry.points
 
     res = TEliminationOpponent(
             id = pilot_id,

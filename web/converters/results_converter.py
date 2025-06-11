@@ -13,6 +13,7 @@ from TemplateTypes import (
 
 from typing import Optional
 import json
+import logging
 
 from converters.results_converters.results_converter_types import insert_or_append
 
@@ -82,7 +83,11 @@ def ranking(r: Optional[RHResults],
     # Build a convenience map which will index our result converters (RH data -> TemplateTypes data)
     # Now build a list of classes per visible display format
     for rhclass in c.classes:
-        meta = TEliminationRoundMeta(**json.loads(rhclass.description))
+        try:
+            meta = TEliminationRoundMeta(**json.loads(rhclass.description))
+        except Exception as e:
+            logging.warning(f"Invalid JSON for class {e} for \"{rhclass.description}\"")
+            continue
 
         if not meta.final_ranking:
             continue

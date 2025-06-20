@@ -23,6 +23,14 @@ Or a graph of all lap times of a pilot:
 Or information about each flight:
 ![Race information](img/flight-info.png)
 
+### Displaying race progression and results
+
+Elimination brackets
+![Elimination brackets](img/brackets.png)
+
+Or Qualifying ranking:
+![Qualifying ranking](img/qualifiers.png)
+
 
 ## Notable uses
 

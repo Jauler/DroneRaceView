@@ -40,7 +40,7 @@ Or Qualifying ranking:
 
 ## Getting started
 
-See [Getting Started](doc/Getting-Started.md) for more information.
+See [Getting Started](doc/getting-started.md) for more information.
 
 ## Notable uses
 

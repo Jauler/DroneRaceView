@@ -64,4 +64,25 @@ __Step 3:__ Do some races and verify that consecutives table is being displayed 
 
 ![Qualifier view](../img/consecutives-view.png)
 
+Consecutive results form all classes having `display=consecutives` in its assigned race format is merged into one and shown in a single table.
+
+
+### points
+
+__Step 1:__ In the same manner like for "Consecutives" view, prepare a Race Format which has `display=points` in its name.
+
+__Step 2:__ In the "Race Format" setup "Points Assignment" to be "Position" (and setup point value for each position by clicking gear icon.
+
+__Step 3:__ In the same manner like for "Consecutives view - assign this Race Format to a class intended for points accumulation
+
+__Step 4:__ In a class for which points are being calculated - select "Ranking" to be "Cumulative Points"
+
+__Step 5:__ Do some races, and observe the point table and progression table being shown
+
+![Points table](../img/points-table.png)
+
+![Points Progression graph](../img/points-progression-table.png)
+
+
+
 

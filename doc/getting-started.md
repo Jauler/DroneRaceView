@@ -112,6 +112,6 @@ Again, do not forget to replace results.jauler.eu with your own domain.
 By now you should have your DroneRaceView website up and running.
 You should be able to setup some classes and heats and see them visualized in `/heats` view.
 
-
+Next step is to take a look at [Timer Setup](timer-setup.md) on how to configure timer for specific race formats.
 
 

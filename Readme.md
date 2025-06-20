@@ -9,19 +9,19 @@ But the flip side of the coin is that a timer setup has to match what is expecte
 ### Listing heats and assigned channels to pilots
 
 DroneRaceView can show heats with pilots and assigned channels to them:
-![A screenshot of heat view](img/heat-view.png | width=480)
+![A screenshot of heat view](img/heat-view.png)
 
 
 ### Displaying per-pilot specific information
 
 DroneRaceView may show various kind of information about each participating pilot, like some generic statistics:
-![Per-pilot stats](img/per-pilot-stats.png | width=480)
+![Per-pilot stats](img/per-pilot-stats.png)
 
 Or a graph of all lap times of a pilot:
-![Lap-times graph](img/lap-time-graph.png | width=480)
+![Lap-times graph](img/lap-time-graph.png)
 
 Or information about each flight:
-![Race information](img/flight-info.png | width=480)
+![Race information](img/flight-info.png)
 
 
 ## Notable uses

@@ -9,7 +9,7 @@ It does not although get into details on how to configure timer itself in order 
 
 DroneRaceView requires direct network access to the timer in order to operate.
 In case you are running the website on a machine which the timer is connected to - direct access should be available out-of-the-box.
-Otherwise consider taking a look at [Establishing Wireguard Tunnel](doc/establishing-wireguard-tunnel.md)
+Otherwise consider taking a look at [Establishing Wireguard Tunnel](establishing-wireguard-tunnel.md)
 
 ### Docker and Docker compose
 
@@ -38,7 +38,7 @@ Or you may download zip and extract it wherever convenient.
 ### Step 2. Configure DroneRaceView
 
 A few configuration parameters are needed in order for drone race view to operate, therefore open up docker-compose.yml file in your favorite text editor and replace:
-- `--url http://10.42.191:8000` with whatever the actual URL for accessing timer is. If setting up remote access - see [Establishing Wireguard Tunnel](doc/establishing-wireguard-tunnel.md)
+- `--url http://10.42.191:8000` with whatever the actual URL for accessing timer is. If setting up remote access - see [Establishing Wireguard Tunnel](establishing-wireguard-tunnel.md)
 - `--username <your username>` replace `<your username>` with the administrator's username for the RotorHazard timing system
 - `--password <your password>` replace `<your password>` with the administrator's password for the RotorHazard timing system
 

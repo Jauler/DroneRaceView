@@ -40,4 +40,28 @@ This results in the following table showing up:
 ![Classes and Heats in DroneRaceView](../img/drone-race-view-classes-and-heats.png)
 
 
+## Race formats
+
+Currently the following result formats has been added to DroneRaceView:
+- points - a results view showing a table of cumulative points of each pilot and a graph of progression. This view was used during race with "King Of The Hill" race format
+- consecutives - A most common view which displays a table of pilots ranked by best consecutive time
+- eliminations - A view showing elimination brackets
+- finals - A view showing progression of finals where pilots compete until one of the pilots wins two times
+
+### Consecutives
+
+Consecutives is generally the simplest to setup.
+
+__Step 1:__ Create a race format, which has "display=consecutives" in its name.
+
+![Qualifier Race Format](../img/qualifier-race-format.png)
+
+__Step 2:__ Assign this race format to the class
+
+![Qualifier Class Setup](../img/qualifier-class-setup.png)
+
+__Step 3:__ Do some races and verify that consecutives table is being displayed in `/results`
+
+![Qualifier view](../img/consecutives-view.png)
+
 

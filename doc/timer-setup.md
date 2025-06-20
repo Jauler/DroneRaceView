@@ -67,7 +67,7 @@ __Step 3:__ Do some races and verify that consecutives table is being displayed 
 Consecutive results form all classes having `display=consecutives` in its assigned race format is merged into one and shown in a single table.
 
 
-### points
+### Points
 
 __Step 1:__ In the same manner like for "Consecutives" view, prepare a Race Format which has `display=points` in its name.
 
@@ -82,6 +82,37 @@ __Step 5:__ Do some races, and observe the point table and progression table bei
 ![Points table](../img/points-table.png)
 
 ![Points Progression graph](../img/points-progression-table.png)
+
+
+### Eliminations
+
+__Step 1:__ In the same manner like for other views - setup a race format with "display=eliminations" in its name.
+
+__Step 2:__ Create all relevant classes (e.g. all stages and heats of elimination) with all the heats, pilots may not be assigned at this point.
+For example if you are doing double elimination format for 16 pilots with FAI format - you will need three rounds (and thus three classes) in winnders track and 4 rounds (therefore four classes) in loosers track.
+Hence you will need to setup 7 classes in total.
+
+__Step 3:__ This one is a bit tricky, but one needs to fill in metadata about the class and heats for each of the classes. Metadata must include:
+- track - normally "winner" or "looser" track. Each distinct track name gets its own brackets view.
+- number - round number in a track. E.g. first round in winners track, second round in winners track, first round in loosers track etc.
+- displayname - just a name to display in this track. This is a bit redudant, as the name is taken only from the first class in the track
+- previous_connection_type - Can be "square", "straight" or null. This defines the lines between brackets.
+- next connection-type - Can be "square", "straight" or null. This defines the lines between brackets.
+
+This medatada must be formatted as JSON and added to describtion of the class. For example, if we have track: "loosers", "number": 2, "display name "Loosers elimination" and some connection types, we would get the following text:
+```JSON
+{"number": 2, "track": "loosers", "displayname":"2nd Elimination","previous_connection_type":"straight","next_connection_type":"square"}
+```
+It is very important to strictly follow JSON format.
+
+For example here is one such example setup of the class:
+
+![Elimination Class setup](../img/elimination-setup.png)
+
+And once all the relevant classes are correctly setup, one gets view like this:
+
+![Elimination View](../img/brackets.png)
+
 
 
 

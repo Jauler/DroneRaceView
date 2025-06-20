@@ -6,7 +6,7 @@ In order to achieve that one may establish a WireGuard tunnel from the timer to 
 
 In the end, the setup would look something like this:
 
-![DroneRaceView Setup](img/drone-race-view-setup.png)
+![DroneRaceView Setup](../img/drone-race-view-setup.png)
 
 Although in same cases Race Director's computer may act as Modem/Router if configured to do so.
 

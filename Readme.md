@@ -38,6 +38,10 @@ Or Qualifying ranking:
 ![Qualifying ranking](img/qualifiers.png)
 
 
+## Getting started
+
+See [Getting Started](doc/Getting-Started.md) for more information.
+
 ## Notable uses
 
 DroneRaceView has been succesfully used in:

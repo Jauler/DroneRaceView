@@ -95,7 +95,7 @@ def periodic_load_all():
                     ]
 
             if store_events is not None:
-                load_data_types = store_events
+                load_data_types = list(store_events)
 
             data = {"load_types": load_data_types}
             sio.emit("load_data", data=data)

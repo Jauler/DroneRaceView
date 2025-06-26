@@ -84,8 +84,7 @@ def periodic_load_all():
     while True:
         if sio.connected:
             logger.info("Emitting 'load_all'")
-            data = {
-                    "load_types":[
+            load_data_types = [
                         "node_data",
                         "frequency_data",
                         "pilot_data",
@@ -94,7 +93,11 @@ def periodic_load_all():
                         "result_data",
                         "race_status",
                     ]
-                }
+
+            if store_events is not None:
+                load_data_types = store_events
+
+            data = {"load_types": load_data_types}
             sio.emit("load_data", data=data)
         else:
             logger.warning("Skipping 'load_all' emit because client is disconnected")

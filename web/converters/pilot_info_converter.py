@@ -176,6 +176,8 @@ def pilot_lap_times(r: Optional[RHResults], pilot_id: int) -> list[float]:
                     if lap.deleted:
                         continue
 
+                    # skip holeshot
+                    #
                     # It would be wiser to take a look
                     # At StartingBehavior, but its a bit overkill.
                     # Lets just assume, that first lap is holeshot always
@@ -203,6 +205,7 @@ def pilot_rounds(r: Optional[RHResults], h: Optional[RHHeats], pilot_id: int) ->
                 # fill in laps
                 laps = []
                 started = False
+                is_holeshot = True
                 for idx, lap in enumerate(seat.laps):
                     if lap.deleted:
                         continue
@@ -210,7 +213,12 @@ def pilot_rounds(r: Optional[RHResults], h: Optional[RHHeats], pilot_id: int) ->
                     started = True
 
                     # skip holeshot
-                    if idx == 0:
+                    #
+                    # It would be wiser to take a look
+                    # At StartingBehavior, but its a bit overkill.
+                    # Lets just assume, that first lap is holeshot always
+                    if is_holeshot:
+                        is_holeshot = False
                         continue
 
                     laps.append(round(lap.lap_time / 1000, 3))

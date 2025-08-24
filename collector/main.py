@@ -118,7 +118,6 @@ def run_socketio_client(url, username, password):
             load_all_thread.start()
             sio.wait()
         except Exception as e:
-            logger.exception(f"Socket.IO connection error, will retry in 60s: {e}")
             time.sleep(60)
 
 # --- Argparse CLI ---

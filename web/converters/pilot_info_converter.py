@@ -83,7 +83,7 @@ def pilot_results(r: Optional[RHResults], h: Optional[RHHeats], p: Optional[RHPi
                             continue
                         laps_count += 1
 
-                    if 0 < laps_count and laps_count <= consecutive_base:
+                    if 0 < laps_count and laps_count <= consecutive_base and pilot_id in pilot_results:
                         pilot_results[pilot_id].unfinished_races += 1
 
         # Populate success ratio

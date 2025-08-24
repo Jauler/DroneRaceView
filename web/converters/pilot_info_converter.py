@@ -171,12 +171,16 @@ def pilot_lap_times(r: Optional[RHResults], pilot_id: int) -> list[float]:
             for seat in race_round.nodes:
                 if seat.pilot_id != pilot_id:
                     continue
-                for idx, lap in enumerate(seat.laps):
+                is_holeshot = True
+                for lap in seat.laps:
                     if lap.deleted:
                         continue
 
-                    # skip holeshot
-                    if idx == 0:
+                    # It would be wiser to take a look
+                    # At StartingBehavior, but its a bit overkill.
+                    # Lets just assume, that first lap is holeshot always
+                    if is_holeshot:
+                        is_holeshot = False
                         continue
 
                     lap_times.append(round(lap.lap_time / 1000, 3))

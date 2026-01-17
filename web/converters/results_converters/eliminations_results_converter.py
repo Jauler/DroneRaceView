@@ -34,21 +34,29 @@ def heat_slot_to_opponent(h: RHHeat, r: Optional[RHResults], idx: int) -> TElimi
             r.heats[str(h.id)].leaderboard is None):
         return TEliminationOpponent(id=pilot_id, score="-", result=None)
 
-    for lb_entry in r.heats[str(h.id)].leaderboard.by_race_time:
-        if lb_entry.pilot_id != pilot_id:
-            continue
+    # Acquire points for current pilot and current heat
+    pilot_points = None
+    for round in r.heats[str(h.id)].rounds:
+        for round_lb in round.leaderboard.by_race_time:
+            if round_lb.pilot_id != pilot_id:
+                continue
 
-        if lb_entry.position is None:
-            position = "?"
-            result = None
-        else:
-            position = lb_entry.position
-            result = "win" if position <= 2 else "loss"
+            points = None
+            if round_lb.points is not None:
+                points = round_lb.points
+            elif round_lb.position is not None:
+                points = round_lb.position
 
+            if pilot_points is None and points is not None:
+                pilot_points = points
+            elif pilot_points is not None and points is not None:
+                pilot_points += points
+
+    if pilot_points is not None:
         res = TEliminationOpponent(
                 id = pilot_id,
-                score = position,
-                result = result)
+                score = pilot_points,
+                result = None)
         return res
 
     return TEliminationOpponent(id=pilot_id, score="-", result=None)

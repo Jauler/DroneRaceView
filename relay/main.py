@@ -4,7 +4,6 @@ import argparse
 import logging
 import os
 import sqlite3
-import time
 
 from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
@@ -22,7 +21,7 @@ logger = logging.getLogger("relay")
 
 def create_app(db_path: str, snapshot_types: list[str]):
     app = Flask(__name__)
-    socketio = SocketIO(app, async_mode="threading", cors_allowed_origins="*")
+    socketio = SocketIO(app, async_mode="gevent", cors_allowed_origins="*")
 
     snapshot_set = set(snapshot_types)
     state = {"poller_alive": False}
@@ -38,9 +37,17 @@ def create_app(db_path: str, snapshot_types: list[str]):
             return jsonify({"ok": False, "poller": "not_running"}), 500
         return jsonify({"ok": True}), 200
 
+    def _kick_load_all(sid):
+        # Give the client time to register its load_all handler in
+        # $(document).ready before we tell it to ask for its data_dependencies.
+        socketio.sleep(1.0)
+        socketio.emit("load_all", to=sid)
+
     @socketio.on("connect")
     def on_connect():
-        logger.info(f"Client connected: sid={request.sid}")
+        sid = request.sid
+        logger.info(f"Client connected: sid={sid}")
+        socketio.start_background_task(_kick_load_all, sid)
 
     @socketio.on("disconnect")
     def on_disconnect():
@@ -104,7 +111,7 @@ def run_poller(socketio, db_path: str, snapshot_types: list[str], interval_ms: i
         except Exception:
             logger.exception("poller: cycle failed; continuing")
 
-        time.sleep(interval_s)
+        socketio.sleep(interval_s)
 
 
 def main():
@@ -129,7 +136,7 @@ def main():
 
     logger.info(f"Listening on {args.host}:{args.port}, db={db_path}, "
                 f"poll={args.poll_interval_ms}ms, types={snapshot_types}")
-    socketio.run(app, host=args.host, port=args.port, allow_unsafe_werkzeug=True)
+    socketio.run(app, host=args.host, port=args.port)
 
 
 if __name__ == "__main__":

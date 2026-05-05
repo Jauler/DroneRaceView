@@ -42,6 +42,7 @@ def create_app(db_path: str, snapshot_types: list[str]):
         # $(document).ready before we tell it to ask for its data_dependencies.
         socketio.sleep(1.0)
         socketio.emit("load_all", to=sid)
+        logger.info(f"emit load_all -> sid={sid}")
 
     @socketio.on("connect")
     def on_connect():
@@ -75,9 +76,10 @@ def create_app(db_path: str, snapshot_types: list[str]):
                 logger.exception(f"load_data: failed to read latest {t!r}")
                 continue
             if payload is None:
-                logger.debug(f"load_data: no row for {t!r}")
+                logger.info(f"load_data: no row for {t!r} (sid={sid})")
                 continue
             emit(t, payload)
+            logger.info(f"emit {t!r} -> sid={sid} (load_data response)")
 
     return app, socketio, state
 
@@ -99,7 +101,7 @@ def run_poller(socketio, db_path: str, snapshot_types: list[str], interval_ms: i
     def emit_broadcast(entry_type, payload):
         try:
             socketio.emit(entry_type, payload)
-            logger.debug(f"poller: broadcast {entry_type!r}")
+            logger.info(f"emit {entry_type!r} -> all (poller broadcast)")
         except Exception:
             logger.exception(f"poller: broadcast {entry_type!r} failed")
 

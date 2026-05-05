@@ -24,7 +24,7 @@ services:
     build:
       context: ./collector
       dockerfile: ../docker/collector-dockerfile
-    command: python main.py --url http://10.42.0.191:8000 --username <your username> --password <your password> --store-events class_data,heat_data,pilot_data,race_status,result_data,frequency_data,format_data --store-max-events 100
+    command: python main.py --url http://10.42.0.191:8000 --username <your username> --password <your password> --store-events class_data,heat_data,pilot_data,race_status,result_data,frequency_data,format_data,leaderboard,current_heat,current_laps,language,all_languages --periodic-load-types node_data,frequency_data,pilot_data,heat_data,class_data,result_data,race_status,format_data,leaderboard,current_heat,current_laps,language,all_languages --store-max-events 100
     restart: always
     volumes:
       - ./data:/data/

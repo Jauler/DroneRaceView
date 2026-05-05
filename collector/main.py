@@ -19,6 +19,11 @@ engine = create_engine(db_path)
 session_maker = sessionmaker(bind=engine)
 Base.metadata.create_all(bind=engine)
 
+# WAL allows the relay (and web) to read concurrently with collector writes.
+if engine.url.get_backend_name() == "sqlite":
+    with engine.connect() as conn:
+        conn.exec_driver_sql("PRAGMA journal_mode=WAL")
+
 class RHDataTable(Base):
     __tablename__ = "rhdata"
 
@@ -31,6 +36,7 @@ class RHDataTable(Base):
 ignored_events = None
 store_events = None
 store_max_event_count = None
+periodic_load_types = None
 
 # --- Socket.IO Client setup ---
 sio = socketio.Client(reconnection=False)  # We will handle reconnection manually
@@ -81,21 +87,23 @@ def disconnect():
     logger.warning("Disconnected from Socket.IO server")
 
 def periodic_load_all():
+    default_load_data_types = [
+                "node_data",
+                "frequency_data",
+                "pilot_data",
+                "heat_data",
+                "class_data",
+                "result_data",
+                "race_status",
+            ]
+
     while True:
         if sio.connected:
             logger.info("Emitting 'load_all'")
-            load_data_types = [
-                        "node_data",
-                        "frequency_data",
-                        "pilot_data",
-                        "heat_data",
-                        "class_data",
-                        "result_data",
-                        "race_status",
-                    ]
-
-            if store_events is not None:
-                load_data_types = list(store_events)
+            if periodic_load_types is not None:
+                load_data_types = list(periodic_load_types)
+            else:
+                load_data_types = default_load_data_types
 
             data = {"load_types": load_data_types}
             sio.emit("load_data", data=data)
@@ -129,6 +137,7 @@ def main():
     parser.add_argument("--ignore-events", help="Comma-separated list of events to ignore", default=None)
     parser.add_argument("--store-events", help="Comma-separated list of events to store. Will only store these events if specified", default=None)
     parser.add_argument("--store-max-events", help="Maximum number of events to store in DB", type=int)
+    parser.add_argument("--periodic-load-types", help="Comma-separated list of types to request from the timer every 5 minutes via load_data. Defaults to a built-in list.", default=None)
 
     args = parser.parse_args()
 
@@ -143,6 +152,10 @@ def main():
     if args.store_max_events:
         global store_max_event_count
         store_max_event_count = args.store_max_events
+
+    if args.periodic_load_types:
+        global periodic_load_types
+        periodic_load_types = [e.strip() for e in args.periodic_load_types.split(",") if e.strip()]
 
     run_socketio_client(args.url, args.username, args.password)
 

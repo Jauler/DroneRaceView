@@ -50,14 +50,16 @@ def initial_max_id(db_path: str) -> int:
 
 def poll_once(db_path: str, snapshot_set: set, last_max_id: int, last_data_version,
               emit) -> tuple[int, int | None, int]:
-    """Run one polling cycle. Returns (new_last_max_id, new_last_data_version, emitted_count)."""
+    """Run one polling cycle. Returns (new_last_max_id, new_last_data_version, emitted_count).
+
+    last_data_version is accepted/returned for API stability with earlier callers
+    but is no longer consulted — running the SELECT every cycle is cheap and avoids
+    cross-process data_version caching surprises.
+    """
+    if not snapshot_set:
+        return last_max_id, last_data_version, 0
+
     with sqlite3.connect(db_path) as conn:
-        version_row = conn.execute("PRAGMA data_version").fetchone()
-        current_data_version = version_row[0] if version_row else None
-
-        if current_data_version == last_data_version or not snapshot_set:
-            return last_max_id, current_data_version, 0
-
         placeholders = ",".join("?" * len(snapshot_set))
         cur = conn.execute(
             f"SELECT id, entry_type, payload FROM rhdata "
@@ -78,4 +80,4 @@ def poll_once(db_path: str, snapshot_set: set, last_max_id: int, last_data_versi
             emit(entry_type, json.loads(payload))
             emitted += 1
 
-        return max_seen, current_data_version, emitted
+        return max_seen, last_data_version, emitted

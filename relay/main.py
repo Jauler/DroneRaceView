@@ -1,11 +1,23 @@
-"""Read-only Socket.IO relay backed by collector's SQLite DB."""
+"""Read-only Socket.IO relay backed by collector's SQLite DB.
+
+Also serves the ddr_overlays HTML, CSS, JS, fonts and images directly so
+overlay browsers no longer need to hit the timer for static traffic.
+"""
 
 import argparse
 import logging
 import os
 import sqlite3
 
-from flask import Flask, jsonify, request
+from flask import (
+    Blueprint,
+    Flask,
+    abort,
+    jsonify,
+    render_template,
+    request,
+    send_from_directory,
+)
 from flask_socketio import SocketIO, emit
 
 from db import (
@@ -18,10 +30,102 @@ from db import (
 
 logger = logging.getLogger("relay")
 
+AVATAR_DIR = os.getenv("RELAY_AVATAR_DIR", "/shared/avatars")
 
-def create_app(db_path: str, snapshot_types: list[str]):
-    app = Flask(__name__)
-    socketio = SocketIO(app, async_mode="gevent", cors_allowed_origins="*")
+
+def _register_static_blueprints(app: Flask) -> None:
+    """Mount vendored RH static at /static and plugin static at /ddr_overlays/static."""
+    rh_static = Blueprint(
+        "rh_static", __name__,
+        static_folder="static/_rh",
+        static_url_path="/static",
+    )
+    ddr_static = Blueprint(
+        "ddr_static", __name__,
+        static_folder="static/ddr",
+        static_url_path="/ddr_overlays/static",
+    )
+    app.register_blueprint(rh_static)
+    app.register_blueprint(ddr_static)
+
+
+def _register_jinja_globals(app: Flask) -> None:
+    """Provide template helpers that ddr_overlays templates expect from RH."""
+    app.jinja_env.globals["__"] = lambda s: s  # English passthrough
+    app.jinja_env.globals["getOption"] = lambda key, default="": os.getenv(
+        f"RELAY_OPTION_{key.upper()}", default
+    )
+    app.jinja_env.globals["serverInfo"] = None
+
+
+def _register_overlay_pages(app: Flask) -> None:
+    """Mirrors ddr_overlays/__init__.py:54-108 page routes."""
+
+    @app.get("/ddr_overlays/stream/results")
+    def page_results():
+        return render_template("stream/results.html", DEBUG=False)
+
+    @app.get("/ddr_overlays/stream/bar")
+    def page_bar():
+        return render_template("stream/bar.html", DEBUG=False)
+
+    @app.get("/ddr_overlays/stream/leaderboard/<string:bracket_type>/<int:class_id>")
+    def page_leaderboard(bracket_type, class_id):
+        return render_template("stream/leaderboard.html", DEBUG=False,
+                               bracket_type=bracket_type, class_id=class_id)
+
+    @app.get("/ddr_overlays/stream/leaderboard_pages/<string:bracket_type>/<int:class_id>")
+    def page_leaderboard_pages(bracket_type, class_id):
+        return render_template("stream/leaderboard_pages.html", DEBUG=False,
+                               bracket_type=bracket_type, class_id=class_id)
+
+    @app.get("/ddr_overlays/stream/brackets/<string:bracket_type>/<int:class_id>")
+    def page_brackets(bracket_type, class_id):
+        return render_template("stream/brackets.html", DEBUG=False,
+                               bracket_type=bracket_type, class_id=class_id)
+
+    @app.get("/ddr_overlays/stream/last_heat/<string:bracket_type>/<int:class_id>")
+    def page_last_heat(bracket_type, class_id):
+        return render_template("stream/last_heat.html", DEBUG=False,
+                               bracket_type=bracket_type, class_id=class_id)
+
+    @app.get("/ddr_overlays/stream/next_up/<string:bracket_type>/<int:class_id>")
+    def page_next_up(bracket_type, class_id):
+        return render_template("stream/next_up.html", DEBUG=False,
+                               bracket_type=bracket_type, class_id=class_id)
+
+    @app.get("/ddr_overlays/stream/podium/<string:bracket_type>/<int:class_id>")
+    def page_podium(bracket_type, class_id):
+        return render_template("stream/podium.html", DEBUG=False,
+                               bracket_type=bracket_type, class_id=class_id)
+
+    @app.get("/ddr_overlays/stream/node/<int:node_id>")
+    def page_node(node_id):
+        if node_id > 8:
+            abort(404)
+        return render_template("stream/node.html", DEBUG=False,
+                               node_id=node_id - 1, num_nodes=8)
+
+
+def _register_avatar_serving(app: Flask) -> None:
+    @app.get("/shared/avatars/<path:filename>")
+    def avatars(filename):
+        return send_from_directory(AVATAR_DIR, filename)
+
+
+def create_app(db_path: str, snapshot_types: list[str], async_mode: str = "gevent"):
+    app = Flask(
+        __name__,
+        template_folder="templates",
+        static_folder="static",
+        static_url_path="/__static",
+    )
+    socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins="*")
+
+    _register_static_blueprints(app)
+    _register_jinja_globals(app)
+    _register_overlay_pages(app)
+    _register_avatar_serving(app)
 
     snapshot_set = set(snapshot_types)
     state = {"poller_alive": False}

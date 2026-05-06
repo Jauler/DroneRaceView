@@ -49,6 +49,7 @@ services:
     volumes:
       - ./data:/data/
       - ./relay:/relay
+      - ./shared/avatars:/shared/avatars
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5001/healthz"]
       interval: 30s
@@ -56,4 +57,6 @@ services:
       retries: 3
     environment:
       - DATABASE_URL=sqlite:////data/data.db
+      - RELAY_OPTION_TIMERNAME=
+      - RELAY_OPTION_EVENTNAME=
 

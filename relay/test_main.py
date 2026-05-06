@@ -106,6 +106,8 @@ def client(db_path):
 
 
 PAGE_CASES = [
+    ("/", b"DroneRaceView Relay"),
+    ("/ddr_overlays", b"DroneRaceView Relay"),
     ("/ddr_overlays/stream/results", b'id="header"'),
     ("/ddr_overlays/stream/bar", b'id="ddr_frame_topbar"'),
     ("/ddr_overlays/stream/leaderboard/ddr8de/1", b'id="ddr_leaderboard32"'),

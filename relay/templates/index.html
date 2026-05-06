@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>DroneRaceView Relay - Overlays</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script type="text/javascript" src="/static/jquery-3.6.4/jquery-3.6.4.min.js"></script>
+    <script type="text/javascript" src="/static/socket.io-4.6.1/socket.io.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            const socket = io({transports: ['websocket', 'polling']});
+
+            socket.on('connect', function () {
+                socket.emit('load_data', {load_types: ['class_data']});
+            });
+
+            socket.on('load_all', function () {
+                socket.emit('load_data', {load_types: ['class_data']});
+            });
+
+            socket.on('class_data', function (msg) {
+                const selectElement = document.getElementById("class_id");
+                const selectedValue = selectElement.value;
+                const classes = msg.classes || [];
+
+                const seen = new Set();
+                Array.from(selectElement.options).forEach(option => {
+                    if (!classes.some(c => String(c.id) === option.value)) {
+                        option.remove();
+                    } else {
+                        seen.add(option.value);
+                    }
+                });
+
+                classes.forEach(race_class => {
+                    if (!seen.has(String(race_class.id))) {
+                        const option = document.createElement('option');
+                        option.value = race_class.id;
+                        option.textContent = race_class.name ? race_class.name : ('Class ' + race_class.id);
+                        selectElement.appendChild(option);
+                    }
+                });
+
+                if ([...selectElement.options].some(o => o.value === selectedValue)) {
+                    selectElement.value = selectedValue;
+                }
+            });
+        });
+
+        function openDynamicLink(event, baseURL) {
+            event.preventDefault();
+            const bracket_type = document.getElementById("bracket_type").value;
+            const class_id = document.getElementById("class_id").value;
+            if (!class_id) {
+                alert("No class selected. Wait for class_data to load, or pick a class.");
+                return;
+            }
+            const finalUrl = baseURL + "/" + encodeURIComponent(bracket_type) + "/" + encodeURIComponent(class_id);
+            window.open(finalUrl, '_blank' + Math.random());
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #00112d;
+        }
+
+        h2.text-center, h3 {
+            text-align: center;
+        }
+
+        .text-center { text-align: center; }
+        .mb-5 { margin-bottom: 50px; }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        p.note {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            padding: 20px;
+            margin-left: 35%;
+            margin-right: 35%;
+            border: 2px solid black;
+        }
+
+        label, select {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="/ddr_overlays/static/imgs/ddr_logo_white.png" alt="DDR Logo" height="48px">
+    </header>
+
+    <h2 class="text-center">DroneRaceView Relay - Overlays</h2>
+    <hr>
+
+    <div class="text-center mb-5">
+        <h3>Notes</h3>
+        <p class="note">
+            This relay serves the overlay pages and snapshot data over Socket.IO.
+            Live race events (countdowns, staging) are not relayed - some pages
+            ship with non-animating timing visuals by design.
+        </p>
+        <br>
+        <p class="note"><b>Pilot Avatars</b><br>
+            Avatars are read from the relay's <code>/shared/avatars/</code> mount.
+            Drop <code>&lt;callsign&gt;.jpg</code> (lowercase, spaces -&gt; underscores,
+            ideally 256x256 or 512x512) into the host's <code>./shared/avatars/</code>
+            directory. Missing files fall back to <code>no_avatar.png</code>.
+        </p>
+        <br>
+        <p class="note"><b>Country Flags</b><br>
+            Set a pilot's <i>country</i> attribute on the timer; the flag icon
+            appears before the callsign. Flag images come from
+            <a href="https://flagpedia.net/download/images" target="_blank">flagpedia.net</a>.
+        </p>
+    </div>
+
+    <div class="text-center mb-5">
+        <h3>Overlays</h3>
+
+        <div class="form-container text-center mb-5">
+            <form id="ddr_form">
+                <label for="bracket_type">Bracket type:</label>
+                <select id="bracket_type">
+                    <option value="multigp16">MultiGP 16 double-elimination</option>
+                    <option value="fai16de">FAI 16 double-elimination</option>
+                    <option value="fai32de">FAI 32 double-elimination</option>
+                    <option value="ddr8de">DDR 8 double-elimination</option>
+                    <option value="none">None</option>
+                </select>
+
+                <br><br>
+
+                <label for="class_id">Class name:</label>
+                <select id="class_id">
+                    <!-- populated from class_data over Socket.IO -->
+                </select>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Link</th>
+                    <th>Description</th>
+                    <th>Required parameters</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="/ddr_overlays/stream/results" target="_blank">Live Results (1920x800)</a></td>
+                    <td>Panel with positions and lap times</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td><a href="/ddr_overlays/stream/bar?nologo=1" target="_blank">Status Bar (1920x200)</a></td>
+                    <td>Status Bar</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td><a href="#" onclick='openDynamicLink(event, "/ddr_overlays/stream/leaderboard")'>Qualifier Leaderboard - Fullscreen (1920x1080)</a></td>
+                    <td>Current leaderboard on a single page</td>
+                    <td>Bracket type<br>Qualifier class</td>
+                </tr>
+                <tr>
+                    <td><a href="#" onclick='openDynamicLink(event, "/ddr_overlays/stream/leaderboard_pages")'>Qualifier Leaderboard - Pages (1920x600)</a></td>
+                    <td>Leaderboard divided in pages of 8 pilots each</td>
+                    <td>Bracket type<br>Qualifier class</td>
+                </tr>
+                <tr>
+                    <td><a href="#" onclick='openDynamicLink(event, "/ddr_overlays/stream/brackets")'>Brackets (1920x2000)</a></td>
+                    <td>Bracket diagram of elimination stage</td>
+                    <td>Bracket type<br>Race class</td>
+                </tr>
+                <tr>
+                    <td><a href="#" onclick='openDynamicLink(event, "/ddr_overlays/stream/last_heat")'>Last Heat (1920x800)</a></td>
+                    <td>Results of the last heat of elimination stage</td>
+                    <td>Bracket type<br>Race class</td>
+                </tr>
+                <tr>
+                    <td><a href="#" onclick='openDynamicLink(event, "/ddr_overlays/stream/next_up")'>Next Up (1920x800)</a></td>
+                    <td>Preview of the next heat</td>
+                    <td>Bracket type<br>Race class</td>
+                </tr>
+                <tr>
+                    <td><a href="#" onclick='openDynamicLink(event, "/ddr_overlays/stream/podium")'>Podium (1920x800)</a></td>
+                    <td>Top 3 pilots of the leaderboard</td>
+                    <td>Bracket type<br>Race class</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mb-5">
+        <h3>DDR Node Overlays (960x600)</h3>
+        <p><a href="/ddr_overlays/stream/node/1" target="_blank">Pilot Live + Avatar - Node 1</a></p>
+        <p><a href="/ddr_overlays/stream/node/2" target="_blank">Pilot Live + Avatar - Node 2</a></p>
+        <p><a href="/ddr_overlays/stream/node/3" target="_blank">Pilot Live + Avatar - Node 3</a></p>
+        <p><a href="/ddr_overlays/stream/node/4" target="_blank">Pilot Live + Avatar - Node 4</a></p>
+        <p><a href="/ddr_overlays/stream/node/5" target="_blank">Pilot Live + Avatar - Node 5</a></p>
+        <p><a href="/ddr_overlays/stream/node/6" target="_blank">Pilot Live + Avatar - Node 6</a></p>
+        <p><a href="/ddr_overlays/stream/node/7" target="_blank">Pilot Live + Avatar - Node 7</a></p>
+        <p><a href="/ddr_overlays/stream/node/8" target="_blank">Pilot Live + Avatar - Node 8</a></p>
+    </div>
+</body>
+
+</html>

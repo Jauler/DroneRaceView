@@ -61,6 +61,11 @@ def _register_jinja_globals(app: Flask) -> None:
 def _register_overlay_pages(app: Flask) -> None:
     """Mirrors ddr_overlays/__init__.py:54-108 page routes."""
 
+    @app.get("/")
+    @app.get("/ddr_overlays")
+    def page_index():
+        return render_template("index.html")
+
     @app.get("/ddr_overlays/stream/results")
     def page_results():
         return render_template("stream/results.html", DEBUG=False)

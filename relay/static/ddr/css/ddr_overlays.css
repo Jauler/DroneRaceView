@@ -344,7 +344,7 @@ h1, h2, h3, h4, h5 {
 
 #ddr_frame_topbar #block_center {
     float: left;
-    width: calc(100vw - 320px);
+    width: calc(100vw - 160px);
 }
 
 #ddr_frame_topbar {

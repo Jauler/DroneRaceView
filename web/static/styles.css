@@ -1,3 +1,7 @@
+:root {
+  --pico-font-size: 90%;
+}
+
 .theme-toggle {
   padding: 0.25rem 0.5rem;
   font-size: 1.2rem;
@@ -23,29 +27,33 @@
   border-radius: 0.5rem;
 }
 
-.vertical-heat-cell {
-  padding: 0;
-  text-align: center;
-  vertical-align: middle;
-  width: 1px;
-  min-width: 0;
-  border-right: 2px solid var(--pico-muted-border-color);
+.round-block {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.rotated-heat-label {
+.heat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.heat-card {
+  margin: 0;
+  max-width: 400px;
+  border: 2px solid var(--pico-muted-border-color);
+}
+
+.heat-card header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  transform: rotate(270deg);
-  transform-origin: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-  padding: 0.5rem;
 }
 
-.heat-name {
-  font-weight: bold;
+.heat-card table {
+  margin: 0;
 }
 
 .heat-badge {
@@ -111,7 +119,7 @@
   --connector-color: var(--pico-muted-color);
   --match-background: var(--pico-card-background-color);
   --round-margin: 38px;
-  --text-size: 16px;
+  --text-size: 14px;
   padding: 10px 0 !important;
 }
 

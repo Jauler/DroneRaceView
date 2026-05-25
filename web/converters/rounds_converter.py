@@ -128,7 +128,5 @@ def rounds(r: Optional[RHResults], h: Optional[RHHeats], c: Optional[RHClasses],
 
         rounds.append(race_round)
 
-    rounds.reverse()
-
     return rounds
 

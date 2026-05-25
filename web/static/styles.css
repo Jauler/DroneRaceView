@@ -91,7 +91,7 @@
 
 
 .brackets-viewer .opponents > span {
-  top: -13px;
+  top: -17px;
 }
 
 .brackets-viewer .participant.hover {
@@ -110,7 +110,8 @@
   --border-hover-color: var(--pico-primary);
   --connector-color: var(--pico-muted-color);
   --match-background: var(--pico-card-background-color);
-  --round-margin: 24px;
+  --round-margin: 38px;
+  --text-size: 16px;
   padding: 10px 0 !important;
 }
 

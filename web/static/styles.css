@@ -1,230 +1,26 @@
-/* Reset and base styles */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #111;
-  color: #fff;
-  padding: 1rem;
-  position: relative;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.menu-icon {
-  font-size: 1.5rem;
+.theme-toggle {
+  padding: 0.25rem 0.5rem;
+  font-size: 1.2rem;
+  line-height: 1;
+  border: none;
+  background: none;
   cursor: pointer;
-  display: block;
 }
 
-/* Dropdown menu */
-.dropdown {
-  display: none;
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  text-align: center;
+}
+
+.stat-item {
+  display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 100%;
-  right: 1rem;
-  background-color: #222;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--pico-muted-border-color);
   border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.dropdown a {
-  color: white;
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  display: block;
-}
-
-.dropdown a:hover {
-  background-color: #333;
-}
-
-/* Toggle class */
-.show {
-  display: flex;
-}
-
-/* Optional: hide menu-icon on larger screens and show horizontal nav */
-@media (min-width: 768px) {
-  .menu-icon {
-    display: none;
-  }
-
-  .dropdown {
-    display: flex !important;
-    position: static;
-    flex-direction: row;
-    gap: 1rem;
-    background: none;
-    box-shadow: none;
-  }
-
-  .dropdown a {
-    padding: 0;
-  }
-}
-
-
-.current-heat-section {
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-
-.heat-wrapper {
-  display: flex;
-  justify-content: center;     /* horizontally center */
-  align-items: center;         /* vertically center */
-  gap: 3rem;
-  flex-wrap: wrap;
-  background-color: #f0f0f0;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;          /* center text inside children */
-}
-
-
-.heat-wrapper h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.75rem;
-  text-align: center;
-  color: #222;
-}
-
-.pilot-table table {
-  border-collapse: collapse;
-  background-color: #fff;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  min-width: 240px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.pilot-table th,
-.pilot-table td {
-  padding: 0.75rem 1.25rem;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
-
-.pilot-table th {
-  background-color: #111;
-  color: #fff;
-}
-
-.pilot-table tr:last-child td {
-  border-bottom: none;
-}
-
-@media (max-width: 600px) {
-  .heat-wrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-.results-section {
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.results-summary-section {
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.results-container {
-  width: 100%;
-  max-width: 1200px;
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-}
-
-.results-container h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.75rem;
-  text-align: center;
-  color: #222;
-}
-
-.results-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.results-table th,
-.results-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
-}
-
-.results-table th {
-  background-color: #111;
-  color: #fff;
-}
-
-.results-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.results-table tr:last-child td {
-  border-bottom: none;
-}
-
-
-.round-section {
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.results-container h2 {
-  font-size: 1.75rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.round-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.round-table th,
-.round-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
-}
-
-.round-table th {
-  background-color: #111;
-  color: #fff;
-}
-
-.round-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.round-table tr:last-child td {
-  border-bottom: none;
 }
 
 .vertical-heat-cell {
@@ -233,7 +29,7 @@ body {
   vertical-align: middle;
   width: 1px;
   min-width: 0;
-  border-right: 2px solid #ddd;  /* ← Add vertical divider */
+  border-right: 2px solid var(--pico-muted-border-color);
 }
 
 .rotated-heat-label {
@@ -244,14 +40,12 @@ body {
   transform: rotate(270deg);
   transform-origin: center;
   gap: 0.5rem;
-  height: 100%;
   white-space: nowrap;
   padding: 0.5rem;
 }
 
 .heat-name {
   font-weight: bold;
-  font-size: 1rem;
 }
 
 .heat-badge {
@@ -261,7 +55,6 @@ body {
   padding: 0.2rem 0.5rem;
   border-radius: 0.3rem;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
 .heat-badge.completed {
@@ -274,172 +67,11 @@ body {
   color: #212529;
 }
 
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.round-table {
-  min-width: 600px; /* ensures scrolling kicks in if needed */
-}
-
-.chart-section {
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.chart-section canvas {
-  max-width: 100%;
-  height: 400px;
-}
-
-#progressionChart {
-  max-width: 100%;
-  height: 400px;
-}
-
-.not-found-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  text-align: center;
-}
-
-.not-found-content {
-  max-width: 500px;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.pilot-summary-section,
-.pilot-chart-section,
-.pilot-laps-section {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.pilot-summary,
-.pilot-chart-container,
-.pilot-laps-container {
-  width: 100%;
-  max-width: 800px;
-  padding: 1rem 2rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.chart-container canvas {
-  max-width: 100%;
-  height: 400px;
-}
-
-.pilot-summary-section {
-  display: flex;
-  justify-content: center;
-  margin: 2rem 0;
-}
-
-.pilot-summary-card {
-  width: 100%;
-  max-width: 800px;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.pilot-summary-card h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  color: #333;
-}
-
-.pilot-stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1.5rem;
-  text-align: center;
-}
-
-.pilot-stat-item {
-  background: #f7f7f7;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.pilot-stat-label {
-  display: block;
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-}
-
-.pilot-stat-value {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #222;
-}
-
-.pilot-rounds-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.pilot-round-card {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 2rem;
-  width: 100%;
-  max-width: 800px;
-}
-
-.pilot-round-card h3 {
-  text-align: center;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.pilot-round-meta {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-
-.pilot-round-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.pilot-no-laps {
-  text-align: center;
-  font-style: italic;
-  color: #888;
-}
-
 .status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 999px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  text-transform: capitalize;
-  margin-left: 0.5rem;
 }
 
 .status-badge.finished {
@@ -457,8 +89,41 @@ body {
   color: #6c757d;
 }
 
-.medal {
-  font-size: 1.6rem;
-  margin-right: 0.4rem;
-  vertical-align: middle;
+
+.brackets-viewer .opponents > span {
+  top: -13px;
+}
+
+.brackets-viewer .participant.hover {
+  background: var(--pico-primary-focus) !important;
+}
+
+.brackets-viewer .opponents:hover {
+  border-color: var(--border-color) !important;
+}
+
+.brackets-viewer {
+  --primary-background: transparent;
+  --secondary-background: var(--pico-card-sectioning-background-color);
+  --font-color: var(--pico-color);
+  --border-color: var(--pico-muted-border-color);
+  --border-hover-color: var(--pico-primary);
+  --connector-color: var(--pico-muted-color);
+  --match-background: var(--pico-card-background-color);
+  --round-margin: 24px;
+  padding: 10px 0 !important;
+}
+
+.brackets-viewer article {
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 400px;
 }

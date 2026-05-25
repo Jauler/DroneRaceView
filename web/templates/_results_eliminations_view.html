@@ -1,36 +1,28 @@
-<!-- Full Results Table Section -->
 <script type="text/javascript" src="{{ url_for('static', filename='brackets-viewer.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='stage-form-creator.min.js') }}"></script>
 
-
+<article>
 {% for track, data in result.data.track.items() %}
-<section class="results-section">
-  <div class="results-container">
-    <div id="brackets-{{ track }}" class="brackets-viewer"></div>
+  <div id="brackets-{{ track }}" class="brackets-viewer"></div>
 
-    <script>
-      data = {{ data.dict() | tojson }};
-      window.bracketsViewer.render({
-            stages: data.stage,
-            matches: data.match,
-            matchGames: data.match_game,
-            participants: data.participant,
-        }, {
-            customRoundName: (info, t) => {
-                return `Round ${info.roundNumber}`
-            },
-            selector: '#brackets-{{ track }}',
-            participantOriginPlacement: 'before',
-            separatedChildCountLabel: true,
-            showSlotsOrigin: true,
-            showLowerBracketSlotsOrigin: true,
-            highlightParticipantOnHover: true,
-        })
-
-
-    </script>
-  </div>
-</section>
+  <script>
+    data = {{ data.dict() | tojson }};
+    window.bracketsViewer.render({
+          stages: data.stage,
+          matches: data.match,
+          matchGames: data.match_game,
+          participants: data.participant,
+      }, {
+          customRoundName: (info, t) => {
+              return `Round ${info.roundNumber}`
+          },
+          selector: '#brackets-{{ track }}',
+          participantOriginPlacement: 'before',
+          separatedChildCountLabel: true,
+          showSlotsOrigin: true,
+          showLowerBracketSlotsOrigin: true,
+          highlightParticipantOnHover: true,
+      })
+  </script>
 {% endfor %}
-
-
+</article>

@@ -1,37 +1,35 @@
 {% for finals in result.data.results %}
-<section class="results-section">
-  <div class="results-container">
+<article>
   <h2>{{ finals.displayname }}</h2>
-  <table class="results-table">
-    <thead>
-      <tr>
-        <th>Pilot</th>
-        {% for i in range(finals.race_count) %}
-          <th>Race {{ i + 1 }} position</th>
+  <div class="overflow-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Pilot</th>
+          {% for i in range(finals.race_count) %}
+            <th>Race {{ i + 1 }} position</th>
+          {% endfor %}
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pilot in finals.finalists %}
+        <tr>
+          <td>{{ pilot.callsign }}</td>
+          {% for i in range(finals.race_count) %}
+            <td>
+              {% if pilot.race_positions[i] is defined %}
+                {{ pilot.race_positions[i] }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+          {% endfor %}
+          <td>{{ pilot.totals }}</td>
+        </tr>
         {% endfor %}
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for pilot in finals.finalists %}
-      <tr>
-        <td>{{ pilot.callsign }}</td>
-        {% for i in range(finals.race_count) %}
-          <td>
-            {% if pilot.race_positions[i] is defined %}
-              {{ pilot.race_positions[i] }}
-            {% else %}
-              -
-            {% endif %}
-          </td>
-        {% endfor %}
-         <td>
-         {{ pilot.totals }}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </tbody>
+    </table>
   </div>
-</section>
+</article>
 {% endfor %}

@@ -1,40 +1,35 @@
-<!-- Full Results Table Section -->
-<section class="results-section">
-  <div class="results-container">
-    <h2>Results</h2>
-    <div class="table-wrapper">
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Nickname</th>
-            <th>Points</th>
-            <th>Consecutives</th>
-            <th>Fastest Lap</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for lb_entry in result.data.results %}
-          <tr>
-            <td>{{ lb_entry.rank }}</td>
-            <td><a href={{ url_for('pilot', pilot_id=lb_entry.pilot_id) }}>{{ lb_entry.nickname }}</a></td>
-            <td>{{ lb_entry.points }}</td>
-	    <td>{{ lb_entry.consecutives_str }} {{ lb_entry.consecutives_source }}</td>
-	    <td>{{ lb_entry.fastest_lap }} {{ lb_entry.fastest_lap_source }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+<article>
+  <h2>Results</h2>
+  <div class="overflow-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nickname</th>
+          <th>Points</th>
+          <th>Consecutives</th>
+          <th>Fastest Lap</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lb_entry in result.data.results %}
+        <tr>
+          <td>{{ lb_entry.rank }}</td>
+          <td><a href={{ url_for('pilot', pilot_id=lb_entry.pilot_id) }}>{{ lb_entry.nickname }}</a></td>
+          <td>{{ lb_entry.points }}</td>
+          <td>{{ lb_entry.consecutives_str }} {{ lb_entry.consecutives_source }}</td>
+          <td>{{ lb_entry.fastest_lap }} {{ lb_entry.fastest_lap_source }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-</section>
+</article>
 
-<section class="chart-section">
-  <div class="results-container">
-    <h2>Pilots Progression</h2>
-    <canvas id="progressionChart"></canvas>
-  </div>
-</section>
+<article>
+  <h2>Pilots Progression</h2>
+  <canvas id="progressionChart"></canvas>
+</article>
 
 <script>
   const resultData = {{ result.data.dict() | tojson }};

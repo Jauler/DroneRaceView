@@ -1,45 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Drone Race{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='brackets-viewer.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const theme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+  </script>
 </head>
 <body>
 
-<!-- Top Navigation -->
-<header class="topbar">
-  <div class="logo">DroneRace</div>
-  <div class="menu-icon" id="menuToggle">&#9776;</div>
-  <nav class="dropdown" id="dropdownMenu">
-    <a href="{{ url_for('heats') }}">Heats</a>
-    <a href="{{ url_for('results') }}">Results</a>
-  </nav>
-</header>
+<nav class="container">
+  <ul>
+    <li><strong>DroneRace</strong></li>
+  </ul>
+  <ul>
+    <li><a href="{{ url_for('heats') }}">Heats</a></li>
+    <li><a href="{{ url_for('results') }}">Results</a></li>
+    <li>
+      <button id="themeToggle" class="outline contrast theme-toggle" aria-label="Toggle theme">
+        🌙
+      </button>
+    </li>
+  </ul>
+</nav>
 
-<!-- Page Content -->
-<main>
+<main class="container">
   {% block content %}{% endblock %}
 </main>
 
-<!-- Optional global scripts -->
 <script>
-  const menuToggle = document.getElementById('menuToggle');
-  const dropdownMenu = document.getElementById('dropdownMenu');
-  if (menuToggle && dropdownMenu) {
-    menuToggle.addEventListener('click', () => {
-      dropdownMenu.classList.toggle('show');
-    });
+  const toggle = document.getElementById('themeToggle');
+  function updateToggleIcon() {
+    const current = document.documentElement.getAttribute('data-theme');
+    toggle.textContent = current === 'dark' ? '☀️' : '🌙';
   }
+  updateToggleIcon();
+  toggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateToggleIcon();
+  });
 </script>
 
 <script>
   setTimeout(() => {
     location.reload();
-  }, 10000); // Refresh every 10 seconds (10,000 ms)
+  }, 10000);
 </script>
 
 </body>

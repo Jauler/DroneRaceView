@@ -3,106 +3,93 @@
 {% block title %}Pilot {{ pilot.nickname }}{% endblock %}
 
 {% block content %}
-<section class="pilot-summary-section">
-  <div class="pilot-summary-card">
-    <h2>Pilot: {{ pilot.nickname }}</h2>
-    <div class="pilot-stat-grid">
-      <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Fastest lap</span>
-        <span class="pilot-stat-value">{{ pilot.fastest_lap }}</span>
-      </div>
-      <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Consecutives</span>
-        <span class="pilot-stat-value">{{ pilot.consecutives_str }}</span>
-      </div>
-      <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Total Laps</span>
-        <span class="pilot-stat-value">{{ pilot.total_laps }}</span>
-      </div>
-      <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Avg Lap Time</span>
-        <span class="pilot-stat-value">{{ pilot.average_lap_time }}</span>
-      </div>
-      <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Total Races</span>
-        <span class="pilot-stat-value">{{ pilot.total_starts }}</span>
-      </div>
-      <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Unfinished Races</span>
-        <span class="pilot-stat-value">{{ pilot.unfinished_races }}</span>
-      </div>
-      <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Success Ratio</span>
-        <span class="pilot-stat-value">{{ pilot.success_ratio }}%</span>
-      </div>
-      <div class="pilot-stat-item">
-        <span class="pilot-stat-label">Next Heat</span>
-        <span class="pilot-stat-value">{{ pilot.next_heat }}</span>
-      </div>
+<article>
+  <h2>{{ pilot.nickname }}</h2>
+  <div class="stat-grid">
+    <div class="stat-item">
+      <small>Fastest lap</small>
+      <strong>{{ pilot.fastest_lap }}</strong>
+    </div>
+    <div class="stat-item">
+      <small>Consecutives</small>
+      <strong>{{ pilot.consecutives_str }}</strong>
+    </div>
+    <div class="stat-item">
+      <small>Total Laps</small>
+      <strong>{{ pilot.total_laps }}</strong>
+    </div>
+    <div class="stat-item">
+      <small>Avg Lap Time</small>
+      <strong>{{ pilot.average_lap_time }}</strong>
+    </div>
+    <div class="stat-item">
+      <small>Total Races</small>
+      <strong>{{ pilot.total_starts }}</strong>
+    </div>
+    <div class="stat-item">
+      <small>Unfinished Races</small>
+      <strong>{{ pilot.unfinished_races }}</strong>
+    </div>
+    <div class="stat-item">
+      <small>Success Ratio</small>
+      <strong>{{ pilot.success_ratio }}%</strong>
+    </div>
+    <div class="stat-item">
+      <small>Next Heat</small>
+      <strong>{{ pilot.next_heat }}</strong>
     </div>
   </div>
-</section>
+</article>
 
-<section class="pilot-chart-section">
-  <div class="pilot-chart-container">
-    <h2>Lap Times Over Time</h2>
-    <canvas id="lapTimeChart"></canvas>
-  </div>
-</section>
+<article>
+  <h2>Lap Times Over Time</h2>
+  <canvas id="lapTimeChart"></canvas>
+</article>
 
-<section class="pilot-rounds-container">
-  {% for round in pilot_rounds %}
-  <div class="pilot-round-wrapper">
-    <div class="pilot-round-card">
-      <h3>{{ round.round_name }}</h3>
+{% for round in pilot_rounds %}
+<article>
+  <h3>{{ round.round_name }}</h3>
+  <p>
+    <strong>Status:</strong>
+    <mark class="status-badge {{ round.status | lower }}">{{ round.status }}</mark>
+    &nbsp;&nbsp;
+    <strong>Position:</strong>
+    {% if round.position == "1" %}
+      🥇
+    {% elif round.position == "2" %}
+      🥈
+    {% elif round.position == "3" %}
+      🥉
+    {% elif round.position is not none %}
+      {{ round.position }}
+    {% else %}
+      N/A
+    {% endif %}
+  </p>
 
-      <div class="pilot-round-meta">
-        <p><strong>Status:</strong>
-          <span class="status-badge {{ round.status | lower }}">
-            {{ round.status }}
-          </span>
-        </p>
-        <p><strong>Position:</strong>
-          {% if round.position == "1" %}
-            <span class="medal">🥇</span>
-          {% elif round.position == "2" %}
-            <span class="medal">🥈</span>
-          {% elif round.position == "3" %}
-            <span class="medal">🥉</span>
-          {% elif round.position is not none %}
-            {{ round.position }}
-          {% else %}
-            ❌ N/A
-          {% endif %}
-        </p>
-      </div>
+  {% if round.laps %}
+  <table>
+    <thead>
+      <tr>
+        <th>Lap #</th>
+        <th>Time (s)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lap in round.laps %}
+      <tr>
+        <td>Lap {{ loop.index }}</td>
+        <td>{{ lap }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p><em>No laps recorded.</em></p>
+  {% endif %}
+</article>
+{% endfor %}
 
-      {% if round.laps %}
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>Lap #</th>
-            <th>Time (s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for lap in round.laps %}
-          <tr>
-            <td>Lap {{ loop.index }}</td>
-            <td>{{ lap }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% else %}
-        <p class="pilot-no-laps">No laps recorded.</p>
-      {% endif %}
-    </div>
-  </div>
-  {% endfor %}
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const lapData = {{ pilot_lap_times | tojson }};
   const labels = lapData.map((_, i) => `Lap ${i + 1}`);
@@ -141,4 +128,3 @@
   });
 </script>
 {% endblock %}
-

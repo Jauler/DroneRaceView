@@ -1,59 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}Results{% endblock %}
-
+{% block title %}Heats{% endblock %}
 
 {% block content %}
     {% for round in rounds %}
-    <section class="round-section">
-      <div class="results-container">
-        <h2>{{ round.round_name }}</h2>
-        <div class="table-wrapper">
-          <table class="round-table">
-            <thead>
-              <tr>
-                <th>Heat</th>
-                <th>Channel</th>
-                <th>Nickname</th>
-                <th>Position</th>
-                <th>Gains</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for heat in round.heats %}
-                {% for pilot in heat.pilots %}
-                  {% if loop.index == 1 %}
-                  <td rowspan="{{ heat.pilots | length }}" class="vertical-heat-cell">
-                      <div class="rotated-heat-label">
-                        <span class="heat-name">{{ heat.heat_name }}</span>
-                        <span class="heat-badge {{ 'completed' if heat.completed else 'pending' }}">
-                          {{ 'Completed' if heat.completed else 'Pending' }}
-                        </span>
-                      </div>
-                    </td>
-                  {% else %}
-                    <tr>
-                  {% endif %}
-                  <td>{{ pilot.channel }}</td>
-                  <td>
-                    {% if pilot.pilot_id is not none %}
-                      <a href="{{ url_for('pilot', pilot_id=pilot.pilot_id) }}">
-                        {{ pilot.nickname }}
-                      </a>
-                    {% else %}
-                      {{ pilot.nickname }}
-                    {% endif %}
+    <article>
+      <h2>{{ round.round_name }}</h2>
+      <div class="overflow-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Heat</th>
+              <th>Channel</th>
+              <th>Nickname</th>
+              <th>Position</th>
+              <th>Gains</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for heat in round.heats %}
+              {% for pilot in heat.pilots %}
+                {% if loop.index == 1 %}
+                <td rowspan="{{ heat.pilots | length }}" class="vertical-heat-cell">
+                    <div class="rotated-heat-label">
+                      <span class="heat-name">{{ heat.heat_name }}</span>
+                      <span class="heat-badge {{ 'completed' if heat.completed else 'pending' }}">
+                        {{ 'Completed' if heat.completed else 'Pending' }}
+                      </span>
+                    </div>
                   </td>
-                  <td>{{ pilot.position }}</td>
-                  <td>{{ pilot.gains }}</td>
-                </tr>
-                {% endfor %}
+                {% else %}
+                  <tr>
+                {% endif %}
+                <td>{{ pilot.channel }}</td>
+                <td>
+                  {% if pilot.pilot_id is not none %}
+                    <a href="{{ url_for('pilot', pilot_id=pilot.pilot_id) }}">
+                      {{ pilot.nickname }}
+                    </a>
+                  {% else %}
+                    {{ pilot.nickname }}
+                  {% endif %}
+                </td>
+                <td>{{ pilot.position }}</td>
+                <td>{{ pilot.gains }}</td>
+              </tr>
               {% endfor %}
-            </tbody>
-          </table>
-        </div>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
-    </section>
+    </article>
     {% endfor %}
-
 {% endblock %}

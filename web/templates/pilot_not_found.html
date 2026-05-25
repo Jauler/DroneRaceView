@@ -3,12 +3,9 @@
 {% block title %}Pilot Not Found{% endblock %}
 
 {% block content %}
-<section class="not-found-section">
-  <div class="not-found-content">
-    <h2>Pilot Not Found</h2>
-    <p>Sorry, the pilot you're looking for does not exist or has been removed.</p>
-    <a href="{{ url_for('results') }}" class="back-link">← Go to Results</a>
-  </div>
-</section>
+<article style="text-align: center;">
+  <h2>Pilot Not Found</h2>
+  <p>Sorry, the pilot you're looking for does not exist or has been removed.</p>
+  <a href="{{ url_for('results') }}">← Go to Results</a>
+</article>
 {% endblock %}
-

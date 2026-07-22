@@ -5,6 +5,7 @@ from storage import RHClassesRepository, RHFrequencyRepository, RHPilotsReposito
 import converters.results_converter as results_converter
 import converters.rounds_converter as rounds_converter
 import converters.pilot_info_converter as pilot_info_converter
+import converters.totals_converter as totals_converter
 
 import logging
 
@@ -51,6 +52,11 @@ def results():
         results=converted_results,
         ranking = ranking
     )
+
+@app.route("/totals", methods=["GET"])
+def totals():
+    results = rhresultsrepo.get_latest_entry()
+    return render_template("totals.html", totals=totals_converter.totals(results))
 
 @app.route("/pilot/<int:pilot_id>", methods=["GET"])
 def pilot(pilot_id):

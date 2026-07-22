@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, JSON, String, DateTime, create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker, scoped_session
 from RHTypes.RHClassTypes import Classes
 from RHTypes.RHFormatTypes import Formats
 from RHTypes.RHHeatTypes import Heats
@@ -14,9 +14,9 @@ import os
 T = TypeVar("T")
 Base = declarative_base()
 db_path = os.getenv("DATABASE_URL", "sqlite:///data.db")  # fallback default
-engine = create_engine(db_path)
+engine = create_engine(db_path, connect_args={"check_same_thread": False})
 session_maker = sessionmaker(bind=engine)
-session = session_maker()
+session = scoped_session(session_maker)
 
 # Repository methods
 def init_db():

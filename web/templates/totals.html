@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Totals{% endblock %}
+
+{% block content %}
+
+{% if totals is none %}
+  <article>
+    <p><em>No event results yet.</em></p>
+  </article>
+{% else %}
+
+<article>
+  <h2>By Consecutives</h2>
+  <div class="overflow-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nickname</th>
+          <th>Consecutives</th>
+          <th>Fastest Lap</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in totals.by_consecutives %}
+        <tr>
+          <td>{{ e.rank }}</td>
+          <td><a href={{ url_for('pilot', pilot_id=e.pilot_id) }}>{{ e.nickname }}</a></td>
+          <td>{% if e.consecutives_base == 0 %}N/A{% else %}{{ e.consecutives_base }}/{{ e.consecutives_str }} {{ e.consecutives_source }}{% endif %}</td>
+          <td>{{ e.fastest_lap }} {{ e.fastest_lap_source }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</article>
+
+<article>
+  <h2>By Fastest Lap</h2>
+  <div class="overflow-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nickname</th>
+          <th>Fastest Lap</th>
+          <th>Laps</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in totals.by_fastest_lap %}
+        <tr>
+          <td>{{ e.rank }}</td>
+          <td><a href={{ url_for('pilot', pilot_id=e.pilot_id) }}>{{ e.nickname }}</a></td>
+          <td>{{ e.fastest_lap }} {{ e.fastest_lap_source }}</td>
+          <td>{{ e.laps }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</article>
+
+<article>
+  <h2>By Race Time</h2>
+  <div class="overflow-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nickname</th>
+          <th>Total Time</th>
+          <th>Laps</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in totals.by_race_time %}
+        <tr>
+          <td>{{ e.rank }}</td>
+          <td><a href={{ url_for('pilot', pilot_id=e.pilot_id) }}>{{ e.nickname }}</a></td>
+          <td>{{ e.total_time }}</td>
+          <td>{{ e.laps }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</article>
+
+{% endif %}
+
+{% endblock %}

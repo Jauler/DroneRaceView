@@ -148,6 +148,24 @@ class Results(BaseModel):
     results: list[Result]
 
 
+class TotalsEntry(BaseModel):
+    rank: int
+    nickname: str
+    pilot_id: int
+    laps: int
+    total_time: str
+    fastest_lap: str
+    fastest_lap_source: str
+    consecutives_base: int
+    consecutives_str: str
+    consecutives_source: str
+
+class Totals(BaseModel):
+    by_consecutives: list[TotalsEntry]
+    by_fastest_lap: list[TotalsEntry]
+    by_race_time: list[TotalsEntry]
+
+
 class RankingEntry(BaseModel):
     rank: int
     nickname: str
